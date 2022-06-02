@@ -46,10 +46,8 @@
 </div>
   <!-- container-scroller -->
     <!-- plugins:js -->
-    @stack('scripts')
     <script src="{!!asset('PurpleAdmin/assets/vendors/js/vendor.bundle.base.js')!!}"></script>
     <!-- endinject -->
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <!-- Plugin js for this page -->
     <script src="{!!asset('PurpleAdmin/assets/vendors/chart.js/Chart.min.js')!!}"></script>
     <script src="{!!asset('PurpleAdmin/assets/js/jquery.cookie.js')!!}" type="text/javascript"></script>
@@ -62,18 +60,17 @@
     <!-- Custom js for this page -->
     <script src="{!! asset('PurpleAdmin/assets/js/dashboard.js') !!}"></script>
     <script src="{!! asset('PurpleAdmin/assets/js/todolist.js') !!}"></script>
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js">
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" integrity="sha256-7dA7lq5P94hkBsWdff7qobYkp9ope/L5LQy2t/ljPLo=" crossorigin="anonymous"></script>
     <!-- select2 -->
     <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js" integrity="sha256-AFAYEOkzB6iIKnTYZOdUf9FFje6lOTYdwRJKwTN5mks=" crossorigin="anonymous"></script>
-    
-    <!-- select2-bootstrap4-theme -->
-    <script src="script.js"></script>
+    <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+    @stack('scripts')
     </body>
     </html>
     
-    <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
     <!-- End custom js for this page -->
     <script>
       $('.select2bs4').select2({
