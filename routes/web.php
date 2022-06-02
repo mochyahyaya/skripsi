@@ -29,7 +29,8 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 Route::group(['middleware' => ['auth:sanctum', 'verified']], function() {
     Route::get('admin/dashboard', [Dashboard::class, 'index'])->name('admin/dashboard');
-    Route::post('admin/grooms', [Grooms::class, 'index'])->name('admin/grooms');
+    Route::get('admin/grooms', [Grooms::class, 'index'])->name('admin/grooms');
+    Route::get('admin/grooms-fetch', [Grooms::class, 'fetch'])->name('admin/groomsfetch');
     Route::post('admin/grooms-store', [Grooms::class, 'store'])->name('admin/groomsStore');
     Route::get('admin/hotels', [Hotels::class, 'index'])->name('admin/hotels');
     Route::get('admin/breeds', [Grooms::class, 'index'])->name('admin/breeds');

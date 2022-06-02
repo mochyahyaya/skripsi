@@ -63,7 +63,7 @@
                     @csrf
                     <div class="modal-body">
                         <div class="row">
-                            <div class="form-group">
+                            <div class="forms-group">
                                 <label for="username">Nama Pemilik</label>
                                 <select id="username" class="form-control select2bs4">
                                     <option value="" selected disabled>--Pilih Nama Pemilik--</option>
@@ -116,13 +116,37 @@
       $('#table-grooms').DataTable();
     });
 
-    $.ajaxSetup({
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        }
-    });
-    
     $(document).ready(function () {
+      fetch();
+
+      function fetch() {
+        $.ajax({
+            type: "GET",
+            url : "{{ route('admin/groomsfetch') }}",,
+            dataType :"json",
+            success: function (reponse) {
+                $('tbody').html("");
+                $.each(reponse.grooms, function (key,item) {
+                    $('tbody').append('<tr>\
+                            <td>' + item.pets.name + '</td>\
+                            <td>' + item.service + '</td>\
+                            <td>' + item.price + '</td>\
+                            <td>' + item.status + '</td>\
+                            <td>' + item.pickup + '</td>\
+                            <td class="text-center"><button type="button" value="' + item.id + '" class="badge badge-gradient-warning" edit_pengguna">Edit</button>\
+                            <td class="text-center"><button type="button" value="' + item.id + '" class="badge badge-gradient-danger" hapus_pengguna">Hapus</button>\
+                        \</tr>');
+                })
+            }
+        });
+    }
+
+      $.ajaxSetup({
+          headers: {
+              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+          }
+      });
+
       $(document).on('click', '.tambah_data', function (e) {
         e.preventDefault();
 
