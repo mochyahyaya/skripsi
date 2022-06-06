@@ -15,25 +15,25 @@
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="index.html">
+        <a class="nav-link" href="{{route('admin/dashboard')}}">
           <span class="menu-title">Dashboard</span>
           <i class="mdi mdi-home menu-icon"></i>
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="pages/icons/mdi.html">
+        <a class="nav-link" href="{{route('admin/grooms')}}">
           <span class="menu-title">Grooming</span>
           <i class="mdi mdi-broom menu-icon"></i>
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="pages/forms/basic_elements.html">
+        <a class="nav-link" href="{{route('admin/hotels')}}">
           <span class="menu-title">Boarding</span>
           <i class="mdi mdi-hotel menu-icon"></i>
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="pages/charts/chartjs.html">
+        <a class="nav-link" href="{{route('admin/breeds')}}">
           <span class="menu-title">Breeding</span>
           <i class="mdi mdi-houzz-box menu-icon"></i>
         </a>
@@ -46,10 +46,10 @@
         </a>
         <div class="collapse" id="general-pages">
           <ul class="nav flex-column sub-menu">
-            <li class="nav-item"> <a class="nav-link" href="pages/samples/blank-page.html"> Pengguna </a></li>
-            <li class="nav-item"> <a class="nav-link" href="pages/samples/login.html"> Hewan Peliharaan </a></li>
-            <li class="nav-item"> <a class="nav-link" href="pages/samples/register.html"> Kandang </a></li>
-            <li class="nav-item"> <a class="nav-link" href="pages/samples/error-404.html"> Laporan </a></li>
+            <li class="nav-item"> <a class="nav-link" href="{{route('admin/users')}}"> Pengguna </a></li>
+            <li class="nav-item"> <a class="nav-link" href="{{route('admin/pets')}}"> Hewan Peliharaan </a></li>
+            <li class="nav-item"> <a class="nav-link" href="{{route('admin/cages')}}"> Kandang </a></li>
+            <li class="nav-item"> <a class="nav-link" href="{{route('admin/reports')}}"> Laporan </a></li>
           </ul>
         </div>
       </li>

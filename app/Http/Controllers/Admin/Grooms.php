@@ -11,14 +11,18 @@ use App\Models\User;
 use App\Models\Pet;
 
 class Grooms extends Controller
-{
+{   
+    public $petUsers;
+
     public function index()
     {   
-        $users = User::all();
+        $users = User::where('role_id', 3)->get();
         $grooms = Groom::all();
         $pets = Pet::all();
-        return view('admin.grooms', compact('grooms', 'users', 'pets'));
+        $updatepet = $this->petUsers;
+        return view('admin.grooms', compact('grooms', 'users', 'pets', 'updatepet'));
     }
+
 
     public function fetch()
     {
@@ -53,7 +57,8 @@ class Grooms extends Controller
                 'pet_id' => $request['petname'],
                 'price' => $request['price'],
                 'service' => $request['service'],
-                'status' => $request['status']
+                'status' => $request['status'],
+                'pickup' => $request['pickup'],
             ]);
 
             $data = [
@@ -64,5 +69,40 @@ class Grooms extends Controller
         }
 
         return response()->json($data);
+    }
+
+    public function edit($id)
+    {
+        $grooms = Groom::find($id);
+        $users = Pet::where('pet_id', $grooms->pet_id)->get();
+        $pets = Pet::where('user_id', $users);
+        $this->petUsers = $pets;
+
+        if($grooms)
+        {
+            $data = [
+                'data' => $grooms,
+                'pets' => $pets,
+            ];
+        }
+
+        else
+        {
+            $data = [
+                'data' => $grooms,
+                'pets' => $pets
+            ];
+        }
+        return response()->json($data);
+    }
+
+    public function update()
+    {
+
+    }
+
+    public function destroy()
+    {
+        
     }
 }

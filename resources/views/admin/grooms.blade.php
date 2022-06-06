@@ -35,11 +35,11 @@
                       <td>{{$value->pets->name}}</td>
                       <td>{{$value->service}}</td>
                       <td>{{$value->price}}</td>
-                      <td>{{$value->status}}</td>
                       <td>{{$value->pickup}}</td>
+                      <td>{{$value->status}}</td>
                       <td>
-                        <button>Edit</button>
-                        <button>Delete</button>
+                        <button class="btn btn-gradient-info btn-rounded btn-sm edit_data" value="{{$value->id}}">Edit</button>
+                        <button class="btn btn-gradient-danger btn-rounded btn-sm" value="{{$value->id}}">Delete</button>
                       </td>
                   </tr>
                 @endforeach
@@ -63,7 +63,7 @@
                     @csrf
                     <div class="modal-body">
                         <div class="row">
-                            <div class="form-group">
+                            <div class="forms-group">
                                 <label for="username">Nama Pemilik</label>
                                 <select id="username" class="form-control select2bs4">
                                     <option value="" selected disabled>--Pilih Nama Pemilik--</option>
@@ -76,11 +76,11 @@
                         <div class="row">
                             <div class="forms-group">
                                 <label for="petname" class="col-form-label">Nama Pet</label>
-                                <select id="petname" class="form-control select2bs4">
+                                <select id="petname" class="form-control select2bs4" name="petname">
                                   <option value="" selected disabled>--Pilih Nama Pet--</option>
-                                  @foreach ($pets as $value)
+                                  {{-- @foreach ($pets as $value)
                                       <option value="{{$value->id}}">{{$value->name}}</option>
-                                  @endforeach
+                                  @endforeach --}}
                               </select>
                             </div>
                         </div>
@@ -106,7 +106,65 @@
                 </form>
             </div>
         </div>
-    </div>
+      </div>
+
+      {{-- Update Modal --}}
+      <div class="modal fade" id="modal-update">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <h6 class="modal-title">Update Data</h6>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <form action="" method="POST">
+                @csrf
+                <input type="hidden" id="grooms_id">
+                <div class="modal-body">
+                  <div class="row">
+                      <div class="col-12">
+                          <div class="forms-group">
+                            <label for="petname" class="col-form-label">Nama Pet</label>
+                            <select id="updatepetname" class="form-control select2bs4" name="petname">
+                              <option value="" selected disabled>--Pilih Nama Pet--</option>
+                              @foreach ($pets as $value)
+                                  <option value="{{$value->id}}">{{$value->name}}</option>
+                              @endforeach
+                          </select>
+                        </div>
+                      </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-12">
+                      <div class="forms-group">
+                          <label for="service" class="col-form-label">Jenis Grooming</label>
+                          <select id="updateservice" class="form-control select2bs4">
+                            <option value="Lengkap">Lengkap</option>
+                            <option value="Jamur">Jamur</option>
+                            <option value="Kutu">Kutu</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                      <div class="col-12">
+                          <div class="forms-group">
+                            <label for="status" class="col-form-label">Status</label>
+                            <select id="updatestatus" class="form-control select2bs4">
+                              <option value="Selesai">Selesai</option>
+                          </select>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="modal-footer justify-content-between">
+                      <button type="button" class="btn btn-gradient-light btn-fw btnclose" data-dismiss="modal">Kembali</button>
+                      <button type="submit" class="btn btn-gradient-primary btn-fw update_data">Simpan</button>
+                  </div>
+                </div>
+              </form>
+        </div>
+      </div>
 </div>
 @endsection
 
@@ -123,6 +181,53 @@
     });
     
     $(document).ready(function () {
+      fetch();
+      function fetch() {
+        $.ajax({
+            type: "GET",
+            url : "{{route('admin/grooms')}}",
+            dataType :"json",
+            success: function (reponse) {
+                $('tbody').html("");
+                $.each(reponse.grooms, function (key,item) {
+                    $('tbody').append('<tr>\
+                            <td>' + item.pets.petname + '</td>\
+                            <td>' + item.service + '</td>\
+                            <td>' + item.price + '</td>\
+                            <td>' + item.pickup + '</td>\
+                            <td>' + item.status+ '</td>\
+                            <td class="text-center"><button type="button" value="' + item.id + '" class="btn btn-gradient-danger btn-rounded btn-sm edit_data">Edit</button>\
+                            <td class="text-center"><button type="button" value="' + item.id + '" class="btn btn-gradient-danger btn-rounded btn-sm hapus_data">Hapus</button>\
+                        \</tr>');
+                })
+            }
+        });
+    }
+
+      $(document).on('change', "#username", function(e) {
+        $('select[name="petname"]').attr('disabled','disabled').find('option:nth-of-type(n+2)').remove()
+        var user = $(e.target).find(':selected').val();
+        $.ajax({
+            type:'POST',
+            url:"{{ route('admin/refPets') }}",
+            data:{user},
+            success:function(data){
+                console.log(data);
+            },
+            complete:function(e){
+                data = e.responseJSON.data;
+                console.log(data);
+                $.each(data,function (j,data){
+                    $('select[name="petname"]').append($('<option>', { 
+                        value: data['id'],
+                        text : data['id']+' - '+ data['name'] 
+                    }));
+                });
+                $('select[name="petname"]').removeAttr('disabled')
+            }
+        })
+      });
+
       $(document).on('click', '.tambah_data', function (e) {
         e.preventDefault();
 
@@ -144,14 +249,12 @@
         }
 
         var data = {
-            "_token": "{{ csrf_token() }}",
             'petname': $('#petname').val(),
             'service': $('#service').val(),
             'price': $('#price').val(),
             'status': 'Diproses',
             'pickup' : 'Tidak'
         }
-
 
     $.ajax({
         type: "POST",
@@ -160,7 +263,7 @@
         dataType: "json",
         success: function (data) {
             if (data != null){
-                toast(data)
+                console.log('success');
                 }
         },
         complete: function(err){
@@ -184,6 +287,49 @@
             }
           }
         });
+      });
+
+      $(document).on('click', '.edit_data', function (e) {
+      e.preventDefault();
+      var grooms_id = $(this).val();
+      // alert(user_id);
+      $('#modal-update').modal('show');
+      $.ajax({
+          type: "GET",
+          url: "groomsEdit/" + grooms_id,
+          success: function (response) {
+              if (response.status == 404) {
+                  $('#success_message').addClass('alert alert-success');
+                  $('#success_message').text(response.message);
+                  $('#modal-update').modal('hide');
+              } else {
+                  // console.log(response.user.username);
+                  $('#updatepet').val(response.data.petname);
+                  $('#updateservice').val(response.data.service);
+                  $('#updatestatus').val(response.data.status);
+                  $('#grooms_id').val(grooms_id);
+              }
+          },
+          complete: function(err) {
+              fetch();
+              $('#modal-update').modal('hide');
+          },
+          error: function (err) {
+              if (err.status == 422) { // when status code is 422, it's a validation issue
+                  console.log(err.responseJSON);
+                  $('#success_message').fadeIn().html(err.responseJSON.message);
+                  
+                  // you can loop through the errors object and show it to the user
+                  console.warn(err.responseJSON.errors);
+                  // display errors on each form field
+                  $.each(err.responseJSON.errors, function (i, error) {
+                      var el = $(document).find('[name="'+i+'"]');
+                      el.after($('<span style="color: red;">'+error[0]+'</span>'));
+                  });
+              }
+          }
+        });
+        $('.btnclose').find('input').val('');
       });
     });
   </script>
