@@ -19,8 +19,7 @@ class Grooms extends Controller
         $users = User::where('role_id', 3)->get();
         $grooms = Groom::all();
         $pets = Pet::all();
-        $updatepet = $this->petUsers;
-        return view('admin.grooms', compact('grooms', 'users', 'pets', 'updatepet'));
+        return view('admin.dummy', compact('grooms', 'users', 'pets'));
     }
 
 
@@ -74,35 +73,64 @@ class Grooms extends Controller
     public function edit($id)
     {
         $grooms = Groom::find($id);
-        $users = Pet::where('pet_id', $grooms->pet_id)->get();
-        $pets = Pet::where('user_id', $users);
-        $this->petUsers = $pets;
-
         if($grooms)
         {
-            $data = [
-                'data' => $grooms,
-                'pets' => $pets,
-            ];
+            return response()->json([
+                'status'=>200,
+                'grooms'=> $grooms,
+            ]);
         }
-
         else
         {
-            $data = [
-                'data' => $grooms,
-                'pets' => $pets
-            ];
+            return response()->json([
+                'status'=>404,
+                'message'=>'No Student Found.'
+            ]);
         }
-        return response()->json($data);
     }
 
-    public function update()
+    public function update($id, Request $request)
     {
+        $data = $request->all();
+            $data = Groom::find($id);
+            if($data)
+            {
+                $data->pet_id = $request['petname'];
+                $data->service = $request[('nama')];
+                $data->status = $request['nip'];
+                $data->update();
+                $data = [
+                    'data' => $data,
+                ];
+            }
+            else
+            {
+                $data = [
+                    'data' => $data,
+                ];
+            }
+            return response()->json($data);
 
     }
 
-    public function destroy()
+    public function destroy($id)
     {
-        
+        $user = Groom::find($id);
+        if($user)
+        {
+            $user->delete();
+            return response()->json([
+                'status'=>200,
+                'message'=>'Berhasil dihapus.'
+            ]);
+        }
+        else
+        {
+            return response()->json([
+                'status'=>404,
+                'message'=>'Data tidak ditemukan.'
+            ]);
+        }
+
     }
 }

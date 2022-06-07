@@ -30,19 +30,6 @@
                 </tr>
               </thead>
               <tbody>
-                @foreach ($grooms as $value)
-                  <tr>
-                      <td>{{$value->pets->name}}</td>
-                      <td>{{$value->service}}</td>
-                      <td>{{$value->price}}</td>
-                      <td>{{$value->pickup}}</td>
-                      <td>{{$value->status}}</td>
-                      <td>
-                        <button class="btn btn-gradient-info btn-rounded btn-sm edit_data" value="{{$value->id}}">Edit</button>
-                        <button class="btn btn-gradient-danger btn-rounded btn-sm" value="{{$value->id}}">Delete</button>
-                      </td>
-                  </tr>
-                @endforeach
               </tbody>
             </table>
           </div>
@@ -94,11 +81,11 @@
                                 <option value="Kutu">Kutu</option>
                             </select>
                           </div>
+                        </div>
+                        <div>
+                          <input type="hidden" name="price" id="price">
+                        </div>
                       </div>
-                      <div>
-                        <input type="hidden" name="price" id="price">
-                      </div>
-                    </div>
                     <div class="modal-footer justify-content-between">
                         <button type="button" class="btn btn-gradient-light btn-fw" data-dismiss="modal">Kembali</button>
                         <button type="submit" class="btn btn-gradient-primary btn-fw tambah_data">Simpan</button>
@@ -111,58 +98,53 @@
       {{-- Update Modal --}}
       <div class="modal fade" id="modal-update">
         <div class="modal-dialog modal-lg">
-          <div class="modal-content">
-              <div class="modal-header">
-                  <h6 class="modal-title">Update Data</h6>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <form action="" method="POST">
-                @csrf
-                <input type="hidden" id="grooms_id">
-                <div class="modal-body">
-                  <div class="row">
-                      <div class="col-12">
-                          <div class="forms-group">
-                            <label for="petname" class="col-form-label">Nama Pet</label>
-                            <select id="updatepetname" class="form-control select2bs4" name="petname">
-                              <option value="" selected disabled>--Pilih Nama Pet--</option>
-                              @foreach ($pets as $value)
-                                  <option value="{{$value->id}}">{{$value->name}}</option>
-                              @endforeach
-                          </select>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title">Ubah Data</h6>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form action="" method="" class="forms-sample">
+                    @csrf
+                    <div class="modal-body">
+                      <input type="hidden" id="grooms_id">
+                        <div class="row">
+                            <div class="forms-group">
+                                <label for="petname" class="col-form-label">Nama Pet</label>
+                                <select id="updatePetName" class="form-control select2bs4" name="updatePetName">
+                                  @foreach ($pets as $value)
+                                      <option value="{{$value->id}}">{{$value->name}}</option>
+                                  @endforeach
+                              </select>
+                            </div>
                         </div>
-                      </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-12">
-                      <div class="forms-group">
-                          <label for="service" class="col-form-label">Jenis Grooming</label>
-                          <select id="updateservice" class="form-control select2bs4">
-                            <option value="Lengkap">Lengkap</option>
-                            <option value="Jamur">Jamur</option>
-                            <option value="Kutu">Kutu</option>
-                        </select>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="row">
-                      <div class="col-12">
+                        <div class="row">
                           <div class="forms-group">
-                            <label for="status" class="col-form-label">Status</label>
-                            <select id="updatestatus" class="form-control select2bs4">
-                              <option value="Selesai">Selesai</option>
-                          </select>
+                              <label for="service" class="col-form-label">Jenis Grooming</label>
+                              <select id="updateService" class="form-control select2bs4">
+                                <option value="Lengkap">Lengkap</option>
+                                <option value="Jamur">Jamur</option>
+                                <option value="Kutu">Kutu</option>
+                            </select>
                           </div>
                       </div>
-                  </div>
-                  <div class="modal-footer justify-content-between">
-                      <button type="button" class="btn btn-gradient-light btn-fw btnclose" data-dismiss="modal">Kembali</button>
-                      <button type="submit" class="btn btn-gradient-primary btn-fw update_data">Simpan</button>
-                  </div>
-                </div>
-              </form>
+                        <div class="row">
+                          <div class="forms-group">
+                              <label for="status" class="col-form-label">Status</label>
+                              <select id="updateStatus" class="form-control select2bs4">
+                                <option value="Proses">Proses</option>
+                                <option value="Selesai">Selesai</option>
+                            </select>
+                          </div>
+                      </div>
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-gradient-light btn-fw" data-dismiss="modal">Kembali</button>
+                        <button type="submit" class="btn btn-gradient-primary btn-fw tambah_data">Simpan</button>
+                    </div>
+                </form>
+            </div>
         </div>
       </div>
 </div>
@@ -170,6 +152,12 @@
 
 @push('scripts')
   <script>
+    $.ajaxSetup({
+      headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+      }
+    });
+
     $(document).ready( function () {
       $('#table-grooms').DataTable();
     });
@@ -179,7 +167,7 @@
       function fetch() {
         $.ajax({
             type: "GET",
-            url : "{{route('admin/grooms')}}",
+            url : "{{route('admin/groomsFetch')}}",
             dataType :"json",
             success: function (reponse) {
                 $('tbody').html("");
@@ -190,13 +178,14 @@
                             <td>' + item.price + '</td>\
                             <td>' + item.pickup + '</td>\
                             <td>' + item.status+ '</td>\
-                            <td class="text-center"><button type="button" value="' + item.id + '" class="btn btn-gradient-danger btn-rounded btn-sm edit_data">Edit</button>\
+                            <td class="text-center"><button type="button" value="' + item.id + '" class="btn btn-gradient-info btn-rounded btn-sm edit_data">Edit</button>\
                             <td class="text-center"><button type="button" value="' + item.id + '" class="btn btn-gradient-danger btn-rounded btn-sm hapus_data">Hapus</button>\
+                            </td>\
                         \</tr>');
                 })
             }
         });
-    }
+      }
 
       $(document).on('change', "#username", function(e) {
         $('select[name="petname"]').attr('disabled','disabled').find('option:nth-of-type(n+2)').remove()
@@ -250,67 +239,22 @@
             'pickup' : 'Tidak'
         }
 
-    $.ajax({
-        type: "POST",
-        url: "{{ route('admin/groomsStore') }}",
-        data: data,
-        dataType: "json",
-        success: function (data) {
-            if (data != null){
-                console.log('success');
-                }
-        },
-        complete: function(err){
-          fetch();
-          $('.tambah_data').text('Simpan').removeAttr('disabled')
-          $('#modal-insert').modal('hide');
-          $('#modal-insert').find('input').val('');
-        },
-        error: function (err) {
-            if (err.status == 422) { // when status code is 422, it's a validation issue
-                // console.log(err.responseJSON);
-                $('#success_message').fadeIn().html(err.responseJSON.message);
-                
-                // you can loop through the errors object and show it to the user
-                console.warn(err.responseJSON.errors);
-                // display errors on each form field
-                $.each(err.responseJSON.errors, function (i, error) {
-                    var el = $(document).find('[name="'+i+'"]');
-                    el.after($('<span style="color: red;">'+error[0]+'</span>'));
-                });
-            }
-          }
-        });
-      });
-
-      $(document).on('click', '.edit_data', function (e) {
-      e.preventDefault();
-      var grooms_id = $(this).val();
-      // alert(user_id);
-      $('#modal-update').modal('show');
-      $.ajax({
-          type: "GET",
-          url: "groomsEdit/" + grooms_id,
-          success: function (response) {
-              if (response.status == 404) {
-                  $('#success_message').addClass('alert alert-success');
-                  $('#success_message').text(response.message);
-                  $('#modal-update').modal('hide');
-              } else {
-                  // console.log(response.user.username);
-                  $('#updatepet').val(response.data.petname);
-                  $('#updateservice').val(response.data.service);
-                  $('#updatestatus').val(response.data.status);
-                  $('#grooms_id').val(grooms_id);
-              }
-          },
-          complete: function(err) {
+        $.ajax({
+            type: "POST",
+            url: "{{ route('admin/groomsStore') }}",
+            data: data,
+            dataType: "json",
+            success: function (data) {
+              $('#modal-insert').modal('hide');
+              $('#modal-insert').find(':selected').val('');
+            },
+            complete: function(err){
+              $('.tambah_data').text('Simpan').removeAttr('disabled')
               fetch();
-              $('#modal-update').modal('hide');
-          },
-          error: function (err) {
+            },
+            error: function (err) {
               if (err.status == 422) { // when status code is 422, it's a validation issue
-                  console.log(err.responseJSON);
+                  // console.log(err.responseJSON);
                   $('#success_message').fadeIn().html(err.responseJSON.message);
                   
                   // you can loop through the errors object and show it to the user
@@ -321,8 +265,47 @@
                       el.after($('<span style="color: red;">'+error[0]+'</span>'));
                   });
               }
-          }
+            }
         });
+      });
+
+      $(document).on('click', '.edit_data', function (e) {
+        e.preventDefault();
+        var grooms_id = $(this).val();
+        // alert(user_id);
+        $('#modal-update').modal('show');
+        $.ajax({
+            type: "GET",
+            url: "{{ route('admin/groomsEdit') }}" + '/' + id,
+            success: function (response) {
+                if (response.status == 404) {
+                    $('#success_message').addClass('alert alert-success');
+                    $('#success_message').text(response.message);
+                    $('#modal-update').modal('hide');
+                } else {
+                    $('#updatePetName').val(response.data.petname);
+                    $('#updateService').val(response.data.service);
+                    $('#updateStatus').val(response.data.status);
+                    $('#grooms_id').val(grooms_id);
+                }
+            },
+            complete: function(err) {
+                fetch();
+                $('#modal-update').modal('hide');
+            },
+            error: function (err) {
+                if (err.status == 422) {
+                    console.log(err.responseJSON);
+                    $('#success_message').fadeIn().html(err.responseJSON.message);
+                    
+                    console.warn(err.responseJSON.errors);
+                    $.each(err.responseJSON.errors, function (i, error) {
+                        var el = $(document).find('[name="'+i+'"]');
+                        el.after($('<span style="color: red;">'+error[0]+'</span>'));
+                    });
+                }
+            }
+          });
         $('.btnclose').find('input').val('');
       });
     });
