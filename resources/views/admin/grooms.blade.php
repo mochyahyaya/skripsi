@@ -97,15 +97,15 @@
 </div>
 
 {{-- Update Modal --}}
-<div class="modal fade" id="modal-update" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="modal-update">
   <div class="modal-dialog modal-lg">
       <div class="modal-content">
-          <div class="modal-header">
-              <h6 class="modal-title">Ubah Data</h6>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-              </button>
-          </div>
+        <div class="modal-header">
+          <h6 class="modal-title">Tambah Data</h6>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
           <form action="" method="" class="forms-sample">
               @csrf
               <div class="modal-body">
@@ -134,10 +134,13 @@
                     <div class="forms-group">
                         <label for="status" class="col-form-label">Status</label>
                         <select id="updateStatus" class="form-control select2bs4">
-                          <option value="Proses">Proses</option>
+                          <option value="Diproses">Proses</option>
                           <option value="Selesai">Selesai</option>
                       </select>
                     </div>
+                </div>
+                <div>
+                  <input type="hidden" name="updatePrice" id="updatePrice">
                 </div>
               </div>
               <div class="modal-footer justify-content-between">
@@ -200,7 +203,7 @@
                         <td>' + item.pickup + '</td>\
                         <td>' + item.status+ '</td>\
                         <td class="text-center"><button type="button" value="' + item.id + '" class="btn btn-gradient-info btn-rounded btn-sm edit_data">Edit</button>\
-                        <td class="text-center"><button type="button" value="' + item.id + '" class="btn btn-gradient-danger btn-rounded btn-sm hapus_data">Hapus</button>\
+                            <button type="button" value="' + item.id + '" class="btn btn-gradient-danger btn-rounded btn-sm hapus_data">Hapus</button>\
                         </td>\
                       \</tr>');
                 })
@@ -281,6 +284,7 @@
                   icon: data.status,
                   title: data.message
                 })
+                $('#modal-create').modal('hide');
             },
             complete: function(err){
               if (err.status == 422) { 
@@ -329,7 +333,7 @@
                   icon: response.status,
                   title: response.message
                 })
-                $('#updatePetName').val(response.grooms.pet_id);
+                    $('#updatePetName').val(response.grooms.pet_id);
                     $('#updateService').val(response.grooms.service);
                     $('#updateStatus').val(response.grooms.status);
                     $('#grooms_id').val(response.grooms.id);
@@ -366,11 +370,24 @@
             $('#table-grooms tbody').empty();
         }
         var id = $('#grooms_id').val();
+        
+        var price = $('#updateService').val();
+        if(price == 'Lengkap'){
+          $('#updatePrice').val('50000');
+        } else if (price == 'Kutu' ) {
+          $('#updatePrice').val('40000');
+        } else {
+          $('#updatePrice').val('35000')
+        }
+
+        var updatePrice = $('#updatePrice').val();
+        console.log(updatePrice);
 
         var data = {
             'petname': $('#updatePetName').val(),
             'service': $('#updateService').val(),
             'status': $('#updateStatus').val(),
+            'price': $('#updatePrice').val(),
         }
 
         $.ajax({
@@ -379,6 +396,21 @@
             data: data,
             dataType: "json",
             success: function (data) {
+              const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                  toast.addEventListener('mouseenter', Swal.stopTimer)
+                  toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+                })
+                Toast.fire({
+                  icon: data.status,
+                  title: data.message
+                })
               $('#modal-update').modal('hide');
             },
             complete: function(err){
@@ -401,36 +433,76 @@
         });
     });
 
-    $(document).on('click', '.hapus_data', function (e) {
-            var grooms_id = $(this).val();
-            $('#delete-modal').modal('show');
-            $('#deleteing_id').val(grooms_id);
+    // $(document).on('click', '.hapus_data', function (e) {
+    //         var grooms_id = $(this).val();
+    //         $('#delete-modal').modal('show');
+    //         $('#deleteing_id').val(grooms_id);
 
-            e.preventDefault();
+    //         e.preventDefault();
 
-            $(this).text('Deleting..');
-            var id = $('#deleteing_id').val();
+    //         $(this).text('Deleting..');
+    //         var id = $('#deleteing_id').val();
 
-            $.ajax({
-                type: "DELETE",
-                url: "grooms-delete/" + id,
-                dataType: "json",
-                success: function (response) {
-                    console.log(response);
-                    if (response.status == 404) {
-                        $('#success_message').addClass('alert alert-success');
-                        $('#success_message').text(response.message);
-                        $('.hapus_data').text('Hapus');
-                    } else {
-                        $('#success_message').html("");
-                        $('#success_message').addClass('alert alert-success');
-                        $('#success_message').text(response.message);
-                        $('.hapus_pengguna').text('Yes Delete');
-                        $('#delete-modal').modal('hide');
-                        fetch();
-                    }
-                }
-            });
+    //         $.ajax({
+    //             type: "DELETE",
+    //             url: "grooms-delete/" + id,
+    //             dataType: "json",
+    //             success: function (response) {
+    //                 console.log(response);
+    //                 if (response.status == 404) {
+    //                     $('#success_message').addClass('alert alert-success');
+    //                     $('#success_message').text(response.message);
+    //                     $('.hapus_data').text('Hapus');
+    //                 } else {
+    //                     $('#success_message').html("");
+    //                     $('#success_message').addClass('alert alert-success');
+    //                     $('#success_message').text(response.message);
+    //                     $('.hapus_pengguna').text('Yes Delete');
+    //                     $('#delete-modal').modal('hide');
+    //                     fetch();
+    //                 }
+    //             }
+    //         });
+    //     });
+
+        $(document).on('click', '.hapus_data', function (e) {
+          e.preventDefault();
+          var grooms_id = $(this).val();
+          Swal.fire({
+                  title: "Apa anda yakin ingin hapus data ini?!",
+                  text: "Jika menghapus data ini, maka anda tidak dapat mengembalikannya",
+                  type: "error",
+                  confirmButtonClass: "btn-danger",
+                  confirmButtonText: "Ya",
+                  showCancelButton: true,
+              }).then((result) => {
+                  if (result.isConfirmed) {
+                    $.ajax({
+                      type: "DELETE",
+                      url: "grooms-delete/" + grooms_id,
+                      dataType: "json",
+                      success: function (response) {
+                          console.log(response);
+                          const Toast = Swal.mixin({
+                          toast: true,
+                          position: 'top-end',
+                          showConfirmButton: false,
+                          timer: 3000,
+                          timerProgressBar: true,
+                          didOpen: (toast) => {
+                            toast.addEventListener('mouseenter', Swal.stopTimer)
+                            toast.addEventListener('mouseleave', Swal.resumeTimer)
+                          }
+                          })
+                          Toast.fire({
+                            icon: response.status,
+                            title: response.message
+                          })
+                          fetch();
+                        }
+                    });
+                  }
+              })
         });
     });
   </script>

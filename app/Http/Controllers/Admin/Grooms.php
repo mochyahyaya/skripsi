@@ -99,15 +99,20 @@ class Grooms extends Controller
                 $data->pet_id = $request['petname'];
                 $data->service = $request['service'];
                 $data->status = $request['status'];
+                $data->price = $request['price'];
                 $data->update();
                 $data = [
                     'data' => $data,
+                    'status' => 'success',
+                    'message' => 'Data berhasil diubah'
                 ];
             }
             else
-            {
+            { 
                 $data = [
                     'data' => $data,
+                    'status' => 'error',
+                    'message' => 'Gagal mengubah data'
                 ];
             }
             return response()->json($data);
@@ -121,14 +126,14 @@ class Grooms extends Controller
         {
             $user->delete();
             return response()->json([
-                'status'=>200,
+                'status'=>'success',
                 'message'=>'Berhasil dihapus.'
             ]);
         }
         else
         {
             return response()->json([
-                'status'=>404,
+                'status'=>'error',
                 'message'=>'Data tidak ditemukan.'
             ]);
         }
