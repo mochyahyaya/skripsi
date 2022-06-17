@@ -115,7 +115,7 @@
                           <label for="petname" class="col-form-label">Nama Pet</label>
                           <select id="updatePetName" class="form-control select2bs4" name="updatePetName">
                             @foreach ($pets as $value)
-                                <option value="{{$value->id}}">{{$value->name}}</option>
+                                <option value="{{$value->id}}" selected>{{$value->name}}</option>
                             @endforeach
                         </select>
                       </div>
@@ -152,25 +152,6 @@
   </div>
 </div>
 
-{{-- Delete Modal --}}
-<div class="modal fade" id="delete-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-      <div class="modal-content">
-          <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">Hapus Data</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-              <h4>Anda yakin ingin menghapus data ?</h4>
-              <input type="hidden" id="deleteing_id">
-          </div>
-          <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-primary hapus_data">Yes</button>
-          </div>
-      </div>
-  </div>
-</div>
 @endsection
 
 @push('scripts')
@@ -219,7 +200,22 @@
             url:"{{ route('admin/refPets') }}",
             data:{user},
             success:function(data){
-                console.log(data);
+              console.log(data);
+              const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                  toast.addEventListener('mouseenter', Swal.stopTimer)
+                  toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+                })
+                Toast.fire({
+                  icon: data.status,
+                  title: data.message
+                })
             },
             complete:function(e){
                 data = e.responseJSON.data;
@@ -356,7 +352,6 @@
                 }
             }
           });
-        $('.btnclose').find('input').val('');
       });
 
       $(document).on('click', '.update_data', function (e) {
@@ -431,79 +426,47 @@
                 }
             }
         });
-    });
+      });
 
-    // $(document).on('click', '.hapus_data', function (e) {
-    //         var grooms_id = $(this).val();
-    //         $('#delete-modal').modal('show');
-    //         $('#deleteing_id').val(grooms_id);
-
-    //         e.preventDefault();
-
-    //         $(this).text('Deleting..');
-    //         var id = $('#deleteing_id').val();
-
-    //         $.ajax({
-    //             type: "DELETE",
-    //             url: "grooms-delete/" + id,
-    //             dataType: "json",
-    //             success: function (response) {
-    //                 console.log(response);
-    //                 if (response.status == 404) {
-    //                     $('#success_message').addClass('alert alert-success');
-    //                     $('#success_message').text(response.message);
-    //                     $('.hapus_data').text('Hapus');
-    //                 } else {
-    //                     $('#success_message').html("");
-    //                     $('#success_message').addClass('alert alert-success');
-    //                     $('#success_message').text(response.message);
-    //                     $('.hapus_pengguna').text('Yes Delete');
-    //                     $('#delete-modal').modal('hide');
-    //                     fetch();
-    //                 }
-    //             }
-    //         });
-    //     });
-
-        $(document).on('click', '.hapus_data', function (e) {
-          e.preventDefault();
-          var grooms_id = $(this).val();
-          Swal.fire({
-                  title: "Apa anda yakin ingin hapus data ini?!",
-                  text: "Jika menghapus data ini, maka anda tidak dapat mengembalikannya",
-                  type: "error",
-                  confirmButtonClass: "btn-danger",
-                  confirmButtonText: "Ya",
-                  showCancelButton: true,
-              }).then((result) => {
-                  if (result.isConfirmed) {
-                    $.ajax({
-                      type: "DELETE",
-                      url: "grooms-delete/" + grooms_id,
-                      dataType: "json",
-                      success: function (response) {
-                          console.log(response);
-                          const Toast = Swal.mixin({
-                          toast: true,
-                          position: 'top-end',
-                          showConfirmButton: false,
-                          timer: 3000,
-                          timerProgressBar: true,
-                          didOpen: (toast) => {
-                            toast.addEventListener('mouseenter', Swal.stopTimer)
-                            toast.addEventListener('mouseleave', Swal.resumeTimer)
-                          }
-                          })
-                          Toast.fire({
-                            icon: response.status,
-                            title: response.message
-                          })
-                          fetch();
+      $(document).on('click', '.hapus_data', function (e) {
+        e.preventDefault();
+        var grooms_id = $(this).val();
+        Swal.fire({
+                title: "Apa anda yakin ingin hapus data ini?!",
+                text: "Jika menghapus data ini, maka anda tidak dapat mengembalikannya",
+                type: "error",
+                confirmButtonClass: "btn-danger",
+                confirmButtonText: "Ya",
+                showCancelButton: true,
+            }).then((result) => {
+                if (result.isConfirmed) {
+                  $.ajax({
+                    type: "DELETE",
+                    url: "grooms-delete/" + grooms_id,
+                    dataType: "json",
+                    success: function (response) {
+                        console.log(response);
+                        const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        didOpen: (toast) => {
+                          toast.addEventListener('mouseenter', Swal.stopTimer)
+                          toast.addEventListener('mouseleave', Swal.resumeTimer)
                         }
-                    });
-                  }
-              })
-        });
+                        })
+                        Toast.fire({
+                          icon: response.status,
+                          title: response.message
+                        })
+                        fetch();
+                      }
+                  });
+                }
+            })
+      });
     });
   </script>
 @endpush

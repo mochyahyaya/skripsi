@@ -18,8 +18,11 @@ class Dashboard extends Controller
     {
         $data = Pet::where('user_id', $request['user'])->get();
 
-        return response()->json([
-            'data' => $data
-        ]);
+        $data = [
+            'data' => $data,
+            'message' => 'Berhasil menampilkan pet pengguna',
+            'status' => 'success'
+        ];
+        return response()->json($data);
     }
 }

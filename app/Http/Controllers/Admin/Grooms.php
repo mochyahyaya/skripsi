@@ -17,8 +17,8 @@ class Grooms extends Controller
     public function index()
     {   
         $users = User::where('role_id', 3)->get();
-        $grooms = Groom::all();
         $pets = Pet::all();
+        $grooms = Groom::all();
         return view('admin.grooms', compact('grooms', 'users', 'pets'));
     }
 
@@ -104,7 +104,7 @@ class Grooms extends Controller
                 $data = [
                     'data' => $data,
                     'status' => 'success',
-                    'message' => 'Data berhasil diubah'
+                    'message' => 'Data grooming berhasil diubah'
                 ];
             }
             else
@@ -112,7 +112,7 @@ class Grooms extends Controller
                 $data = [
                     'data' => $data,
                     'status' => 'error',
-                    'message' => 'Gagal mengubah data'
+                    'message' => 'Gagal mengubah data grooming'
                 ];
             }
             return response()->json($data);
@@ -121,10 +121,10 @@ class Grooms extends Controller
 
     public function destroy($id)
     {
-        $user = Groom::find($id);
+        $grooms = Groom::find($id);
         if($user)
         {
-            $user->delete();
+            $grooms->delete();
             return response()->json([
                 'status'=>'success',
                 'message'=>'Berhasil dihapus.'
@@ -137,6 +137,5 @@ class Grooms extends Controller
                 'message'=>'Data tidak ditemukan.'
             ]);
         }
-
     }
 }
