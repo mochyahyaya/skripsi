@@ -19,7 +19,7 @@ class Grooms extends Controller
         $users = User::where('role_id', 3)->get();
         $grooms = Groom::all();
         $pets = Pet::all();
-        return view('admin.dummy', compact('grooms', 'users', 'pets'));
+        return view('admin.grooms', compact('grooms', 'users', 'pets'));
     }
 
 
@@ -43,8 +43,8 @@ class Grooms extends Controller
         if(!$validated)
         {
             $data = [
-                'tipe' => 'warning',
-                'status' => "Gagal menambahkan data",
+                'status' => 'error',
+                'meesage' => "Gagal menambahkan data grooming",
                 'data' => ''
             ];
         }
@@ -61,8 +61,8 @@ class Grooms extends Controller
             ]);
 
             $data = [
-                'tipe' => 'success',
-                'status' => 'Data berhasil ditambahkan',
+                'status' => 'success',
+                'message' => 'Data grooming berhasil ditambahkan',
                 'data' => $data,
             ];
         }
@@ -76,28 +76,29 @@ class Grooms extends Controller
         if($grooms)
         {
             return response()->json([
-                'status'=>200,
+                'status' => 'success',
+                'message' => 'Data grooming berhasil ditampilkan',
                 'grooms'=> $grooms,
             ]);
         }
         else
         {
             return response()->json([
-                'status'=>404,
-                'message'=>'No Student Found.'
+                'status'=> 'error',
+                'message'=>'Data grooming tidak ditemukan'
             ]);
         }
     }
 
     public function update($id, Request $request)
     {
-        $data = $request->all();
+            $data = $request->all();
             $data = Groom::find($id);
             if($data)
             {
                 $data->pet_id = $request['petname'];
-                $data->service = $request[('nama')];
-                $data->status = $request['nip'];
+                $data->service = $request['service'];
+                $data->status = $request['status'];
                 $data->update();
                 $data = [
                     'data' => $data,

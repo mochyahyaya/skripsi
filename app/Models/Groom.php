@@ -15,6 +15,6 @@ class Groom extends Model
 
     public function pets()
     {
-        return $this->belongsTo(Pet::class, 'pet_id');
+        return $this->belongsTo(Pet::class, 'pet_id', 'id');
     }
 }
