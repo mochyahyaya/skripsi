@@ -55,12 +55,13 @@ class Hotels extends Controller
             $end = new Carbon($request['end_at']);
             $day =  $start->diff($end)->format('%a');
             $price = $day * 20000;
+            $priceformat = number_format($price,0,".",".");
             // dd($price);
             $data = Hotel::create([
                 'pet_id' => $request['petname'],
                 'start_at'=> $request['start_at'],
                 'end_at'=> $request['end_at'],
-                'price' => $price,
+                'price' => $priceformat,
                 'status' => $request['status'],
                 'pickup' => $request['pickup'],
             ]);
@@ -105,12 +106,13 @@ class Hotels extends Controller
                 $end = new Carbon($request['end_at']);
                 $day =  $start->diff($end)->format('%a');
                 $price = $day * 20000;
+                $priceformat = number_format($price,0,".",".");
 
                 $data->pet_id = $request['petname'];
                 $data->start_at = $request['start_at'];
                 $data->end_at = $request['end_at'];
                 $data->status = $request['status'];
-                $data->price = $price;
+                $data->price = $priceformat;
                 $data->update();
                 $data = [
                     'data' => $data,

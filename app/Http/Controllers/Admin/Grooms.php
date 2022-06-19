@@ -52,9 +52,11 @@ class Grooms extends Controller
         else
         {
             $data = $request->all();
+            $price = $request['price'];
+            $priceformat = number_format($price,0,".",".");
             $data = Groom::create([
                 'pet_id' => $request['petname'],
-                'price' => $request['price'],
+                'price' => $priceformat,
                 'service' => $request['service'],
                 'status' => $request['status'],
                 'pickup' => $request['pickup'],
@@ -94,12 +96,14 @@ class Grooms extends Controller
     {
             $data = $request->all();
             $data = Groom::find($id);
+            $data->price = $request['price'];
+            $priceformat = number_format($data->price,0,".",".");
             if($data)
             {
                 $data->pet_id = $request['petname'];
                 $data->service = $request['service'];
                 $data->status = $request['status'];
-                $data->price = $request['price'];
+                $data->price = $priceformat;
                 $data->update();
                 $data = [
                     'data' => $data,

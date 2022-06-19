@@ -15,6 +15,6 @@ class Breed extends Model
 
     public function pets()
     {
-        $this->belongsTo(Pet::class, 'pet_id');
+        return $this->belongsTo(Pet::class, 'pet_id');
     }
 }

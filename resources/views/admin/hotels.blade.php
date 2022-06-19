@@ -36,9 +36,9 @@
         </div>
       </div>
     </div>
-  </div>
+</div>
 
-{{-- Insert Modal --}}
+  {{-- Insert Modal --}}
 <div class="modal fade" id="modal-create">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -76,16 +76,16 @@
                     <div class="row">
                       <div class="forms-group">
                           <label for="service" class="col-form-label">Tanggal Masuk</label>
-                          <input type="date" name="start_at" id="start_at" class="form-control"> 
+                          <input type="text" placeholder="dd/mm/yyyy" name="start_at" id="start_at" class="form-control"> 
                       </div>
                     </div>
                     <div class="row">
                       <div class="forms-group">
                           <label for="service" class="col-form-label">Tanggal Keluar</label>
-                          <input type="date" name="end_at" id="end_at" class="form-control">
+                          <input type="text" placeholder="dd/mm/yyyy" name="end_at" id="end_at" class="form-control">
                       </div>
                     </div>
-                  </div>
+                </div>
                 <div class="modal-footer justify-content-between">
                     <button type="button" class="btn btn-gradient-light btn-fw" data-dismiss="modal">Kembali</button>
                     <button type="submit" class="btn btn-gradient-primary btn-fw tambah_data">Simpan</button>
@@ -100,7 +100,7 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
           <div class="modal-header">
-            <h6 class="modal-title">Tambah Data</h6>
+            <h6 class="modal-title">Ubah Data</h6>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
@@ -122,13 +122,13 @@
                     <div class="row">
                         <div class="forms-group">
                             <label for="service" class="col-form-label">Tanggal Masuk</label>
-                            <input type="date" name="updateStartAt" id="updateStartAt" class="form-control">
+                            <input type="text" placeholder="dd/mm/yyyy" name="updateStartAt" id="updateStartAt" class="form-control">
                         </div>
                       </div>
                       <div class="row">
                         <div class="forms-group">
                             <label for="service" class="col-form-label">Tanggal Keluar</label>
-                            <input type="date" name="updateEndAt" id="updateEndAt" class="form-control">
+                            <input type="text" placeholder="dd/mm/yyyy" name="updateEndAt" id="updateEndAt" class="form-control">
                         </div>
                       </div>
                     <div class="row">
@@ -161,6 +161,14 @@
 
     $(document).ready( function () {
       $('#table-hotels').DataTable();
+      $('#start_at').datepicker({
+        dateFormat: 'yy-mm-dd',
+        minDate: 0
+      });
+      $('#end_at').datepicker({
+        dateFormat: 'yy-mm-dd',
+        minDate: +1
+      });
     });
 
     $(document).ready(function () {
@@ -176,8 +184,8 @@
                     $.each(reponse.hotels, function (key,item) {
                         $('tbody').append('<tr>\
                             <td>' + item.pets.name + '</td>\
-                            <td>' + item.start_at + '</td>\
-                            <td>' + item.end_at + '</td>\
+                            <td>' + moment(item.start_at).locale('id').format('LL') + '</td>\
+                            <td>' + moment(item.end_at).locale('id').format('LL') + '</td>\
                             <td>' + item.price + '</td>\
                             <td>' + item.pickup + '</td>\
                             <td>' + item.status+ '</td>\
@@ -270,17 +278,11 @@
                     icon: data.status,
                     title: data.message
                     })
-                    $('#modal-create').modal('hide');
                 },
-                complete: function(err){
-                if (err.status == 422) { 
-                    $('#modal-create').modal('show');
-                } else {
-                    fetch();
-                    $('.tambah_data').text('Simpan').removeAttr('disabled')
+                complete: function(){
                     $('#modal-create').modal('hide');
-                    $('#modal-create').find('input').val('');
-                }
+                    $('.tambah_data').text('Simpan').removeAttr('disabled')
+                    fetch();
                 },
                 error: function (err) {
                 if (err.status == 422) {
@@ -408,44 +410,44 @@
         });
 
         $(document).on('click', '.hapus_data', function (e) {
-        e.preventDefault();
-        var grooms_id = $(this).val();
-        Swal.fire({
-                title: "Apa anda yakin ingin hapus data ini?!",
-                text: "Jika menghapus data ini, maka anda tidak dapat mengembalikannya",
-                type: "error",
-                confirmButtonClass: "btn-danger",
-                confirmButtonText: "Ya",
-                showCancelButton: true,
-            }).then((result) => {
-                if (result.isConfirmed) {
-                  $.ajax({
-                    type: "DELETE",
-                    url: "hotels-delete/" + grooms_id,
-                    dataType: "json",
-                    success: function (response) {
-                        console.log(response);
-                        const Toast = Swal.mixin({
-                        toast: true,
-                        position: 'top-end',
-                        showConfirmButton: false,
-                        timer: 3000,
-                        timerProgressBar: true,
-                        didOpen: (toast) => {
-                          toast.addEventListener('mouseenter', Swal.stopTimer)
-                          toast.addEventListener('mouseleave', Swal.resumeTimer)
+            e.preventDefault();
+            var grooms_id = $(this).val();
+            Swal.fire({
+                    title: "Apa anda yakin ingin hapus data ini?!",
+                    text: "Jika menghapus data ini, maka anda tidak dapat mengembalikannya",
+                    type: "error",
+                    confirmButtonClass: "btn-danger",
+                    confirmButtonText: "Ya",
+                    showCancelButton: true,
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                    $.ajax({
+                        type: "DELETE",
+                        url: "hotels-delete/" + grooms_id,
+                        dataType: "json",
+                        success: function (response) {
+                            console.log(response);
+                            const Toast = Swal.mixin({
+                            toast: true,
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true,
+                            didOpen: (toast) => {
+                            toast.addEventListener('mouseenter', Swal.stopTimer)
+                            toast.addEventListener('mouseleave', Swal.resumeTimer)
+                            }
+                            })
+                            Toast.fire({
+                            icon: response.status,
+                            title: response.message
+                            })
+                            fetch();
                         }
-                        })
-                        Toast.fire({
-                          icon: response.status,
-                          title: response.message
-                        })
-                        fetch();
-                      }
-                  });
-                }
-            })
-      });
+                    });
+                    }
+                })
+        });
     });
 </script>
     
