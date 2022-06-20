@@ -126,7 +126,7 @@ class Grooms extends Controller
     public function destroy($id)
     {
         $grooms = Groom::find($id);
-        if($user)
+        if($grooms)
         {
             $grooms->delete();
             return response()->json([

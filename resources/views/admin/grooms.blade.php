@@ -101,7 +101,7 @@
   <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
-          <h6 class="modal-title">Tambah Data</h6>
+          <h6 class="modal-title">Ubah Data</h6>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
           </button>
@@ -281,16 +281,12 @@
                   title: data.message
                 })
                 $('#modal-create').modal('hide');
+                fetch();
             },
             complete: function(err){
-              if (err.status == 422) { 
-                $('#modal-create').modal('show');
-              } else {
-                fetch();
                 $('.tambah_data').text('Simpan').removeAttr('disabled')
                 $('#modal-create').modal('hide');
                 $('#modal-create').find('input').val('');
-              }
             },
             error: function (err) {
               if (err.status == 422) {

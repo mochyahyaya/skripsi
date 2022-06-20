@@ -207,41 +207,41 @@
 
         $(document).on('change', "#username", function(e) {
             $('select[name="petname"]').attr('disabled','disabled').find('option:nth-of-type(n+2)').remove()
-            var user = $(e.target).find(':selected').val();
-            $.ajax({
-                type:'POST',
-                url:"{{ route('admin/refPets') }}",
-                data:{user},
-                success:function(data){
-                console.log(data);
-                const Toast = Swal.mixin({
-                    toast: true,
-                    position: 'top-end',
-                    showConfirmButton: false,
-                    timer: 3000,
-                    timerProgressBar: true,
-                    didOpen: (toast) => {
-                    toast.addEventListener('mouseenter', Swal.stopTimer)
-                    toast.addEventListener('mouseleave', Swal.resumeTimer)
-                    }
-                    })
-                    Toast.fire({
-                    icon: data.status,
-                    title: data.message
-                    })
-                },
-                complete:function(e){
-                    data = e.responseJSON.data;
+                var user = $(e.target).find(':selected').val();
+                $.ajax({
+                    type:'POST',
+                    url:"{{ route('admin/refPets') }}",
+                    data:{user},
+                    success:function(data){
                     console.log(data);
-                    $.each(data,function (j,data){
-                        $('select[name="petname"]').append($('<option>', { 
-                            value: data['id'],
-                            text : data['id']+' - '+ data['name'] 
-                        }));
-                    });
-                    $('select[name="petname"]').removeAttr('disabled')
-                }
-            })
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        didOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                        }
+                        })
+                        Toast.fire({
+                        icon: data.status,
+                        title: data.message
+                        })
+                    },
+                    complete:function(e){
+                        data = e.responseJSON.data;
+                        console.log(data);
+                        $.each(data,function (j,data){
+                            $('select[name="petname"]').append($('<option>', { 
+                                value: data['id'],
+                                text : data['id']+' - '+ data['name'] 
+                            }));
+                        });
+                        $('select[name="petname"]').removeAttr('disabled')
+                    }
+                })
         });
 
         $(document).on('click', '.tambah_data', function (e) {
@@ -284,16 +284,12 @@
                         title: data.message
                         });
                         $('#modal-create').modal('hide');
+                        fetch();
                     },
                     complete: function(err){
-                    if (err.status == 422) { 
-                        $('#modal-create').modal('show');
-                    } else {
-                        fetch();
                         $('.tambah_data').text('Simpan').removeAttr('disabled');
                         $('#modal-create').modal('hide');
                         $('#modal-create').find('input').val('');
-                    }
                     },
                     error: function (err) {
                     if (err.status == 422) {

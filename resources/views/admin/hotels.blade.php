@@ -160,7 +160,7 @@
     });
 
     $(document).ready( function () {
-      $('#table-hotels').DataTable();
+      $('#table-hotels').DataTable()
       $('#start_at').datepicker({
         dateFormat: 'yy-mm-dd',
         minDate: 0
@@ -328,7 +328,7 @@
                         $('#hotels_id').val(response.hotels.id);
                 }
                 },
-                complete: function(err) {
+                complete: function() {
                     fetch();
                     $('#modal-update').modal('hide');
                 },
