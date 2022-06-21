@@ -8,4 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class TypeCage extends Model
 {
     use HasFactory;
+
+    public $table = 'type_cages';
+
+    public $guarded = [''];
+
+    public function cages()
+    {
+        return $this->hasMany(Cage::class);
+    }
 }

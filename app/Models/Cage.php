@@ -15,6 +15,6 @@ class Cage extends Model
 
     public function typeCages()
     {
-        return $this->belongsTo(Cage::class. 'type_cage_id');
+        return $this->belongsTo(TypeCage::class, 'type_cage_id');
     }
 }

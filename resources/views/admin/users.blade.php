@@ -165,10 +165,6 @@
       }
     });
 
-    $(document).ready( function () {
-        $('#table-users').DataTable();
-    });
-
     $(document).ready(function () {
         fetch();
 
@@ -190,7 +186,8 @@
                                 <button type="button" value="' + item.id + '" class="btn btn-gradient-danger btn-rounded btn-sm hapus_data">Hapus</button>\
                             </td>\
                         \</tr>');
-                    })
+                    });
+                    $('#table-users').DataTable();
                 }
             });
         }
@@ -238,9 +235,8 @@
                     })
                     $('#modal-create').find('input').val('');
                 },
-                complete: function(err){
-                    $('#modal-create').modal('hide');
-                    
+                complete: function(){
+                    $("#modal-create .close").click();
                     $('.tambah_data').text('Simpan').removeAttr('disabled');
                     fetch();
                 },
@@ -255,6 +251,10 @@
                 }
             });
         });
+
+        $(document).on('click', '.add_data', function (e) {
+            $("#modal-create").modal('show');
+        })
 
         $(document).on('click', '.edit_data', function (e) {
             e.preventDefault();

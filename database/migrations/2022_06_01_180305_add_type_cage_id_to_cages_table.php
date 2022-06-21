@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::table('cages', function (Blueprint $table) {
             $table->foreignId('type_cage_id')
-            ->constrained('cages')
+            ->constrained('type_cages')
             ->onUpdate('cascade')
             ->onDelete('cascade');
         });

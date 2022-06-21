@@ -20,8 +20,47 @@ class Cages extends Controller
     public function fetch()
     {
         $cages = Cage::with('typeCages')->get();
+        // dd($cages); 
         return response()->json([
             'cages' => $cages
         ]);
+    }
+
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'type' => 'required',
+            'number' => 'required|numeric',
+            'count' => 'required|numeric',
+        ]);
+
+        if(!$validated)
+        {
+            $data = [
+                'status' => 'error',
+                'meesage' => "Gagal menambahkan data kandang",
+                'data' => ''
+            ];
+        }
+
+        else
+        {
+            $data = $request->all();
+            // dd($data);
+            $data = Cage::create([
+                'type_cage_id' => $request['type'],
+                'number' => $request['number'],
+                'count' => $request['count'],
+                'counter' => $request['counter'],
+            ]);
+
+            $data = [
+                'status' => 'success',
+                'message' => 'Data kandang berhasil ditambahkan',
+                'data' => $data,
+            ];
+        }
+
+        return response()->json($data);
     }
 }

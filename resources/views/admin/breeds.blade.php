@@ -329,11 +329,11 @@
                     icon: response.status,
                     title: response.message
                     })
-                        $('#updatePetName').val(response.breeds.pet_id);
-                        $('#updatePetMale').val(response.breeds.pet_male);
-                        $('#updateStartAt').val(response.breeds.start_at);
-                        $('#updateStatus').val(response.breeds.status);
-                        $('#breeds_id').val(response.breeds.id);
+                    $('#updatePetName').val(response.breeds.pet_id);
+                    $('#updatePetMale').val(response.breeds.pet_male);
+                    $('#updateStartAt').val(response.breeds.start_at);
+                    $('#updateStatus').val(response.breeds.status);
+                    $('#breeds_id').val(response.breeds.id);
                 }
                 },
                 complete: function(err) {

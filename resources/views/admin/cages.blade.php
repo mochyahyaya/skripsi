@@ -21,7 +21,6 @@
           <table class="table table-striped" id="table-cages">
             <thead>
               <tr>
-                <th> # </th>
                 <th> Jenis Kandang</th>
                 <th> Nomor Kandang </th>
                 <th> Nama Kandang </th>
@@ -150,19 +149,21 @@
                 type: "GET",
                 url : "{{route('admin/cagesFetch')}}",
                 dataType :"json",
-                success: function (reponse) {
+                success: function (response) {
                     $('tbody').html("");
-                    $.each(reponse.cages, function (key,item) {
+                    $.each(response.cages, function (key,item) {
+                        console.log(response.cages);
                         $('tbody').append('<tr>\
-                            <td>' + item.typecages.name + '</td>\
+                            <td>' + item.typeCages + '</td>\
                             <td>' + item.number + '</td>\
-                            <td>' + item.typecage.alias + ' - '+ item.number +'</td>\
+                            <td>' + item.typeCages + ' - '+item.typeCages+'</td>\
                             <td>' + item.count + '</td>\
                             <td class="text-center"><button type="button" value="' + item.id + '" class="btn btn-gradient-info btn-rounded btn-sm edit_data">Edit</button>\
                                 <button type="button" value="' + item.id + '" class="btn btn-gradient-danger btn-rounded btn-sm hapus_data">Hapus</button>\
                             </td>\
                         \</tr>');
-                    })
+                    });
+                    $('#table-cages').DataTable();
                 }
             });
         }
