@@ -87,7 +87,7 @@
                     </div>
                 </div>
                 <div class="modal-footer justify-content-between">
-                    <button type="button" class="btn btn-gradient-light btn-fw" data-dismiss="modal">Kembali</button>
+                    <button type="button" class="btn btn-gradient-light btn-fw close" data-dismiss="modal">Kembali</button>
                     <button type="submit" class="btn btn-gradient-primary btn-fw tambah_data">Simpan</button>
                 </div>
             </form>
@@ -101,7 +101,7 @@
         <div class="modal-content">
           <div class="modal-header">
             <h6 class="modal-title">Ubah Data</h6>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
           </div>
@@ -113,9 +113,9 @@
                         <div class="forms-group">
                             <label for="petname" class="col-form-label">Nama Pet</label>
                             <select id="updatePetName" class="form-control select2bs4" name="updatePetName">
-                              @foreach ($pets as $value)
+                              {{-- @foreach ($pets as $value)
                                   <option value="{{$value->id}}" selected>{{$value->name}}</option>
-                              @endforeach
+                              @endforeach --}}
                           </select>
                         </div>
                     </div>
@@ -142,7 +142,7 @@
                   </div>
                 </div>
                 <div class="modal-footer justify-content-between">
-                    <button type="button" class="btn btn-gradient-light btn-fw" data-dismiss="modal">Kembali</button>
+                    <button type="button" class="btn btn-gradient-light btn-fw" data-bs-dismiss="modal">Kembali</button>
                     <button type="submit" class="btn btn-gradient-primary btn-fw update_data">Simpan</button>
                 </div>
             </form>
@@ -160,7 +160,6 @@
     });
 
     $(document).ready( function () {
-      $('#table-hotels').DataTable()
       $('#start_at').datepicker({
         dateFormat: 'yy-mm-dd',
         minDate: 0
@@ -169,6 +168,15 @@
         dateFormat: 'yy-mm-dd',
         minDate: +1
       });
+      $('#updateStartAt').datepicker({
+        dateFormat: 'yy-mm-dd',
+        minDate: 0
+      });
+      $('#updateEndAt').datepicker({
+        dateFormat: 'yy-mm-dd',
+        minDate: +1
+      });
+
     });
 
     $(document).ready(function () {
@@ -193,7 +201,8 @@
                                 <button type="button" value="' + item.id + '" class="btn btn-gradient-danger btn-rounded btn-sm hapus_data">Hapus</button>\
                             </td>\
                             \</tr>');
-                    })
+                    });
+                    $('#table-hotels').DataTable()
                 }
             });
         }
@@ -201,7 +210,8 @@
         $(document).on('change', "#username", function(e) {
             $('select[name="petname"]').attr('disabled','disabled').find('option:nth-of-type(n+2)').remove()
             var user = $(e.target).find(':selected').val();
-            $.ajax({
+            if (user != null && user != '') {
+                $.ajax({
                 type:'POST',
                 url:"{{ route('admin/refPets') }}",
                 data:{user},
@@ -235,6 +245,10 @@
                     $('select[name="petname"]').removeAttr('disabled')
                 }
             })
+            } else {
+                $('select[name="petname"]').removeAttr('disabled')
+            }
+
         });
 
         $(document).on('click', '.tambah_data', function (e) {
@@ -280,8 +294,12 @@
                     })
                 },
                 complete: function(){
-                    $('#modal-create').modal('hide');
-                    $('.tambah_data').text('Simpan').removeAttr('disabled')
+                    $('.tambah_data').text('Simpan').removeAttr('disabled');
+                    $('#username').val(null).trigger('change');
+                    $('#petname').val(null).trigger('change');
+                    $('#start_at').val('');
+                    $('#end_at').val('');
+                    $('#modal-create .close').click();
                     fetch();
                 },
                 error: function (err) {
@@ -298,6 +316,14 @@
 
         $(document).on('click', '.edit_data', function (e) {
             e.preventDefault();
+
+            $('#table-hotels').DataTable().clear();
+            $('#table-hotels').DataTable().destroy();
+            var find = $('#table-hotels tbody').find('tr');
+            if (find) {
+                $('#table-hotels tbody').empty();
+            }
+
             var hotels_id = $(this).val();
             console.log(hotels_id);
             $('#modal-update').modal('show');
@@ -321,11 +347,23 @@
                     icon: response.status,
                     title: response.message
                     })
-                        $('#updatePetName').val(response.hotels.pet_id);
+                        $('#updatePetName').val(response.hotels.pet_id).trigger('change');
                         $('#updateStartAt').val(response.hotels.start_at);
                         $('#updateEndAt').val(response.hotels.end_at);
-                        $('#updateStatus').val(response.hotels.status);
+                        $('#updateStatus').val(response.hotels.status).trigger('change');
                         $('#hotels_id').val(response.hotels.id);
+
+                        data = response.petUser;
+                        console.log(data);
+                        
+                        var el = $(document).find('#updatePetName option');
+                        el.remove();
+                        $.each(data,function (j,data){
+                            $('select[name="updatePetName"]').append($('<option>', { 
+                                value: data['id'],
+                                text : data['name'] 
+                            }));
+                        });
                 }
                 },
                 complete: function() {
@@ -387,16 +425,11 @@
                     icon: data.status,
                     title: data.message
                     })
-                $('#modal-update').modal('hide');
                 },
                 complete: function(err){
-                    if (err.status == 422) { 
-                        $('#modal-update').modal('show');
-                    } else {
-                        fetch();
-                        $('.update_data').text('Simpan').removeAttr('disabled')
-                        $('#modal-update').modal('hide');
-                    }
+                    $('.update_data').text('Simpan').removeAttr('disabled');
+                    $('#modal-update').modal('hide');
+                    fetch();
                 },
                 error: function (err) {
                     if (err.status == 422) { 
@@ -411,6 +444,14 @@
 
         $(document).on('click', '.hapus_data', function (e) {
             e.preventDefault();
+
+            $(this).text('Progress....').attr('disabled', 'disabled')
+            $('#table-hotels').DataTable().clear();
+            $('#table-hotels').DataTable().destroy();
+            var find = $('#table-hotels tbody').find('tr');
+            if (find) {
+                $('#table-hotels tbody').empty();
+            }
             var grooms_id = $(this).val();
             Swal.fire({
                     title: "Apa anda yakin ingin hapus data ini?!",
@@ -448,6 +489,16 @@
                     }
                 })
         });
+
+        $(document).on('click', '.close', function (e) {
+            $('#username').val(null).trigger('change');
+            $('#petname').val(null).trigger('change');
+            $('#start_at').val('');
+            $('#end_at').val('');
+
+            // var el = $(document).find('#updatePetName option');
+            // el.remove();
+        })
     });
 </script>
     

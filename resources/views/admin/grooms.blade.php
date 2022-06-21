@@ -102,7 +102,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <h6 class="modal-title">Ubah Data</h6>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
           </button>
         </div>
@@ -114,9 +114,9 @@
                       <div class="forms-group">
                           <label for="petname" class="col-form-label">Nama Pet</label>
                           <select id="updatePetName" class="form-control select2bs4" name="updatePetName">
-                            @foreach ($pets as $value)
+                            {{-- @foreach ($pets as $value)
                                 <option value="{{$value->id}}" selected>{{$value->name}}</option>
-                            @endforeach
+                            @endforeach --}}
                         </select>
                       </div>
                   </div>
@@ -144,7 +144,7 @@
                 </div>
               </div>
               <div class="modal-footer justify-content-between">
-                  <button type="button" class="btn btn-gradient-light btn-fw" data-dismiss="modal">Kembali</button>
+                  <button type="button" class="btn btn-gradient-light btn-fw" data-bs-dismiss="modal">Kembali</button>
                   <button type="submit" class="btn btn-gradient-primary btn-fw update_data">Simpan</button>
               </div>
           </form>
@@ -160,10 +160,6 @@
       headers: {
         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
       }
-    });
-
-    $(document).ready( function () {
-      $('#table-grooms').DataTable();
     });
 
     $(document).ready(function () {
@@ -187,7 +183,8 @@
                             <button type="button" value="' + item.id + '" class="btn btn-gradient-danger btn-rounded btn-sm hapus_data">Hapus</button>\
                         </td>\
                       \</tr>');
-                })
+                });
+                $('#table-grooms').DataTable();
             }
         });
       }
@@ -280,13 +277,14 @@
                   icon: data.status,
                   title: data.message
                 })
-                $('#modal-create').modal('hide');
-                fetch();
             },
             complete: function(err){
                 $('.tambah_data').text('Simpan').removeAttr('disabled')
-                $('#modal-create').modal('hide');
-                $('#modal-create').find('input').val('');
+                $('#petname').val(null).trigger('change');
+                $('#service').val(null).trigger('change');
+                $('#username').val(null).trigger('change');
+                $('#modal-create .close').click();
+                fetch();
             },
             error: function (err) {
               if (err.status == 422) {
@@ -325,10 +323,19 @@
                   icon: response.status,
                   title: response.message
                 })
-                    $('#updatePetName').val(response.grooms.pet_id);
-                    $('#updateService').val(response.grooms.service);
-                    $('#updateStatus').val(response.grooms.status);
+                    $('#updatePetName').val(response.grooms.pet_id).trigger('change');
+                    $('#updateService').val(response.grooms.service).trigger('change');
+                    $('#updateStatus').val(response.grooms.status).trigger('change');
                     $('#grooms_id').val(response.grooms.id);
+
+                    data = response.petUser;
+                    console.log(data);
+                    $.each(data,function (j,data){
+                        $('select[name="updatePetName"]').append($('<option>', { 
+                            value: data['id'],
+                            text : data['name'] 
+                        }));
+                    });
               }
             },
             complete: function(err) {
@@ -337,10 +344,6 @@
             },
             error: function (err) {
                 if (err.status == 422) {
-                    console.log(err.responseJSON);
-                    $('#success_message').fadeIn().html(err.responseJSON.message);
-                    
-                    console.warn(err.responseJSON.errors);
                     $.each(err.responseJSON.errors, function (i, error) {
                         var el = $(document).find('[name="'+i+'"]');
                         el.after($('<span style="color: red;">'+error[0]+'</span>'));
@@ -404,14 +407,10 @@
                 })
               $('#modal-update').modal('hide');
             },
-            complete: function(err){
-                if (err.status == 422) { 
-                    $('#modal-update').modal('show');
-                } else {
-                    fetch();
+            complete: function(){
                     $('.update_data').text('Simpan').removeAttr('disabled')
                     $('#modal-update').modal('hide');
-                }
+                    fetch();
             },
             error: function (err) {
                 if (err.status == 422) { 
@@ -425,6 +424,12 @@
       });
 
       $(document).on('click', '.hapus_data', function (e) {
+        $('#table-grooms').DataTable().clear();
+        $('#table-grooms').DataTable().destroy();
+        var find = $('#table-grooms tbody').find('tr');
+        if (find) {
+            $('#table-grooms tbody' ).empty();
+        }
         e.preventDefault();
         var grooms_id = $(this).val();
         Swal.fire({
@@ -457,8 +462,10 @@
                           icon: response.status,
                           title: response.message
                         })
-                        fetch();
-                      }
+                      }, 
+                    complete: function() {
+                      fetch();
+                    }
                   });
                 }
             })

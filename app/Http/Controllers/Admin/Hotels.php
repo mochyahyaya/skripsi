@@ -79,12 +79,17 @@ class Hotels extends Controller
     public function edit($id)
     {
         $hotels = Hotel::find($id);
+        //List user by user id
+        $userId = $hotels->pets->user_id;
+        $petUsers = Pet::where('user_id', $userId )->get();
+        // dd($userId);
         if($hotels)
         {
             return response()->json([
                 'status' => 'success',
                 'message' => 'Data boarding berhasil ditampilkan',
                 'hotels'=> $hotels,
+                'petUser' => $petUsers
             ]);
         }
         else

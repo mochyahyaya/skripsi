@@ -168,7 +168,23 @@
     $(document).ready(function () {
         fetch();
 
+        $('input').on('keydown', function(event) {
+            if (this.selectionStart == 0 && event.keyCode >= 65 && event.keyCode <= 90 && !(event.shiftKey) && !(event.ctrlKey) && !(event.metaKey) && !(event.altKey)) {
+            var $t = $(this);
+            event.preventDefault();
+            var char = String.fromCharCode(event.keyCode);
+            $t.val(char + $t.val().slice(this.selectionEnd));
+            this.setSelectionRange(1,1);
+            }
+        });
+
         function fetch() {
+            $('#table-users').DataTable().clear();
+            $('#table-users').DataTable().destroy();
+            var find = $('#table-users tbody').find('tr');
+            if (find) {
+                $('#table-users tbody').empty();
+            }
             $.ajax({
                 type: "GET",
                 url : "{{route('admin/usersFetch')}}",
@@ -196,11 +212,11 @@
             e.preventDefault();
 
             $(this).text('Progress....').attr('disabled', 'disabled')
-            $('#table-grooms').DataTable().clear();
-            $('#table-grooms').DataTable().destroy();
-            var find = $('#table-grooms tbody').find('tr');
+            $('#table-users').DataTable().clear();
+            $('#table-users').DataTable().destroy();
+            var find = $('#table-users tbody').find('tr');
             if (find) {
-                $('#table-grooms tbody').empty();
+                $('#table-users tbody').empty();
             }
 
             var data = {

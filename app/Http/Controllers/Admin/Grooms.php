@@ -75,12 +75,16 @@ class Grooms extends Controller
     public function edit($id)
     {
         $grooms = Groom::find($id);
+        //List user by user id
+        $userId = $grooms->pets->user_id;
+        $petUsers = Pet::where('user_id', $userId )->get();
         if($grooms)
         {
             return response()->json([
                 'status' => 'success',
                 'message' => 'Data grooming berhasil ditampilkan',
                 'grooms'=> $grooms,
+                'petUser' => $petUsers
             ]);
         }
         else
