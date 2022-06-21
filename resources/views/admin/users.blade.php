@@ -372,44 +372,44 @@
         });
 
         $(document).on('click', '.hapus_data', function (e) {
-        e.preventDefault();
-        var users_id = $(this).val();
-        Swal.fire({
-                title: "Apa anda yakin ingin hapus data ini?!",
-                text: "Jika menghapus data ini, maka anda tidak dapat mengembalikannya",
-                type: "error",
-                confirmButtonClass: "btn-danger",
-                confirmButtonText: "Ya",
-                showCancelButton: true,
-            }).then((result) => {
-                if (result.isConfirmed) {
-                  $.ajax({
-                    type: "DELETE",
-                    url: "users-delete/" + users_id,
-                    dataType: "json",
-                    success: function (response) {
-                        console.log(response);
-                        const Toast = Swal.mixin({
-                        toast: true,
-                        position: 'top-end',
-                        showConfirmButton: false,
-                        timer: 3000,
-                        timerProgressBar: true,
-                        didOpen: (toast) => {
-                          toast.addEventListener('mouseenter', Swal.stopTimer)
-                          toast.addEventListener('mouseleave', Swal.resumeTimer)
+            e.preventDefault();
+            var users_id = $(this).val();
+            Swal.fire({
+                    title: "Apa anda yakin ingin hapus data ini?!",
+                    text: "Jika menghapus data ini, maka anda tidak dapat mengembalikannya",
+                    type: "error",
+                    confirmButtonClass: "btn-danger",
+                    confirmButtonText: "Ya",
+                    showCancelButton: true,
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                    $.ajax({
+                        type: "DELETE",
+                        url: "users-delete/" + users_id,
+                        dataType: "json",
+                        success: function (response) {
+                            console.log(response);
+                            const Toast = Swal.mixin({
+                            toast: true,
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true,
+                            didOpen: (toast) => {
+                            toast.addEventListener('mouseenter', Swal.stopTimer)
+                            toast.addEventListener('mouseleave', Swal.resumeTimer)
+                            }
+                            })
+                            Toast.fire({
+                            icon: response.status,
+                            title: response.message
+                            })
+                            fetch();
                         }
-                        })
-                        Toast.fire({
-                          icon: response.status,
-                          title: response.message
-                        })
-                        fetch();
-                      }
-                  });
-                }
-            })
-      });
+                    });
+                    }
+                })
+        });
     });
     </script>
 @endpush
