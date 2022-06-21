@@ -168,7 +168,7 @@
         dateFormat: 'yy-mm-dd',
         minDate: +1
       });
-      $('#updateStartAt').datepicker({
+      $('#updateStartAt ').datepicker({
         dateFormat: 'yy-mm-dd',
         minDate: 0
       });
