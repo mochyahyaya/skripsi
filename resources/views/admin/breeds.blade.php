@@ -143,8 +143,8 @@
                       <div class="forms-group">
                           <label for="status" class="col-form-label">Status</label>
                           <select id="updateStatus" class="form-control select2bs4">
-                            <option value="Proses">Proses</option>
-                            <option value="Selesai">Selesai</option>
+                            <option value="Proses" data-value="Proses">Proses</option>
+                            <option value="Selesai" data-value="Selesai">Selesai</option>
                         </select>
                       </div>
                   </div>
@@ -329,10 +329,13 @@
                     icon: response.status,
                     title: response.message
                     })
+                    console.log(response.breeds.status);
                     $('#updatePetName').val(response.breeds.pet_id);
                     $('#updatePetMale').val(response.breeds.pet_male);
                     $('#updateStartAt').val(response.breeds.start_at);
-                    $('#updateStatus').val(response.breeds.status);
+                    // $('#updateStatus').val(response.breeds.status).attr("selected", "selected");
+                    // $('#updateStatus').select2bs4().val(response.breeds.status).trigger('change.select2');
+                    $("#updateStatus").val(response.breeds.status).trigger('change');
                     $('#breeds_id').val(response.breeds.id);
                 }
                 },

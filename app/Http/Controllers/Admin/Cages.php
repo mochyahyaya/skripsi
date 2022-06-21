@@ -63,4 +63,24 @@ class Cages extends Controller
 
         return response()->json($data);
     }
+
+    public function edit($id)
+    {
+        $cages = Cage::find($id);
+        if($cages)
+        {
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Data kandang berhasil ditampilkan',
+                'cages'=> $cages,
+            ]);
+        }
+        else
+        {
+            return response()->json([
+                'status'=> 'error',
+                'message'=>'Data kandang tidak ditemukan'
+            ]);
+        }
+    }
 }

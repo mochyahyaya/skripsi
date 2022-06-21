@@ -94,13 +94,13 @@
             <form action="" method="" class="forms-sample">
                 @csrf
                 <div class="modal-body">
-                  <input type="hidden" id="users_id">
+                  <input type="hidden" id="cages_id">
                     <div class="row">
                         <div class="forms-group">
                             <label for="type" class="col-form-label">Tipe Kandang</label>
                             <select name="updateType" id="updateType" class="form-control select2bs4">
                                 @foreach ($typeCages as $value)
-                                    <option value="{{$value->id}}">{{$value->name}}</option>
+                                    <option value="{{$value->id}}" selected>{{$value->name}}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -119,7 +119,7 @@
                     </div>
                 </div>
                 <div class="modal-footer justify-content-between">
-                    <button type="button" class="btn btn-gradient-light btn-fw" data-dismiss="modal">Kembali</button>
+                    <button type="button" class="btn btn-gradient-light btn-fw" data-bs-dismiss="modal">Kembali</button>
                     <button type="submit" class="btn btn-gradient-primary btn-fw update_data">Simpan</button>
                 </div>
             </form>
@@ -154,9 +154,9 @@
                     $.each(response.cages, function (key,item) {
                         console.log(response.cages);
                         $('tbody').append('<tr>\
-                            <td>' + item.typeCages + '</td>\
+                            <td>' + item.type_cage_id+ '</td>\
                             <td>' + item.number + '</td>\
-                            <td>' + item.typeCages + ' - '+item.typeCages+'</td>\
+                            <td>' + item.type_cage_id + ' - '+item.type_cage_id+'</td>\
                             <td>' + item.count + '</td>\
                             <td class="text-center"><button type="button" value="' + item.id + '" class="btn btn-gradient-info btn-rounded btn-sm edit_data">Edit</button>\
                                 <button type="button" value="' + item.id + '" class="btn btn-gradient-danger btn-rounded btn-sm hapus_data">Hapus</button>\
@@ -223,6 +223,57 @@
                     });
                     $('.tambah_data').text('Simpan').removeAttr('disabled')
                 }
+                }
+            });
+        });
+
+        $(document).on('click', '.edit_data', function (e) {
+            e.preventDefault();
+            var cages_id = $(this).val();
+            console.log(cages_id);
+            $('#modal-update').modal('show');
+            $.ajax({
+                type: "GET",
+                url: "cages-edit/" + cages_id,
+                success: function (response) {
+                if (response != null){
+                    const Toast = Swal.mixin({
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                    })
+                    Toast.fire({
+                    icon: response.status,
+                    title: response.message
+                    })
+                        $('#updateType').val(response.cages.type_cage_id);
+                        $('#updateNumber').val(response.cages.number);
+                        $('#updateCount').val(response.cages.count);
+                        $('#cages_id').val(response.cages.id);
+                        // $("#updateType option[data-value='" + response.cages.type_cage_id +"']").attr("selected","selected");
+                    }
+                },
+                complete: function(err) {
+                    fetch();
+                    $('#modal-update').modal('hide');
+                },
+                error: function (err) {
+                    if (err.status == 422) {
+                        console.log(err.responseJSON);
+                        $('#success_message').fadeIn().html(err.responseJSON.message);
+                        
+                        console.warn(err.responseJSON.errors);
+                        $.each(err.responseJSON.errors, function (i, error) {
+                            var el = $(document).find('[name="'+i+'"]');
+                            el.after($('<span style="color: red;">'+error[0]+'</span>'));
+                        });
+                    }
                 }
             });
         });
