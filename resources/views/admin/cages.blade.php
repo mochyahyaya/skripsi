@@ -87,7 +87,7 @@
         <div class="modal-content">
           <div class="modal-header">
             <h6 class="modal-title">Ubah Data</h6>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
           </div>
@@ -154,9 +154,9 @@
                     $.each(response.cages, function (key,item) {
                         console.log(response.cages);
                         $('tbody').append('<tr>\
-                            <td>' + item.type_cage_id+ '</td>\
+                            <td>' + item.type_cages.name+ '</td>\
                             <td>' + item.number + '</td>\
-                            <td>' + item.type_cage_id + ' - '+item.type_cage_id+'</td>\
+                            <td>' + item.type_cages.alias + ' - '+item.number+'</td>\
                             <td>' + item.count + '</td>\
                             <td class="text-center"><button type="button" value="' + item.id + '" class="btn btn-gradient-info btn-rounded btn-sm edit_data">Edit</button>\
                                 <button type="button" value="' + item.id + '" class="btn btn-gradient-danger btn-rounded btn-sm hapus_data">Hapus</button>\
@@ -173,11 +173,11 @@
             e.preventDefault();
 
             $(this).text('Progress....').attr('disabled', 'disabled')
-            $('#table-users').DataTable().clear();
-            $('#table-users').DataTable().destroy();
-            var find = $('#table-users tbody').find('tr');
+            $('#table-cages').DataTable().clear();
+            $('#table-cages').DataTable().destroy();
+            var find = $('#table-cages tbody').find('tr');
             if (find) {
-                $('#table-users tbody').empty();
+                $('#table-cages tbody').empty();
             }
 
             var data = {
@@ -229,6 +229,15 @@
 
         $(document).on('click', '.edit_data', function (e) {
             e.preventDefault();
+
+            $(this).text('Progress....').attr('disabled', 'disabled')
+            $('#table-cages').DataTable().clear();
+            $('#table-cages').DataTable().destroy();
+            var find = $('#table-cages tbody').find('tr');
+            if (find) {
+                $('#table-cages tbody').empty();
+            }
+
             var cages_id = $(this).val();
             console.log(cages_id);
             $('#modal-update').modal('show');
@@ -252,11 +261,11 @@
                     icon: response.status,
                     title: response.message
                     })
-                        $('#updateType').val(response.cages.type_cage_id);
+                        $('#updateType').val(response.cages.type_cage_id).trigger('change');
                         $('#updateNumber').val(response.cages.number);
                         $('#updateCount').val(response.cages.count);
                         $('#cages_id').val(response.cages.id);
-                        // $("#updateType option[data-value='" + response.cages.type_cage_id +"']").attr("selected","selected");
+
                     }
                 },
                 complete: function(err) {
@@ -269,6 +278,67 @@
                         $('#success_message').fadeIn().html(err.responseJSON.message);
                         
                         console.warn(err.responseJSON.errors);
+                        $.each(err.responseJSON.errors, function (i, error) {
+                            var el = $(document).find('[name="'+i+'"]');
+                            el.after($('<span style="color: red;">'+error[0]+'</span>'));
+                        });
+                    }
+                }
+            });
+        });
+
+        $(document).on('click', '.update_data', function (e) {
+            e.preventDefault();
+
+            $(this).text('Progress....').attr('disabled', 'disabled')
+            $('#table-cages').DataTable().clear();
+            $('#table-cages').DataTable().destroy();
+            var find = $('#table-cages tbody').find('tr');
+            if (find) {
+                $('#table-cages tbody').empty();
+            }
+            var id = $('#cages').val();
+
+            var data = {
+                'type': $('#updateType').val(),
+                'count': $('#updateCount').val(),
+                'number': $('#updateNumber').val(),
+            }
+
+            $.ajax({
+                type: "PUT",
+                url: "breeds-update/" + id,
+                data: data,
+                dataType: "json",
+                success: function (data) {
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                    })
+                    Toast.fire({
+                    icon: data.status,
+                    title: data.message
+                    })
+                $('#modal-update').modal('hide');
+                },
+                complete: function(err){
+                    if (err.status == 422) { 
+                        $('#modal-update').modal('show');
+                    } else {
+                        fetch();
+                        $('.update_data').text('Simpan').removeAttr('disabled')
+                        $('#modal-update').modal('hide');
+                    }
+                },
+                error: function (err) {
+                    if (err.status == 422) { 
                         $.each(err.responseJSON.errors, function (i, error) {
                             var el = $(document).find('[name="'+i+'"]');
                             el.after($('<span style="color: red;">'+error[0]+'</span>'));

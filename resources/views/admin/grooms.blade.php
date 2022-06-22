@@ -173,12 +173,17 @@
             success: function (reponse) {
                 $('tbody').html("");
                 $.each(reponse.grooms, function (key,item) {
+                  if (item.status == 'Selesai') {
+                  var status_badge = '<td><label class="badge badge-success">'+item.status+'</label></td>'
+                  } else {
+                      var status_badge = '<td><label class="badge badge-warning">'+item.status+'</label></td>'
+                  }
                     $('tbody').append('<tr>\
                         <td>' + item.pets.name + '</td>\
                         <td>' + item.service + '</td>\
                         <td>' + item.price + '</td>\
                         <td>' + item.pickup + '</td>\
-                        <td>' + item.status+ '</td>\
+                            ' + status_badge+ '\
                         <td class="text-center"><button type="button" value="' + item.id + '" class="btn btn-gradient-info btn-rounded btn-sm edit_data">Edit</button>\
                             <button type="button" value="' + item.id + '" class="btn btn-gradient-danger btn-rounded btn-sm hapus_data">Hapus</button>\
                         </td>\
@@ -330,6 +335,9 @@
 
                     data = response.petUser;
                     console.log(data);
+                    
+                    var el = $(document).find('#updatePetName option');
+                    el.remove();
                     $.each(data,function (j,data){
                         $('select[name="updatePetName"]').append($('<option>', { 
                             value: data['id'],

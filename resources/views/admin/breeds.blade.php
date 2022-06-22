@@ -105,7 +105,7 @@
         <div class="modal-content">
           <div class="modal-header">
             <h6 class="modal-title">Ubah Data</h6>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
           </div>
@@ -150,7 +150,7 @@
                   </div>
                 </div>
                 <div class="modal-footer justify-content-between">
-                    <button type="button" class="btn btn-gradient-light btn-fw" data-dismiss="modal">Kembali</button>
+                    <button type="button" class="btn btn-gradient-light btn-fw" data-bs-dismiss="modal">Kembali</button>
                     <button type="submit" class="btn btn-gradient-primary btn-fw update_data">Simpan</button>
                 </div>
             </form>
@@ -190,12 +190,17 @@
                 success: function (reponse) {
                     $('tbody').html("");
                     $.each(reponse.breeds, function (key,item) {
+                        if (item.status == 'Selesai') {
+                            var status_badge = '<td><label class="badge badge-success">'+item.status+'</label></td>'
+                        } else {
+                            var status_badge = '<td><label class="badge badge-warning">'+item.status+'</label></td>'
+                        }
                         $('tbody').append('<tr>\
                             <td>' + item.pet_male + '</td>\
                             <td>' + item.pets.name + '</td>\
                             <td>' + moment(item.start_at).locale('id').format('LL') + '</td>\
                             <td>' + item.pickup + '</td>\
-                            <td>' + item.status+ '</td>\
+                                ' + status_badge+ '\
                             <td class="text-center"><button type="button" value="' + item.id + '" class="btn btn-gradient-info btn-rounded btn-sm edit_data">Edit</button>\
                                 <button type="button" value="' + item.id + '" class="btn btn-gradient-danger btn-rounded btn-sm hapus_data">Hapus</button>\
                             </td>\
@@ -330,13 +335,23 @@
                     title: response.message
                     })
                     console.log(response.breeds.status);
-                    $('#updatePetName').val(response.breeds.pet_id);
+                    $('#updatePetName').val(response.breeds.pet_id).trigger('change');
                     $('#updatePetMale').val(response.breeds.pet_male);
                     $('#updateStartAt').val(response.breeds.start_at);
-                    // $('#updateStatus').val(response.breeds.status).attr("selected", "selected");
-                    // $('#updateStatus').select2bs4().val(response.breeds.status).trigger('change.select2');
                     $("#updateStatus").val(response.breeds.status).trigger('change');
                     $('#breeds_id').val(response.breeds.id);
+
+                    data = response.petUser;
+                    console.log(data);
+                    
+                    var el = $(document).find('#updatePetName option');
+                    el.remove();
+                    $.each(data,function (j,data){
+                        $('select[name="updatePetName"]').append($('<option>', { 
+                            value: data['id'],
+                            text : data['name'] 
+                        }));
+                    });
                 }
                 },
                 complete: function(err) {

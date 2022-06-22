@@ -19,7 +19,7 @@ class Cages extends Controller
 
     public function fetch()
     {
-        $cages = Cage::with('typeCages')->get();
+        $cages = Cage::with('type_cages')->get();
         // dd($cages); 
         return response()->json([
             'cages' => $cages

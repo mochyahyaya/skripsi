@@ -13,7 +13,7 @@ class Cage extends Model
 
     public $guarded = [''];
 
-    public function typeCages()
+    public function type_cages()
     {
         return $this->belongsTo(TypeCage::class, 'type_cage_id');
     }

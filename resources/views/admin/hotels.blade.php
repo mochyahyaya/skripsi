@@ -52,7 +52,7 @@
                 @csrf
                 <div class="modal-body">
                     <div class="row">
-                        <div class="forms-group">
+                        <div class="form-group">
                             <label for="username">Nama Pemilik</label>
                             <select id="username" class="form-control select2bs4">
                                 <option value="" selected disabled>--Pilih Nama Pemilik--</option>
@@ -63,7 +63,7 @@
                           </div>
                     </div>
                     <div class="row">
-                        <div class="forms-group">
+                        <div class="form-group">
                             <label for="petname" class="col-form-label">Nama Pet</label>
                             <select id="petname" class="form-control select2bs4" name="petname">
                               <option value="" selected disabled>--Pilih Nama Pet--</option>
@@ -74,13 +74,13 @@
                         </div>
                     </div>
                     <div class="row">
-                      <div class="forms-group">
+                      <div class="form-group">
                           <label for="service" class="col-form-label">Tanggal Masuk</label>
                           <input type="text" placeholder="dd/mm/yyyy" name="start_at" id="start_at" class="form-control"> 
                       </div>
                     </div>
                     <div class="row">
-                      <div class="forms-group">
+                      <div class="form-group">
                           <label for="service" class="col-form-label">Tanggal Keluar</label>
                           <input type="text" placeholder="dd/mm/yyyy" name="end_at" id="end_at" class="form-control">
                       </div>
@@ -190,13 +190,18 @@
                 success: function (reponse) {
                     $('tbody').html("");
                     $.each(reponse.hotels, function (key,item) {
+                        if (item.status == 'Selesai') {
+                            var status_badge = '<td><label class="badge badge-success">'+item.status+'</label></td>'
+                        } else {
+                            var status_badge = '<td><label class="badge badge-warning">'+item.status+'</label></td>'
+                        }
                         $('tbody').append('<tr>\
                             <td>' + item.pets.name + '</td>\
                             <td>' + moment(item.start_at).locale('id').format('LL') + '</td>\
                             <td>' + moment(item.end_at).locale('id').format('LL') + '</td>\
                             <td>' + item.price + '</td>\
                             <td>' + item.pickup + '</td>\
-                            <td>' + item.status+ '</td>\
+                                ' + status_badge+ '\
                             <td class="text-center"><button type="button" value="' + item.id + '" class="btn btn-gradient-info btn-rounded btn-sm edit_data">Edit</button>\
                                 <button type="button" value="' + item.id + '" class="btn btn-gradient-danger btn-rounded btn-sm hapus_data">Hapus</button>\
                             </td>\
