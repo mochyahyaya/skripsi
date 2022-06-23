@@ -25,7 +25,7 @@
                 <th> Tanggal Masuk</th>
                 <th> Tanggal Keluar </th>
                 <th> Harga </th>
-                <th> Penjemputan </th>
+                <th> Kandang </th>
                 <th> Status </th>
                 <th> Aksi </th>
               </tr>
@@ -67,6 +67,7 @@
                             <label for="petname" class="col-form-label">Nama Pet</label>
                             <select id="petname" class="form-control select2bs4" name="petname">
                               <option value="" selected disabled>--Pilih Nama Pet--</option>
+                              <option value=""></option>
                               {{-- @foreach ($pets as $value)
                                   <option value="{{$value->id}}">{{$value->name}}</option>
                               @endforeach --}}
@@ -84,6 +85,17 @@
                           <label for="service" class="col-form-label">Tanggal Keluar</label>
                           <input type="text" placeholder="dd/mm/yyyy" name="end_at" id="end_at" class="form-control">
                       </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <label for="cages" class="col-form-label">Kandang</label>
+                            <select id="cage_id" class="form-control select2bs4" name="cage_id">
+                              <option value="" selected disabled>--Pilih Kandang--</option>
+                              {{-- @foreach ($pets as $value)
+                                  <option value="{{$value->id}}">{{$value->name}}</option>
+                              @endforeach --}}
+                          </select>
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer justify-content-between">
@@ -140,6 +152,17 @@
                         </select>
                       </div>
                   </div>
+                  <div class="row">
+                    <div class="form-group">
+                        <label for="cages" class="col-form-label">Kandang</label>
+                        <select id="updateCages" class="form-control select2bs4" name="updateCages">
+                          <option value="" selected disabled>--Pilih Kandang--</option>
+                          {{-- @foreach ($cages as $value)
+                              <option value="{{$value->id}}" selected>{{$value->type_cages->alias}} - {{$value->number}}</option>
+                          @endforeach --}}
+                      </select>
+                    </div>
+                </div>
                 </div>
                 <div class="modal-footer justify-content-between">
                     <button type="button" class="btn btn-gradient-light btn-fw" data-bs-dismiss="modal">Kembali</button>
@@ -190,6 +213,7 @@
                 success: function (reponse) {
                     $('tbody').html("");
                     $.each(reponse.hotels, function (key,item) {
+                        console.log(item.cages);
                         if (item.status == 'Selesai') {
                             var status_badge = '<td><label class="badge badge-success">'+item.status+'</label></td>'
                         } else {
@@ -200,7 +224,7 @@
                             <td>' + moment(item.start_at).locale('id').format('LL') + '</td>\
                             <td>' + moment(item.end_at).locale('id').format('LL') + '</td>\
                             <td>' + item.price + '</td>\
-                            <td>' + item.pickup + '</td>\
+                            <td>' + item.cages.type_cages.alias + ' - ' + item.cages.number + '</td>\
                                 ' + status_badge+ '\
                             <td class="text-center"><button type="button" value="' + item.id + '" class="btn btn-gradient-info btn-rounded btn-sm edit_data">Edit</button>\
                                 <button type="button" value="' + item.id + '" class="btn btn-gradient-danger btn-rounded btn-sm hapus_data">Hapus</button>\
@@ -244,7 +268,7 @@
                     $.each(data,function (j,data){
                         $('select[name="petname"]').append($('<option>', { 
                             value: data['id'],
-                            text : data['id']+' - '+ data['name'] 
+                            text : data.type_pets['name']+' - '+ data['name'] 
                         }));
                     });
                     $('select[name="petname"]').removeAttr('disabled')
@@ -255,6 +279,51 @@
             }
 
         });
+
+        $(document).on('change', "#petname", function(e) {
+            $('select[name="cage_id"]').attr('disabled','disabled').find('option:nth-of-type(n+2)').remove()
+            var cage = $(e.target).find(':selected').val();
+            if (cage != null && cage != '') {
+                $.ajax({
+                type:'POST',
+                url:"{{ route('admin/refCages') }}",
+                data:{cage},
+                success:function(data){
+                console.log(data);
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                    })
+                    Toast.fire({
+                    icon: data.status,
+                    title: data.message
+                    })
+                },
+                complete:function(e){
+                    data = e.responseJSON.data;
+                    console.log(data);
+                    $.each(data,function (j,data){
+                        $('select[name="cage_id"]').append($('<option>', { 
+                            value: data['id'],
+                            text : data.type_cages['alias']+' - '+ data['number'] 
+                        }));
+                    });
+                    $('select[name="cage_id"]').removeAttr('disabled')
+                }
+            })
+            } else {
+                $('select[name="petname"]').removeAttr('disabled')
+            }
+
+        });
+
 
         $(document).on('click', '.tambah_data', function (e) {
             e.preventDefault();
@@ -272,6 +341,7 @@
                 'service': $('#service').val(),
                 'start_at': $('#start_at').val(),
                 'end_at': $('#end_at').val(),
+                'cage_id': $('#cage_id').val(),
                 'status': 'Dalam Kandang',
                 'pickup' : 'Tidak'
             }
@@ -356,10 +426,12 @@
                         $('#updateStartAt').val(response.hotels.start_at);
                         $('#updateEndAt').val(response.hotels.end_at);
                         $('#updateStatus').val(response.hotels.status).trigger('change');
+                        $('#updateCages').val(response.hotels.cage_id).trigger('change');
                         $('#hotels_id').val(response.hotels.id);
 
                         data = response.petUser;
-                        console.log(data);
+                        cage = response.cages;
+                        console.log(cage);
                         
                         var el = $(document).find('#updatePetName option');
                         el.remove();
@@ -367,6 +439,20 @@
                             $('select[name="updatePetName"]').append($('<option>', { 
                                 value: data['id'],
                                 text : data['name'] 
+                            }));
+                        });
+
+
+                        var el2 = $(document).find('#updateCages option');
+                        el2.remove();
+                        $('select[name="updateCages"]').append($('<option>', { 
+                                value: response.hotels.cage_id,
+                                text : response.hotels.cages.type_cages['alias']+ '-' + response.hotels.cages['number']   
+                            }));
+                        $.each(cage,function (j,data){
+                            $('select[name="updateCages"]').append($('<option>', { 
+                                value: data['id'],
+                                text : data.type_cages['alias']+ '-' + data['number']   
                             }));
                         });
                 }
@@ -407,6 +493,7 @@
                 'start_at': $('#updateStartAt').val(),
                 'end_at': $('#updateEndAt').val(),
                 'status': $('#updateStatus').val(),
+                'cage_id': $('#updateCages').val()
             }
 
             $.ajax({

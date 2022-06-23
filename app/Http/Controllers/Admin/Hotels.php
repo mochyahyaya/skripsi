@@ -9,6 +9,7 @@ use Carbon\Carbon;
 use App\Models\Hotel;
 use App\Models\User;
 use App\Models\Pet;
+use App\Models\Cage;
 
 class Hotels extends Controller
 {
@@ -17,13 +18,16 @@ class Hotels extends Controller
         $users = User::where('role_id', 3)->get();
         $pets = Pet::all();
         $hotels = Hotel::all();
-        return view('admin.hotels', compact('users', 'pets', 'hotels'));
+        $cages = Cage::all();
+        return view('admin.hotels', compact('users', 'pets', 'hotels', 'cages'));
     }
 
     
     public function fetch()
     {
-        $hotels = Hotel::with('pets')->get();
+        $hotels = Hotel::with('pets', 'cages.type_cages')->get();
+        $cages = Cage::with('type_cages')->get();
+        // dd($hotels);
         return response()->json([
             'hotels' => $hotels
         ]);
@@ -36,7 +40,8 @@ class Hotels extends Controller
             'start_at' => 'required',
             'end_at' => 'required',
             'pickup' => 'required',
-            'status' => 'required'
+            'status' => 'required', 
+            'cage_id' => 'required'
         ]);
 
         if(!$validated)
@@ -64,7 +69,12 @@ class Hotels extends Controller
                 'price' => $priceformat,
                 'status' => $request['status'],
                 'pickup' => $request['pickup'],
+                'cage_id' => $request['cage_id']
             ]);
+            $data->save();
+            $cage = Cage::find($data->cage_id);
+            $cage->counter = $cage->counter + 1;
+            $cage->save(); 
 
             $data = [
                 'status' => 'success',
@@ -78,18 +88,26 @@ class Hotels extends Controller
 
     public function edit($id)
     {
-        $hotels = Hotel::find($id);
-        //List user by user id
-        $userId = $hotels->pets->user_id;
-        $petUsers = Pet::where('user_id', $userId )->get();
-        // dd($userId);
+        $hotels = Hotel::with('cages.type_cages', 'pets')->find($id);
+        //Get pets by user id
+        // $userId = $hotels->pets->user_id;
+        // $petId = $hotels->pets->type_pet_id;
+        // $cageId = $hotels->cages->type_cages->alias;
+        // dd($hotels);
+        $petUsers = Pet::where('user_id', $hotels->pets->user_id )->get();
+        //Get cages where count > counter
+        $cages = Cage::with('type_cages')
+                ->where('type_cage_id',  $hotels->pets->type_pet_id)
+                ->whereRaw('counter < count')
+                ->get(); 
         if($hotels)
         {
             return response()->json([
                 'status' => 'success',
                 'message' => 'Data boarding berhasil ditampilkan',
                 'hotels'=> $hotels,
-                'petUser' => $petUsers
+                'petUser' => $petUsers,
+                'cages' => $cages
             ]);
         }
         else
@@ -117,8 +135,15 @@ class Hotels extends Controller
                 $data->start_at = $request['start_at'];
                 $data->end_at = $request['end_at'];
                 $data->status = $request['status'];
+                $data->cage_id = $request['cage_id'];
                 $data->price = $priceformat;
                 $data->update();
+
+                if($data->status == 'Selesai'){
+                    $cages = Cage::find($data->cage_id);
+                    $cages->counter = $cages->counter - 1;
+                    $cages->save();
+                }
                 $data = [
                     'data' => $data,
                     'status' => 'success',

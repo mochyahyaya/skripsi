@@ -13,8 +13,4 @@ class TypeCage extends Model
 
     public $guarded = [''];
 
-    public function cages()
-    {
-        return $this->hasMany(Cage::class);
-    }
 }

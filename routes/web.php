@@ -43,6 +43,7 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function() {
     Route::prefix('admin')->group(function () {
         Route::get('dashboard', [Dashboard::class, 'index'])->name('admin/dashboard');
         Route::post('ref-pet', [Dashboard::class, 'refPets'])->name('admin/refPets');
+        Route::post('ref-cage', [Dashboard::class, 'refCages'])->name('admin/refCages');
     
         Route::get('grooms', [Grooms::class, 'index'])->name('admin/grooms');
         Route::get('grooms-fetch', [Grooms::class, 'fetch'])->name('admin/groomsFetch');
