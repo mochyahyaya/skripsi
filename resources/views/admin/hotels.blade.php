@@ -445,7 +445,7 @@
 
                         var el2 = $(document).find('#updateCages option');
                         el2.remove();
-                        $('select[name="updateCages"]').append($('<option>', { 
+                        $('select[name="updateCages"]').append($('<option >', { 
                                 value: response.hotels.cage_id,
                                 text : response.hotels.cages.type_cages['alias']+ '-' + response.hotels.cages['number']   
                             }));
