@@ -158,31 +158,29 @@ class Grooms extends Controller
 
     public function refPets(Request $request)
     {
-        $null = Pet::with('typePets')
-                ->where('user_id', $request['user'])
-                ->whereDoesntHave('grooms')
-                ->get();
-
-        $data = Pet::with('typePets')
-                // ->select('pets.id', 'pets.name', 'grooms.status', 'grooms.pet_id')
-                ->where('user_id', $request['user'])
-                ->leftjoin('grooms', 'pets.id', '=', 'grooms.pet_id')
-                ->where('grooms.status', 'Selesai')
-                ->latest('grooms.created_at')
-                // ->groupBy('pets.id','pets.name', 'grooms.status', 'grooms.pet_id')
-                ->get();
-        // dd($data);
-        // $data = DB::table('pets')
-        //         ->join('grooms', function ($join) {
-        //             $join->on('pets.id', '=' , 'grooms.pet_id')
-        //             ->where('grooms.status', '=', 'Selesai');
-        //         })
+        // $null = Pet::with('typePets')
         //         ->where('user_id', $request['user'])
+        //         ->whereDoesntHave('grooms')
         //         ->get();
-        
+
+        // $data = Pet::with('typePets')
+        //         // ->select('pets.id', 'pets.name', 'grooms.status', 'grooms.pet_id')
+        //         ->where('user_id', $request['user'])
+        //         ->leftjoin('grooms', 'pets.id', '=', 'grooms.pet_id')
+        //         ->where('grooms.status', 'Selesai')
+        //         ->latest('grooms.created_at')
+        //         // ->groupBy('pets.id','pets.name', 'grooms.status', 'grooms.pet_id')
+        //         ->get();
+        // dd($data);
+        $data = Pet::select('*', 'pets.id as idpets', 'grooms.id as idgrooms')
+                ->leftjoin('grooms', 'pets.id', '=', 'grooms.pet_id')
+                ->where('pets.user_id', $request['user'])
+                ->whereNull('grooms.status')
+                ->orWhere('grooms.status', 'selesai')
+                ->get();
+                // dd($data);
         $data = [
             'data' => $data,
-            'data2' => $null,
             'message' => 'Berhasil menampilkan pet pengguna',
             'status' => 'success'
         ];

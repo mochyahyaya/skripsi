@@ -168,14 +168,11 @@ class Breeds extends Controller
     public function refPets(Request $request)
     {
         $grooms = Breed::where('status', 'Selesai')->latest()->first();
-        $data = Pet::with('typePets')
-                ->where('user_id', $request['user'])
-                ->WhereDoesntHave('hotels')
-                ->leftjoin('hotels', 'pets.id', '=', 'hotels.pet_id')        
-                ->orwhere(function ($query) {
-                    $query
-                    ->where('hotels.status', '=', 'Selesai');
-                })
+        $data = Pet::select('*', 'pets.id as idpets', 'breeds.id as idgrooms')
+                ->leftjoin('grooms', 'pets.id', '=', 'grooms.pet_id')
+                ->where('pets.user_id', $request['user'])
+                ->whereNull('grooms.status')
+                ->orWhere('grooms.status', 'selesai')
                 ->get();
         
         // dd($data);

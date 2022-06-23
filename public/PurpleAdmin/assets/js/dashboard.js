@@ -452,7 +452,7 @@
 
       var trafficChartData = {
         datasets: [{
-          data: [30, 30, 40],
+          data: [5, 6, 10],
           backgroundColor: [
             gradientStrokeBlue,
             gradientStrokeGreen,

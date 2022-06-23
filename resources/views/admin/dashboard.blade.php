@@ -66,7 +66,7 @@
     <div class="col-md-5 grid-margin stretch-card">
       <div class="card">
         <div class="card-body">
-          <h4 class="card-title">Traffic Sources</h4>
+          <h4 class="card-title">Jumlah Transaksi</h4>
           <canvas id="traffic-chart"></canvas>
           <div id="traffic-chart-legend" class="rounded-legend legend-vertical legend-bottom-left pt-4"></div>
         </div>
