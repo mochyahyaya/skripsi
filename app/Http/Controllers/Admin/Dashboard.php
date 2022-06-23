@@ -7,6 +7,9 @@ use Illuminate\Http\Request;
 
 use App\Models\Pet;
 use App\Models\Cage;
+use App\Models\Groom;
+use App\Models\Hotel;
+use App\Models\Breed;
 
 class Dashboard extends Controller
 {
@@ -17,7 +20,16 @@ class Dashboard extends Controller
 
     public function refPets(Request $request)
     {
-        $data = Pet::with('typePets')->where('user_id', $request['user'])->get();
+        $grooms = Groom::where('status', 'Selesai')->latest()->first();
+        $data = Pet::where('user_id', $request['user'])
+                ->leftJoin('grooms', 'pets.id', '=', 'grooms.pet_id')
+                ->where(function ($query) {
+                    $query
+                    ->where('grooms.status', '=', 'Selesai');
+                })
+                ->get();
+        
+        // $data = Pet::with('typePets')->where('user_id', $request['user'])->get();
         // dd($data);
         $data = [
             'data' => $data,

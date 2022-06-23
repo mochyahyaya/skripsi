@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;
 
 use App\Models\Groom;
 use App\Models\User;
@@ -44,7 +45,7 @@ class Grooms extends Controller
         {
             $data = [
                 'status' => 'error',
-                'meesage' => "Gagal menambahkan data grooming",
+                'meesage' => "Terdapat inputan kosong",
                 'data' => ''
             ];
         }
@@ -61,12 +62,21 @@ class Grooms extends Controller
                 'status' => $request['status'],
                 'pickup' => $request['pickup'],
             ]);
+            if($data->wasRecentlyCreated  ){
+                $data = [
+                    'status' => 'success',
+                    'message' => 'Data grooming berhasil ditambahkan',
+                    'data' => $data,
+                ];
+            } else { 
+                $data = [
+                    'status' => 'error',
+                    'message' => 'Gagal menambahkan data grooming',
+                    'data' => $data,
+                ];
 
-            $data = [
-                'status' => 'success',
-                'message' => 'Data grooming berhasil ditambahkan',
-                'data' => $data,
-            ];
+            }
+
         }
 
         return response()->json($data);
@@ -74,17 +84,16 @@ class Grooms extends Controller
 
     public function edit($id)
     {
-        $grooms = Groom::find($id);
+        $grooms = Groom::with('pets')->find($id);
         //List user by user id
-        $userId = $grooms->pets->user_id;
-        $petUsers = Pet::where('user_id', $userId )->get();
+        $petUsers = Pet::where('user_id', $grooms->pets->user_id )->get();
         if($grooms)
         {
             return response()->json([
                 'status' => 'success',
                 'message' => 'Data grooming berhasil ditampilkan',
                 'grooms'=> $grooms,
-                'petUser' => $petUsers
+                'petUser' => $petUsers,
             ]);
         }
         else
@@ -145,5 +154,38 @@ class Grooms extends Controller
                 'message'=>'Data tidak ditemukan.'
             ]);
         }
+    }
+
+    public function refPets(Request $request)
+    {
+        $null = Pet::with('typePets')
+                ->where('user_id', $request['user'])
+                ->whereDoesntHave('grooms')
+                ->get();
+
+        $data = Pet::with('typePets')
+                // ->select('pets.id', 'pets.name', 'grooms.status', 'grooms.pet_id')
+                ->where('user_id', $request['user'])
+                ->leftjoin('grooms', 'pets.id', '=', 'grooms.pet_id')
+                ->where('grooms.status', 'Selesai')
+                ->latest('grooms.created_at')
+                // ->groupBy('pets.id','pets.name', 'grooms.status', 'grooms.pet_id')
+                ->get();
+        // dd($data);
+        // $data = DB::table('pets')
+        //         ->join('grooms', function ($join) {
+        //             $join->on('pets.id', '=' , 'grooms.pet_id')
+        //             ->where('grooms.status', '=', 'Selesai');
+        //         })
+        //         ->where('user_id', $request['user'])
+        //         ->get();
+        
+        $data = [
+            'data' => $data,
+            'data2' => $null,
+            'message' => 'Berhasil menampilkan pet pengguna',
+            'status' => 'success'
+        ];
+        return response()->json($data);
     }
 }

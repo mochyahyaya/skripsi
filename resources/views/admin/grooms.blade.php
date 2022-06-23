@@ -88,7 +88,7 @@
                   </div>
                 </div>
               <div class="modal-footer justify-content-between">
-                  <button type="button" class="btn btn-gradient-light btn-fw" data-dismiss="modal">Kembali</button>
+                  <button type="button" class="btn btn-gradient-light btn-fw close" data-dismiss="modal">Kembali</button>
                   <button type="submit" class="btn btn-gradient-primary btn-fw tambah_data">Simpan</button>
               </div>
           </form>
@@ -114,9 +114,10 @@
                       <div class="forms-group">
                           <label for="petname" class="col-form-label">Nama Pet</label>
                           <select id="updatePetName" class="form-control select2bs4" name="updatePetName">
-                            {{-- @foreach ($pets as $value)
+                            <option value=""></option>
+                            @foreach ($pets as $value)
                                 <option value="{{$value->id}}" selected>{{$value->name}}</option>
-                            @endforeach --}}
+                            @endforeach
                         </select>
                       </div>
                   </div>
@@ -197,9 +198,10 @@
       $(document).on('change', "#username", function(e) {
         $('select[name="petname"]').attr('disabled','disabled').find('option:nth-of-type(n+2)').remove()
         var user = $(e.target).find(':selected').val();
-        $.ajax({
+        if (user != null && user != '') {
+          $.ajax({
             type:'POST',
-            url:"{{ route('admin/refPets') }}",
+            url:"{{ route('admin/refPetsGrooms') }}",
             data:{user},
             success:function(data){
               console.log(data);
@@ -221,16 +223,26 @@
             },
             complete:function(e){
                 data = e.responseJSON.data;
-                console.log(data);
-                $.each(data,function (j,data){
+                data2 = e.responseJSON.data2;
+                console.log(data2);
+                $.each(data2,function (j,data){
                     $('select[name="petname"]').append($('<option>', { 
                         value: data['id'],
                         text : data['id']+' - '+ data['name'] 
                     }));
                 });
+                $.each(data,function (j,data){
+                  // if(data['status'] == 'Selesai')
+                    $('select[name="petname"]').append($('<option>', { 
+                        value: data['pet_id'],
+                        text : data['pet_id']+' - '+ data['name'] 
+                    }));
+                });
                 $('select[name="petname"]').removeAttr('disabled')
             }
-        })
+          })
+        }
+
       });
 
       $(document).on('click', '.tambah_data', function (e) {
@@ -306,7 +318,6 @@
       $(document).on('click', '.edit_data', function (e) {
         e.preventDefault();
         var grooms_id = $(this).val();
-        console.log(grooms_id);
         $('#modal-update').modal('show');
         $.ajax({
             type: "GET",
@@ -336,8 +347,12 @@
                     data = response.petUser;
                     console.log(data);
                     
-                    var el = $(document).find('#updatePetName option');
-                    el.remove();
+                    // var el = $(document).find('#updatePetName option');
+                    // el.remove();
+                    // $('select[name="updatePetName"]').append($('<option>', { 
+                    //         value: response.grooms.pet_id,
+                    //         text : response.grooms.pets.name
+                    //     }));
                     $.each(data,function (j,data){
                         $('select[name="updatePetName"]').append($('<option>', { 
                             value: data['id'],
@@ -478,6 +493,16 @@
                 }
             })
       });
+
+      
+      $(document).on('click', '.close', function (e) {
+            $('#username').val(null).trigger('change');
+            $('#petname').val(null).trigger('change');
+            $('#service').val(null).trigger('change')
+
+            // var el = $(document).find('#updatePetName option');
+            // el.remove();
+        })
     });
   </script>
 @endpush

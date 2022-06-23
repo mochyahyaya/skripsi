@@ -22,4 +22,19 @@ class Pet extends Model
     {
         return $this->belongsTo(User::class, 'user_id');
     }
+
+    public function grooms()
+    {
+        return $this->hasMany(Groom::class);
+    }
+
+    public function hotels()
+    {
+        return $this->hasMany(Hotel::class);
+    }
+
+    public function breeds()
+    {
+        return $this->hasMany(Breed::class);
+    }
 }

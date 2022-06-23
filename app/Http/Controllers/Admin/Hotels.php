@@ -135,14 +135,16 @@ class Hotels extends Controller
                 $data->start_at = $request['start_at'];
                 $data->end_at = $request['end_at'];
                 $data->status = $request['status'];
-                $data->cage_id = $request['cage_id'];
+                // $data->cage_id = $request['cage_id'];
                 $data->price = $priceformat;
                 $data->update();
 
                 if($data->status == 'Selesai'){
                     $cages = Cage::find($data->cage_id);
-                    $cages->counter = $cages->counter - 1;
-                    $cages->save();
+                    if($cage->counter > 0){
+                        $cages->counter = $cages->counter - 1;
+                        $cages->save();
+                    }
                 }
                 $data = [
                     'data' => $data,
@@ -164,9 +166,11 @@ class Hotels extends Controller
     public function destroy($id)
     {
         $hotels = Hotel::find($id);
+        $cages = Cage::find($hotels->cage_id);
         if($hotels)
         {
             $hotels->delete();
+            $cages->counter = $cages->counter + 1;
             return response()->json([
                 'status'=>'success',
                 'message'=>'Berhasil dihapus'
@@ -179,5 +183,27 @@ class Hotels extends Controller
                 'message'=>'Data tidak ditemukan'
             ]);
         }
+    }
+
+    public function refPets(Request $request)
+    {
+        $grooms = Hotel::where('status', 'Selesai')->latest()->first();
+        $data = Pet::where('user_id', $request['user'])
+                ->join('breeds', 'pets.id', '=', 'breeds.pet_id')
+                ->where(function ($query) {
+                    $query
+                    ->where('breeds.status', '=', 'Selesai')
+                    ->latest();
+                })
+                ->orWhereDoesntHave('breeds')
+                ->get();
+        
+        // dd($data);
+        $data = [
+            'data' => $data,
+            'message' => 'Berhasil menampilkan pet pengguna',
+            'status' => 'success'
+        ];
+        return response()->json($data);
     }
 }

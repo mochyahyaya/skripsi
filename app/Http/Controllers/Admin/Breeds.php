@@ -164,4 +164,26 @@ class Breeds extends Controller
             ]);
         }
     }
+
+    public function refPets(Request $request)
+    {
+        $grooms = Breed::where('status', 'Selesai')->latest()->first();
+        $data = Pet::with('typePets')
+                ->where('user_id', $request['user'])
+                ->WhereDoesntHave('hotels')
+                ->leftjoin('hotels', 'pets.id', '=', 'hotels.pet_id')        
+                ->orwhere(function ($query) {
+                    $query
+                    ->where('hotels.status', '=', 'Selesai');
+                })
+                ->get();
+        
+        // dd($data);
+        $data = [
+            'data' => $data,
+            'message' => 'Berhasil menampilkan pet pengguna',
+            'status' => 'success'
+        ];
+        return response()->json($data);
+    }
 }

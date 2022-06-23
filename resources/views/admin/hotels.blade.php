@@ -242,7 +242,7 @@
             if (user != null && user != '') {
                 $.ajax({
                 type:'POST',
-                url:"{{ route('admin/refPets') }}",
+                url:"{{ route('admin/refPetsHotels') }}",
                 data:{user},
                 success:function(data){
                 console.log(data);
@@ -267,7 +267,7 @@
                     console.log(data);
                     $.each(data,function (j,data){
                         $('select[name="petname"]').append($('<option>', { 
-                            value: data['id'],
+                            value: data['pets.id'],
                             text : data.type_pets['name']+' - '+ data['name'] 
                         }));
                     });
@@ -442,19 +442,18 @@
                             }));
                         });
 
-
-                        var el2 = $(document).find('#updateCages option');
-                        el2.remove();
-                        $('select[name="updateCages"]').append($('<option >', { 
-                                value: response.hotels.cage_id,
-                                text : response.hotels.cages.type_cages['alias']+ '-' + response.hotels.cages['number']   
-                            }));
-                        $.each(cage,function (j,data){
-                            $('select[name="updateCages"]').append($('<option>', { 
-                                value: data['id'],
-                                text : data.type_cages['alias']+ '-' + data['number']   
-                            }));
-                        });
+                        // var el2 = $(document).find('#updateCages option');
+                        // el2.remove();
+                        // $('select[name="updateCages"]').prepend($('<option >', { 
+                        //         value: response.hotels.cage_id,
+                        //         text : response.hotels.cages.type_cages['alias']+ '-' + response.hotels.cages['number']   
+                        //     }));
+                        // $.each(cage,function (j,data){
+                        //     $('select[name="updateCages"]').append($('<option>', { 
+                        //     value: data['id'],
+                        //     text : data.type_cages['alias']+ '-' + data['number']   
+                        //     }));
+                        // });
                 }
                 },
                 complete: function() {

@@ -215,7 +215,7 @@
                 var user = $(e.target).find(':selected').val();
                 $.ajax({
                     type:'POST',
-                    url:"{{ route('admin/refPets') }}",
+                    url:"{{ route('admin/refPetsBreeds') }}",
                     data:{user},
                     success:function(data){
                     console.log(data);

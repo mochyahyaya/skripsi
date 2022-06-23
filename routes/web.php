@@ -51,6 +51,7 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function() {
         Route::get('grooms-edit/{id}', [Grooms::class, 'edit'])->name('admin/groomsEdit');
         Route::put('grooms-update/{id}', [Grooms::class, 'update'])->name('admin/groomsUpdate');
         Route::delete('grooms-delete/{id}', [Grooms::class, 'destroy'])->name('admin/groomsDestroy');
+        Route::post('grooms-ref-pet', [Grooms::class, 'refPets'])->name('admin/refPetsGrooms');
     
         Route::get('hotels', [Hotels::class, 'index'])->name('admin/hotels');
         Route::get('hotels-fetch', [Hotels::class, 'fetch'])->name('admin/hotelsFetch');
@@ -58,6 +59,7 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function() {
         Route::get('hotels-edit/{id}', [Hotels::class, 'edit'])->name('admin/hotelsEdit');
         Route::put('hotels-update/{id}', [Hotels::class, 'update'])->name('admin/hotelsUpdate');
         Route::delete('hotels-delete/{id}', [Hotels::class, 'destroy'])->name('admin/hotelsDestroy');
+        Route::post('hotels-ref-pet', [Hotels::class, 'refPets'])->name('admin/refPetsHotels');
 
         Route::get('breeds', [Breeds::class, 'index'])->name('admin/breeds');
         Route::get('breeds-fetch', [Breeds::class, 'fetch'])->name('admin/breedsFetch');
@@ -65,6 +67,7 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function() {
         Route::get('breeds-edit/{id}', [Breeds::class, 'edit'])->name('admin/breedsEdit');
         Route::put('breeds-update/{id}', [Breeds::class, 'update'])->name('admin/breedsUpdate');
         Route::delete('breeds-delete/{id}', [Breeds::class, 'destroy'])->name('admin/breedsDestroy');
+        Route::post('breeds-ref-pet', [Breeds::class, 'refPets'])->name('admin/refPetsBreeds');
 
         Route::get('users', [Users::class, 'index'])->name('admin/users');
         Route::get('users-fetch', [Users::class, 'fetch'])->name('admin/usersFetch');
