@@ -9,6 +9,7 @@ use Carbon\Carbon;
 use App\Models\Breed;
 use App\Models\User;
 use App\Models\Pet;
+use App\Models\Cage;
 
 
 class Breeds extends Controller
@@ -60,8 +61,14 @@ class Breeds extends Controller
                 'start_at'=> $request['start_at'],
                 'status' => $request['status'],
                 'pickup' => $request['pickup'],
+                'cage_id' => $request['cage_id'],
                 'price' => 0,
             ]);
+            $data->save();
+            $cage = Cage::find($data->cage_id);
+            // dd($cage);
+            $cage->counter = $cage->counter + 2;
+            $cage->save(); 
 
             $data = [
                 'status' => 'success',
@@ -76,12 +83,14 @@ class Breeds extends Controller
     public function edit($id)
     {
         $breeds = Breed::find($id);
+        $petUsers = Pet::where('user_id', $breeds->pets->user_id )->get();
         if($breeds)
         {
             return response()->json([
                 'status' => 'success',
                 'message' => 'Data breeding berhasil ditampilkan',
                 'breeds'=> $breeds,
+                'petUser' => $petUsers,
             ]);
         }
         else
@@ -113,6 +122,12 @@ class Breeds extends Controller
                     $data->status = $request['status'];
                     $data->price = $priceformat;
                     $data->update();
+                    $data->save();
+                    $cages = Cage::find($data->cage_id);
+                    if($cages->counter > 0){
+                        $cages->counter = $cages->counter - 2;
+                        $cages->save();
+                    }
                     $data = [
                         'data' => $data,
                         'status' => 'success',
@@ -132,6 +147,8 @@ class Breeds extends Controller
                         'status' => 'success',
                         'message' => 'Data boarding berhasil diubah'
                     ];
+
+
                 }
             }
             else
@@ -148,8 +165,12 @@ class Breeds extends Controller
     public function destroy($id)
     {
         $breeds = Breed::find($id);
+        $cages = Cage::find($breeds->cage_id);
         if($breeds)
         {
+            if($cage->counter > 0) {
+                $cages->counter = $cages->counter - 2;
+            }
             $breeds->delete();
             return response()->json([
                 'status'=>'success',
@@ -168,17 +189,33 @@ class Breeds extends Controller
     public function refPets(Request $request)
     {
         $grooms = Breed::where('status', 'Selesai')->latest()->first();
-        $data = Pet::select('*', 'pets.id as idpets', 'breeds.id as idgrooms')
-                ->leftjoin('grooms', 'pets.id', '=', 'grooms.pet_id')
+        $data = Pet::select('*', 'pets.id as idpets', 'breeds.id as idbreeds')
+                ->leftjoin('breeds', 'pets.id', '=', 'breeds.pet_id')
                 ->where('pets.user_id', $request['user'])
-                ->whereNull('grooms.status')
-                ->orWhere('grooms.status', 'selesai')
+                ->whereNull('breeds.status')
+                ->orWhere('breeds.status', 'selesai')
                 ->get();
         
         // dd($data);
         $data = [
             'data' => $data,
             'message' => 'Berhasil menampilkan pet pengguna',
+            'status' => 'success'
+        ];
+        return response()->json($data);
+    }
+
+    public function refCages(Request $request){
+        $pets = Pet::find($request['cage']);
+        $data = Cage::with('type_cages')
+                ->where('type_cage_id', 3)
+                ->whereRaw('counter < count')
+                ->get();
+        // dd($data);
+
+        $data = [
+            'data' => $data,
+            'message' => 'Berhasil menampilkan kandang', 
             'status' => 'success'
         ];
         return response()->json($data);

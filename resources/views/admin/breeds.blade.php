@@ -24,7 +24,7 @@
                 <th> Nama Jantan </th>
                 <th> Nama Betina </th>
                 <th> Tanggal Masuk </th>
-                <th> Penjemputan </th>
+                <th> Harga </th>
                 <th> Status </th>
                 <th> Aksi </th>
               </tr>
@@ -85,9 +85,20 @@
                     </div>
                     <div class="row">
                       <div class="forms-group">
-                          <label for="service" class="col-form-label">Tanggal Masuk</label>
+                          <label for="start_at" class="col-form-label">Tanggal Masuk</label>
                           <input type="text" placeholder="dd/mm/yyyy" name="start_at" id="start_at" class="form-control">
                       </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <label for="cages" class="col-form-label">Kandang</label>
+                            <select id="cage_id" class="form-control select2bs4" name="cage_id">
+                              <option value="" selected disabled>--Pilih Kandang--</option>
+                              {{-- @foreach ($pets as $value)
+                                  <option value="{{$value->id}}">{{$value->name}}</option>
+                              @endforeach --}}
+                          </select>
+                        </div>
                     </div>
                   </div>
                 <div class="modal-footer justify-content-between">
@@ -117,9 +128,10 @@
                         <div class="forms-group">
                             <label for="petname" class="col-form-label">Nama Betina</label>
                             <select id="updatePetName" class="form-control select2bs4" name="updatePetName">
-                              @foreach ($pets as $value)
+                                <option value="" selected></option>
+                              {{-- @foreach ($pets as $value)
                                   <option value="{{$value->id}}" >{{$value->name}}</option>
-                              @endforeach
+                              @endforeach --}}
                           </select>
                         </div>
                     </div>
@@ -168,14 +180,13 @@
     });
 
     $(document).ready( function () {
-      $('#table-breeds').DataTable();
       $('#start_at').datepicker({
-        dateFormat: 'yy-mm-dd',
-        minDate: 0
+        dateFormat: 'yy-mm-dd'
+        // minDate: 0
       });
       $('#updateStartAt').datepicker({
-        dateFormat: 'yy-mm-dd',
-        minDate: 0
+        dateFormat: 'yy-mm-dd'
+        // minDate: 0
       });
     });
 
@@ -199,13 +210,14 @@
                             <td>' + item.pet_male + '</td>\
                             <td>' + item.pets.name + '</td>\
                             <td>' + moment(item.start_at).locale('id').format('LL') + '</td>\
-                            <td>' + item.pickup + '</td>\
+                            <td>' + item.price + '</td>\
                                 ' + status_badge+ '\
                             <td class="text-center"><button type="button" value="' + item.id + '" class="btn btn-gradient-info btn-rounded btn-sm edit_data">Edit</button>\
                                 <button type="button" value="' + item.id + '" class="btn btn-gradient-danger btn-rounded btn-sm hapus_data">Hapus</button>\
                             </td>\
                             \</tr>');
-                    })
+                    });
+                    $('#table-breeds').DataTable();
                 }
             });
         }
@@ -240,8 +252,8 @@
                         console.log(data);
                         $.each(data,function (j,data){
                             $('select[name="petname"]').append($('<option>', { 
-                                value: data['id'],
-                                text : data['id']+' - '+ data['name'] 
+                                value: data['idpets'],
+                                text : data['idpets']+' - '+ data['name'] 
                             }));
                         });
                         $('select[name="petname"]').removeAttr('disabled')
@@ -249,6 +261,50 @@
                 })
         });
 
+        $(document).on('change', "#petname", function(e) {
+            $('select[name="cage_id"]').attr('disabled','disabled').find('option:nth-of-type(n+2)').remove()
+            var cage = $(e.target).find(':selected').val();
+            if (cage != null && cage != '') {
+                $.ajax({
+                type:'POST',
+                url:"{{ route('admin/refCagesBreeds') }}",
+                data:{cage},
+                success:function(data){
+                console.log(data);
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                    })
+                    Toast.fire({
+                    icon: data.status,
+                    title: data.message
+                    })
+                },
+                complete:function(e){
+                    data = e.responseJSON.data;
+                    console.log(data);
+                    $.each(data,function (j,data){
+                        $('select[name="cage_id"]').append($('<option>', { 
+                            value: data['id'],
+                            text : data.type_cages['alias']+' - '+ data['number'] 
+                        }));
+                    });
+                    $('select[name="cage_id"]').removeAttr('disabled')
+                }
+            })
+            } else {
+                $('select[name="cage_id"]').removeAttr('disabled')
+            }
+
+        });
+        
         $(document).on('click', '.tambah_data', function (e) {
                 e.preventDefault();
 
@@ -264,6 +320,7 @@
                     'petname': $('#petname').val(),
                     'petmale': $('#petMale').val(),
                     'start_at': $('#start_at').val(),
+                    'cage_id': $('#cage_id').val(),
                     'status': 'Proses',
                     'pickup' : 'Tidak'
                 }
@@ -288,13 +345,16 @@
                         icon: data.status,
                         title: data.message
                         });
-                        $('#modal-create').modal('hide');
+                        $('#modal-create .close').click();
                         fetch();
                     },
                     complete: function(err){
                         $('.tambah_data').text('Simpan').removeAttr('disabled');
-                        $('#modal-create').modal('hide');
-                        $('#modal-create').find('input').val('');
+                        $('#username').val(null).trigger('change');
+                        $('#petname').val(null).trigger('change');
+                        $('#start_at').val('');
+                        $('#modal-create .close').click();
+                        fetch();
                     },
                     error: function (err) {
                     if (err.status == 422) {
@@ -336,7 +396,7 @@
                     })
                     console.log(response.breeds.status);
                     $('#updatePetName').val(response.breeds.pet_id).trigger('change');
-                    $('#updatePetMale').val(response.breeds.pet_male);
+                    $('#updatePetMale').val(response.breeds.pet_male).trigger('change');
                     $('#updateStartAt').val(response.breeds.start_at);
                     $("#updateStatus").val(response.breeds.status).trigger('change');
                     $('#breeds_id').val(response.breeds.id);
@@ -346,6 +406,10 @@
                     
                     var el = $(document).find('#updatePetName option');
                     el.remove();
+                    $('select[name="updatePetName"]').append($('<option>', { 
+                            value: response.breeds.pet_id,
+                            text : response.breeds.pets.name
+                        }));
                     $.each(data,function (j,data){
                         $('select[name="updatePetName"]').append($('<option>', { 
                             value: data['id'],
@@ -474,6 +538,17 @@
                     }
                 })
         });
+
+        $(document).on('click', '.close', function (e) {
+            $('#username').val(null).trigger('change');
+            $('#petname').val(null).trigger('change');
+            $('#start_at').val('');
+            $('#petMale').val('');
+            $('#cages').val(null).trigger('change');
+
+            // var el = $(document).find('#updatePetName option');
+            // el.remove();
+        })
     });
 </script>
     

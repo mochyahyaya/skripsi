@@ -67,9 +67,8 @@
                             <label for="petname" class="col-form-label">Nama Pet</label>
                             <select id="petname" class="form-control select2bs4" name="petname">
                               <option value="" selected disabled>--Pilih Nama Pet--</option>
-                              <option value=""></option>
                               {{-- @foreach ($pets as $value)
-                                  <option value="{{$value->id}}">{{$value->name}}</option>
+                                  <option value="{{$value->id}}" selected>{{$value->name}}</option>
                               @endforeach --}}
                           </select>
                         </div>
@@ -152,17 +151,17 @@
                         </select>
                       </div>
                   </div>
-                  <div class="row">
+                  {{-- <div class="row">
                     <div class="form-group">
                         <label for="cages" class="col-form-label">Kandang</label>
                         <select id="updateCages" class="form-control select2bs4" name="updateCages">
                           <option value="" selected disabled>--Pilih Kandang--</option>
-                          {{-- @foreach ($cages as $value)
+                          @foreach ($cages as $value)
                               <option value="{{$value->id}}" selected>{{$value->type_cages->alias}} - {{$value->number}}</option>
-                          @endforeach --}}
+                          @endforeach
                       </select>
                     </div>
-                </div>
+                </div> --}}
                 </div>
                 <div class="modal-footer justify-content-between">
                     <button type="button" class="btn btn-gradient-light btn-fw" data-bs-dismiss="modal">Kembali</button>
@@ -231,7 +230,7 @@
                             </td>\
                             \</tr>');
                     });
-                    $('#table-hotels').DataTable()
+                    $('#table-hotels').DataTable();
                 }
             });
         }
@@ -267,8 +266,8 @@
                     console.log(data);
                     $.each(data,function (j,data){
                         $('select[name="petname"]').append($('<option>', { 
-                            value: data['pets.id'],
-                            text : data.type_pets['name']+' - '+ data['name'] 
+                            value: data['idpets'],
+                            text : data['idpets']+' - '+ data['name'] 
                         }));
                     });
                     $('select[name="petname"]').removeAttr('disabled')
@@ -319,7 +318,7 @@
                 }
             })
             } else {
-                $('select[name="petname"]').removeAttr('disabled')
+                $('select[name="cage_id"]').removeAttr('disabled')
             }
 
         });
@@ -435,6 +434,10 @@
                         
                         var el = $(document).find('#updatePetName option');
                         el.remove();
+                        $('select[name="updatePetName"]').append($('<option>', { 
+                            value: response.hotels.pet_id,
+                            text : response.hotels.pets.name
+                        }));
                         $.each(data,function (j,data){
                             $('select[name="updatePetName"]').append($('<option>', { 
                                 value: data['id'],
@@ -586,6 +589,7 @@
             $('#petname').val(null).trigger('change');
             $('#start_at').val('');
             $('#end_at').val('');
+            $('#cage_id').val(null).trigger('change');
 
             // var el = $(document).find('#updatePetName option');
             // el.remove();

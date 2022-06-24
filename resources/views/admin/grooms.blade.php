@@ -183,7 +183,7 @@
                         <td>' + item.pets.name + '</td>\
                         <td>' + item.service + '</td>\
                         <td>' + item.price + '</td>\
-                        <td>' + item.pickup + '</td>\
+                        <td>' + moment(item.created_at).locale('id').format('LL') + '</td>\
                             ' + status_badge+ '\
                         <td class="text-center"><button type="button" value="' + item.id + '" class="btn btn-gradient-info btn-rounded btn-sm edit_data">Edit</button>\
                             <button type="button" value="' + item.id + '" class="btn btn-gradient-danger btn-rounded btn-sm hapus_data">Hapus</button>\
@@ -225,12 +225,12 @@
                 data = e.responseJSON.data;
                 data2 = e.responseJSON.data2;
                 console.log(data2);
-                $.each(data2,function (j,data){
-                    $('select[name="petname"]').append($('<option>', { 
-                        value: data['id'],
-                        text : data['id']+' - '+ data['name'] 
-                    }));
-                });
+                // $.each(data2,function (j,data){
+                //     $('select[name="petname"]').append($('<option>', { 
+                //         value: data['id'],
+                //         text : data['id']+' - '+ data['name'] 
+                //     }));
+                // });
                 $.each(data,function (j,data){
                   // if(data['status'] == 'Selesai')
                     $('select[name="petname"]').append($('<option>', { 
@@ -347,12 +347,12 @@
                     data = response.petUser;
                     console.log(data);
                     
-                    // var el = $(document).find('#updatePetName option');
-                    // el.remove();
-                    // $('select[name="updatePetName"]').append($('<option>', { 
-                    //         value: response.grooms.pet_id,
-                    //         text : response.grooms.pets.name
-                    //     }));
+                    var el = $(document).find('#updatePetName option');
+                    el.remove();
+                    $('select[name="updatePetName"]').append($('<option>', { 
+                            value: response.grooms.pet_id,
+                            text : response.grooms.pets.name
+                        }));
                     $.each(data,function (j,data){
                         $('select[name="updatePetName"]').append($('<option>', { 
                             value: data['id'],

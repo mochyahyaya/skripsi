@@ -138,10 +138,11 @@ class Hotels extends Controller
                 // $data->cage_id = $request['cage_id'];
                 $data->price = $priceformat;
                 $data->update();
+                $data->save();
 
                 if($data->status == 'Selesai'){
                     $cages = Cage::find($data->cage_id);
-                    if($cage->counter > 0){
+                    if($cages->counter > 0){
                         $cages->counter = $cages->counter - 1;
                         $cages->save();
                     }
@@ -169,8 +170,10 @@ class Hotels extends Controller
         $cages = Cage::find($hotels->cage_id);
         if($hotels)
         {
+            if($cages->counter > 0 ){
+                $cages->counter = $cages->counter - 1;
+            }
             $hotels->delete();
-            $cages->counter = $cages->counter + 1;
             return response()->json([
                 'status'=>'success',
                 'message'=>'Berhasil dihapus'
@@ -187,15 +190,13 @@ class Hotels extends Controller
 
     public function refPets(Request $request)
     {
-        $grooms = Hotel::where('status', 'Selesai')->latest()->first();
-        $data = Pet::where('user_id', $request['user'])
-                ->join('breeds', 'pets.id', '=', 'breeds.pet_id')
-                ->where(function ($query) {
-                    $query
-                    ->where('breeds.status', '=', 'Selesai')
-                    ->latest();
-                })
-                ->orWhereDoesntHave('breeds')
+        $hotels = Hotel::where('status', 'Selesai')->latest()->first();
+        $data = Pet::select('*', 'pets.id as idpets', 'hotels.id as idhotels')
+                ->leftjoin('hotels', 'pets.id', '=', 'hotels.pet_id')
+                ->where('pets.user_id', $request['user'])
+                ->whereNull('hotels.status')
+                ->orWhere('hotels.status', 'Selesai')
+                ->distinct('idpets')
                 ->get();
         
         // dd($data);

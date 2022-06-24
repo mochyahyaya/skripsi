@@ -68,6 +68,7 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function() {
         Route::put('breeds-update/{id}', [Breeds::class, 'update'])->name('admin/breedsUpdate');
         Route::delete('breeds-delete/{id}', [Breeds::class, 'destroy'])->name('admin/breedsDestroy');
         Route::post('breeds-ref-pet', [Breeds::class, 'refPets'])->name('admin/refPetsBreeds');
+        Route::post('breeds-ref-cage', [Breeds::class, 'refCages'])->name('admin/refCagesBreeds');
 
         Route::get('users', [Users::class, 'index'])->name('admin/users');
         Route::get('users-fetch', [Users::class, 'fetch'])->name('admin/usersFetch');

@@ -172,13 +172,15 @@ class Grooms extends Controller
         //         // ->groupBy('pets.id','pets.name', 'grooms.status', 'grooms.pet_id')
         //         ->get();
         // dd($data);
-        $data = Pet::select('*', 'pets.id as idpets', 'grooms.id as idgrooms')
+        $data = Pet::select('pets.id', 'pets.id as idpets', 'grooms.id as idgrooms')
                 ->leftjoin('grooms', 'pets.id', '=', 'grooms.pet_id')
                 ->where('pets.user_id', $request['user'])
                 ->whereNull('grooms.status')
                 ->orWhere('grooms.status', 'selesai')
+                ->groupBy('pets.id')
+                ->latest('grooms.created_at')
                 ->get();
-                // dd($data);
+                dd($data);
         $data = [
             'data' => $data,
             'message' => 'Berhasil menampilkan pet pengguna',
