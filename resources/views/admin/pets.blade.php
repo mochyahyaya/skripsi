@@ -183,7 +183,6 @@
                         <div class="forms-group">
                             <label for="status" class="col-form-label">Gender</label>
                             <select id="updateGender" class="form-control select2bs4">
-                              <option value="">--Pilih Gender--</option>
                               <option value="Jantan">Jantan</option>
                               <option value="Betina">Betina</option>
                           </select>
@@ -372,9 +371,9 @@
                             $('#updateColour').val(response.pets.colour);
                             $('#updateBirthday').val(response.pets.birthday);
                             $('#updateRole').val(response.pets.role_id).trigger('change');
-                            $('#updateGender').val(response.pets.role_id).trigger('change');
+                            $('#updateGender').val(response.pets.gender).trigger('change');
                             $('#updateType').val(response.pets.type_pet_id).trigger('change');
-                            $('#users_id').val(response.pets.id);
+                            $('#pets_id').val(response.pets.id);
                     }
                     },
                     complete: function(err) {
@@ -407,6 +406,7 @@
                     $('#table-pets tbody').empty();
                 }
                 var id = $('#pets_id').val();
+                console.log(id);
 
                 var data = {
                     'name': $('#updateName').val(),

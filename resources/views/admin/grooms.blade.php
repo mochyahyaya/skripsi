@@ -232,10 +232,9 @@
                 //     }));
                 // });
                 $.each(data,function (j,data){
-                  // if(data['status'] == 'Selesai')
                     $('select[name="petname"]').append($('<option>', { 
-                        value: data['idpets'],
-                        text : data['idpets']+' - '+ data['name'] 
+                        value: data['petsid'],
+                        text : data['petsid']+' - '+ data['name'] 
                     }));
                 });
                 $('select[name="petname"]').removeAttr('disabled')

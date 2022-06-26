@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 
 use App\Models\Breed;
@@ -188,12 +189,20 @@ class Breeds extends Controller
 
     public function refPets(Request $request)
     {
-        $grooms = Breed::where('status', 'Selesai')->latest()->first();
-        $data = Pet::select('*', 'pets.id as idpets', 'breeds.id as idbreeds')
-                ->leftjoin('breeds', 'pets.id', '=', 'breeds.pet_id')
-                ->where('pets.user_id', $request['user'])
-                ->whereNull('breeds.status')
-                ->orWhere('breeds.status', 'selesai')
+        $query = DB::table('breeds as b')
+                ->select(DB::raw('ROW_NUMBER() OVER (PARTITION BY pet_id ORDER BY id DESC) AS rn, b.*'));
+
+        $data = DB::table('pets as p')
+                ->select('p.*', 'p.id as petsid')
+                ->withExpression('pos_pets', $query)
+                ->leftJoin('pos_pets', 'p.id', '=', 'pos_pets.pet_id')
+                ->where('p.user_id', $request['user'])
+                ->whereNull('status')
+                ->orWhere(function ($join) use($request){
+                    $join
+                    ->where('rn', 1)
+                    ->where('status', 'Selesai');
+                })
                 ->get();
         
         // dd($data);

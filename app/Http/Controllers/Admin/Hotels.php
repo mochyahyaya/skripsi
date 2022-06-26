@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 use App\Models\Hotel;
 use App\Models\User;
@@ -190,19 +191,42 @@ class Hotels extends Controller
 
     public function refPets(Request $request)
     {
-        $hotels = Hotel::where('status', 'Selesai')->latest()->first();
-        $data = Pet::select('*', 'pets.id as idpets', 'hotels.id as idhotels')
-                ->leftjoin('hotels', 'pets.id', '=', 'hotels.pet_id')
-                ->where('pets.user_id', $request['user'])
-                ->whereNull('hotels.status')
-                ->orWhere('hotels.status', 'Selesai')
-                ->distinct('idpets')
+        $query = DB::table('hotels as h')
+                ->select(DB::raw('ROW_NUMBER() OVER (PARTITION BY pet_id ORDER BY id DESC) AS rn, h.*'));
+
+        $data = DB::table('pets as p')
+                ->select('p.*', 'p.id as petsid')
+                ->withExpression('pos_pets', $query)
+                ->leftJoin('pos_pets', 'p.id', '=', 'pos_pets.pet_id')
+                ->where('p.user_id', $request['user'])
+                ->whereNull('status')
+                ->orWhere(function ($join) use($request){
+                    $join
+                    ->where('rn', 1)
+                    ->where('status', 'Selesai');
+                })
                 ->get();
         
         // dd($data);
         $data = [
             'data' => $data,
             'message' => 'Berhasil menampilkan pet pengguna',
+            'status' => 'success'
+        ];
+        return response()->json($data);
+    }
+
+    public function refCages(Request $request){
+        $pets = Pet::find($request['cage']);
+        $data = Cage::with('type_cages')
+                ->where('type_cage_id', $pets->type_pet_id)
+                ->whereRaw('counter < count')
+                ->get();
+        // dd($data);
+
+        $data = [
+            'data' => $data,
+            'message' => 'Berhasil menampilkan kandang', 
             'status' => 'success'
         ];
         return response()->json($data);

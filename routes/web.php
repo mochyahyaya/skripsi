@@ -43,7 +43,6 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function() {
     Route::prefix('admin')->group(function () {
         Route::get('dashboard', [Dashboard::class, 'index'])->name('admin/dashboard');
         Route::post('ref-pet', [Dashboard::class, 'refPets'])->name('admin/refPets');
-        Route::post('ref-cage', [Dashboard::class, 'refCages'])->name('admin/refCages');
     
         Route::get('grooms', [Grooms::class, 'index'])->name('admin/grooms');
         Route::get('grooms-fetch', [Grooms::class, 'fetch'])->name('admin/groomsFetch');
@@ -60,6 +59,7 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function() {
         Route::put('hotels-update/{id}', [Hotels::class, 'update'])->name('admin/hotelsUpdate');
         Route::delete('hotels-delete/{id}', [Hotels::class, 'destroy'])->name('admin/hotelsDestroy');
         Route::post('hotels-ref-pet', [Hotels::class, 'refPets'])->name('admin/refPetsHotels');
+        Route::post('hotels-ref-cage', [Hotels::class, 'refCages'])->name('admin/refCages');
 
         Route::get('breeds', [Breeds::class, 'index'])->name('admin/breeds');
         Route::get('breeds-fetch', [Breeds::class, 'fetch'])->name('admin/breedsFetch');

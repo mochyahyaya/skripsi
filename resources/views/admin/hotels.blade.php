@@ -266,8 +266,8 @@
                     console.log(data);
                     $.each(data,function (j,data){
                         $('select[name="petname"]').append($('<option>', { 
-                            value: data['idpets'],
-                            text : data['idpets']+' - '+ data['name'] 
+                            value: data['petsid'],
+                            text : data['petsid']+' - '+ data['name'] 
                         }));
                     });
                     $('select[name="petname"]').removeAttr('disabled')

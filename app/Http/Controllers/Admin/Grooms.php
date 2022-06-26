@@ -158,29 +158,23 @@ class Grooms extends Controller
 
     public function refPets(Request $request)
     {
-        // $null = Pet::with('typePets')
-        //         ->where('user_id', $request['user'])
-        //         ->whereDoesntHave('grooms')
-        //         ->get();
+        $query = DB::table('grooms as g')
+                ->select(DB::raw('ROW_NUMBER() OVER (PARTITION BY pet_id ORDER BY id DESC) AS rn, g.*'));
 
-        // $data = Pet::with('typePets')
-        //         // ->select('pets.id', 'pets.name', 'grooms.status', 'grooms.pet_id')
-        //         ->where('user_id', $request['user'])
-        //         ->leftjoin('grooms', 'pets.id', '=', 'grooms.pet_id')
-        //         ->where('grooms.status', 'Selesai')
-        //         ->latest('grooms.created_at')
-        //         // ->groupBy('pets.id','pets.name', 'grooms.status', 'grooms.pet_id')
-        //         ->get();
-        // dd($data);
-        $data = Pet::select('pets.id', 'pets.id as idpets', 'grooms.id as idgrooms')
-                ->leftjoin('grooms', 'pets.id', '=', 'grooms.pet_id')
-                ->where('pets.user_id', $request['user'])
-                ->whereNull('grooms.status')
-                ->orWhere('grooms.status', 'selesai')
-                ->groupBy('pets.id')
-                ->latest('grooms.created_at')
+        $data = DB::table('pets as p')
+                ->select('p.*', 'p.id as petsid')
+                ->withExpression('pos_pets', $query)
+                ->leftJoin('pos_pets', 'p.id', '=', 'pos_pets.pet_id')
+                ->where('p.user_id', $request['user'])
+                ->whereNull('status')
+                ->orWhere(function ($join) use($request){
+                    $join
+                    ->where('rn', 1)
+                    ->where('status', 'Selesai');
+                })
                 ->get();
-                dd($data);
+
+                // dd($data);
         $data = [
             'data' => $data,
             'message' => 'Berhasil menampilkan pet pengguna',
