@@ -11,6 +11,16 @@
     </div>
     <div class="col-lg-12 grid-margin stretch-card">
       <div class="card">
+        <div class="card-header">
+            <ul class="nav nav-tabs card-header-tabs">
+              <li class="nav-item">
+                <a class="nav-link active" href="#">Breeding</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{{route('admin/monitoringsBreed')}}">Monitoring</a>
+              </li>
+            </ul>
+        </div>
         <div class="card-body">
           <h4 class="card-title">List Data Breeding</h4>
           <div class="card-description">

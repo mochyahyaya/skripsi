@@ -11,7 +11,7 @@ class MonitoringsHotel extends Controller
 {
     public function index()
     {
-        $hotels = Hotel::with('pets', 'cages')->where('status', 'Selesai')->get();
+        $hotels = Hotel::with('pets', 'cages')->where('status', 'Dalam Kandang')->get();
         return view('admin.monitorings-hotel', compact('hotels'));
     }
 }

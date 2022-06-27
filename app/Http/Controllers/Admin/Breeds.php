@@ -20,7 +20,7 @@ class Breeds extends Controller
         $users = User::where('role_id', 3)->get();
         $pets = Pet::all();
         $breeds = Breed::all();
-        $petAdmin = Pet::where('user_id', 1)->get();
+        $petAdmin = Pet::where('user_id', 1)->where('gender', 'Jantan')->get();
         return view('admin.breeds', compact('users', 'pets', 'breeds', 'petAdmin'));
     }
 

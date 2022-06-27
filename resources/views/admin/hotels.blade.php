@@ -20,7 +20,7 @@
                 <a class="nav-link" href="{{route('admin/monitoringsHotel')}}">Monitoring</a>
               </li>
             </ul>
-          </div>
+        </div>
         <div class="card-body">
           <h4 class="card-title">List Data Boarding</h4>
           <div class="card-description">
@@ -440,14 +440,9 @@
 
                         data = response.petUser;
                         cage = response.cages;
-                        console.log(cage);
                         
                         var el = $(document).find('#updatePetName option');
                         el.remove();
-                        $('select[name="updatePetName"]').append($('<option>', { 
-                            value: response.hotels.pet_id,
-                            text : response.hotels.pets.name
-                        }));
                         $.each(data,function (j,data){
                             $('select[name="updatePetName"]').append($('<option>', { 
                                 value: data['id'],
@@ -455,18 +450,14 @@
                             }));
                         });
 
-                        // var el2 = $(document).find('#updateCages option');
-                        // el2.remove();
-                        // $('select[name="updateCages"]').prepend($('<option >', { 
-                        //         value: response.hotels.cage_id,
-                        //         text : response.hotels.cages.type_cages['alias']+ '-' + response.hotels.cages['number']   
-                        //     }));
-                        // $.each(cage,function (j,data){
-                        //     $('select[name="updateCages"]').append($('<option>', { 
-                        //     value: data['id'],
-                        //     text : data.type_cages['alias']+ '-' + data['number']   
-                        //     }));
-                        // });
+                        var el2 = $(document).find('#updateCages option');
+                        el2.remove();
+                        $.each(cage,function (j,data){
+                            $('select[name="updateCages"]').append($('<option>', { 
+                            value: data['id'],
+                            text : data.type_cages['alias']+ '-' + data['number'] 
+                            }));
+                        });
                 }
                 },
                 complete: function() {
