@@ -11,6 +11,16 @@
     </div>
     <div class="col-lg-12 grid-margin stretch-card">
       <div class="card">
+        <div class="card-header">
+            <ul class="nav nav-tabs card-header-tabs">
+              <li class="nav-item">
+                <a class="nav-link active" href="#">Boarding</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{{route('admin/monitoringsHotel')}}">Monitoring</a>
+              </li>
+            </ul>
+          </div>
         <div class="card-body">
           <h4 class="card-title">List Data Boarding</h4>
           <div class="card-description">
@@ -151,7 +161,7 @@
                         </select>
                       </div>
                   </div>
-                  {{-- <div class="row">
+                  <div class="row">
                     <div class="form-group">
                         <label for="cages" class="col-form-label">Kandang</label>
                         <select id="updateCages" class="form-control select2bs4" name="updateCages">
@@ -161,7 +171,7 @@
                           @endforeach
                       </select>
                     </div>
-                </div> --}}
+                </div>
                 </div>
                 <div class="modal-footer justify-content-between">
                     <button type="button" class="btn btn-gradient-light btn-fw" data-bs-dismiss="modal">Kembali</button>

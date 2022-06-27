@@ -91,10 +91,6 @@ class Hotels extends Controller
     {
         $hotels = Hotel::with('cages.type_cages', 'pets')->find($id);
         //Get pets by user id
-        // $userId = $hotels->pets->user_id;
-        // $petId = $hotels->pets->type_pet_id;
-        // $cageId = $hotels->cages->type_cages->alias;
-        // dd($hotels);
         $petUsers = Pet::where('user_id', $hotels->pets->user_id )->get();
         //Get cages where count > counter
         $cages = Cage::with('type_cages')
@@ -124,7 +120,8 @@ class Hotels extends Controller
     {
             $data = $request->all();
             $data = Hotel::find($id);
-            if($data)
+            $cages = Cage::find($data->cage_id);
+            if($data->cage_id == $request['cage_id'])
             {
                 $start = new Carbon($request['start_at']);
                 $end = new Carbon($request['end_at']);
@@ -136,18 +133,57 @@ class Hotels extends Controller
                 $data->start_at = $request['start_at'];
                 $data->end_at = $request['end_at'];
                 $data->status = $request['status'];
-                // $data->cage_id = $request['cage_id'];
+                $data->cage_id = $request['cage_id'];
                 $data->price = $priceformat;
                 $data->update();
                 $data->save();
 
                 if($data->status == 'Selesai'){
-                    $cages = Cage::find($data->cage_id);
                     if($cages->counter > 0){
                         $cages->counter = $cages->counter - 1;
                         $cages->save();
                     }
                 }
+                $data = [
+                    'data' => $data,
+                    'status' => 'success',
+                    'message' => 'Data boarding berhasil diubah'
+                ];
+            }
+            elseif($data->cage_id != $request['cage_id']){
+                $start = new Carbon($request['start_at']);
+                $end = new Carbon($request['end_at']);
+                $day =  $start->diff($end)->format('%a');
+                $price = $day * 20000;
+                $priceformat = number_format($price,0,".",".");
+
+                if($cages->counter > 0){
+                    $cages->counter = $cages->counter - 1;
+                    $cages->save();
+                }
+
+                $data->pet_id = $request['petname'];
+                $data->start_at = $request['start_at'];
+                $data->end_at = $request['end_at'];
+                $data->status = $request['status'];
+                $data->cage_id = $request['cage_id'];
+                $data->price = $priceformat;
+                $data->update();
+                $data->save();
+                
+                $updateCountCage = Cage::find($data->cage_id);
+                if($updateCountCage->counter < $updateCountCage->count ) {
+                    $updateCountCage->counter = $updateCountCage->counter + 1;
+                    $updateCountCage->save();
+                }
+
+                if($data->status == 'Selesai'){
+                    if($updateCountCage->counter > 0){
+                        $updateCountCage->counter = $updateCountCage->counter - 1;
+                        $updateCountCage->save();
+                    }
+                }
+
                 $data = [
                     'data' => $data,
                     'status' => 'success',

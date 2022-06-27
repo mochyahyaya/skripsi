@@ -6,7 +6,9 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\Dashboard;
 use App\Http\Controllers\Admin\Grooms;
 use App\Http\Controllers\Admin\Hotels;
+use App\Http\Controllers\Admin\MonitoringsHotel;
 use App\Http\Controllers\Admin\Breeds;
+use App\Http\Controllers\Admin\MonitoringsBreed;
 use App\Http\Controllers\Admin\Users;
 use App\Http\Controllers\Admin\Pets;
 use App\Http\Controllers\Admin\Cages;
@@ -61,6 +63,8 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function() {
         Route::post('hotels-ref-pet', [Hotels::class, 'refPets'])->name('admin/refPetsHotels');
         Route::post('hotels-ref-cage', [Hotels::class, 'refCages'])->name('admin/refCages');
 
+        Route::get('monitorings-hotel', [MonitoringsHotel::class, 'index'])->name('admin/monitoringsHotel');
+
         Route::get('breeds', [Breeds::class, 'index'])->name('admin/breeds');
         Route::get('breeds-fetch', [Breeds::class, 'fetch'])->name('admin/breedsFetch');
         Route::post('breeds-store', [Breeds::class, 'store'])->name('admin/breedsStore');
@@ -69,6 +73,8 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function() {
         Route::delete('breeds-delete/{id}', [Breeds::class, 'destroy'])->name('admin/breedsDestroy');
         Route::post('breeds-ref-pet', [Breeds::class, 'refPets'])->name('admin/refPetsBreeds');
         Route::post('breeds-ref-cage', [Breeds::class, 'refCages'])->name('admin/refCagesBreeds');
+
+        Route::get('monitorings-breed', [MonitoringsBreed::class, 'index'])->name('admin/monitoringsBreed');
 
         Route::get('users', [Users::class, 'index'])->name('admin/users');
         Route::get('users-fetch', [Users::class, 'fetch'])->name('admin/usersFetch');
