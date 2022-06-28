@@ -171,7 +171,7 @@
                           @endforeach
                       </select>
                     </div>
-                </div>
+                  </div>
                 </div>
                 <div class="modal-footer justify-content-between">
                     <button type="button" class="btn btn-gradient-light btn-fw" data-bs-dismiss="modal">Kembali</button>

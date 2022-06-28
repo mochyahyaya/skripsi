@@ -13,11 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('breed_monitorings', function (Blueprint $table) {
-            $table->foreignId('breed_id')
-            ->constrained('breeds')
-            ->onUpdate('cascade')
-            ->onDelete('cascade');
+        Schema::table('hotel_monitorings', function (Blueprint $table) {
+            $table->string('notes');
         });
     }
 
@@ -28,8 +25,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('breed_monitorings', function (Blueprint $table) {
-            //
+        Schema::table('hotel_monitorings', function (Blueprint $table) {
+           //
         });
     }
 };

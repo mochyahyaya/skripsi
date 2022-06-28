@@ -170,6 +170,17 @@
                         </select>
                       </div>
                   </div>
+                  <div class="row">
+                    <div class="form-group">
+                        <label for="cages" class="col-form-label">Kandang</label>
+                        <select id="updateCages" class="form-control select2bs4" name="updateCages">
+                          <option value="" selected disabled>--Pilih Kandang--</option>
+                          {{-- @foreach ($cages as $value)
+                              <option value="{{$value->id}}" selected>{{$value->type_cages->alias}} - {{$value->number}}</option>
+                          @endforeach --}}
+                      </select>
+                    </div>
+                  </div>
                 </div>
                 <div class="modal-footer justify-content-between">
                     <button type="button" class="btn btn-gradient-light btn-fw" data-bs-dismiss="modal">Kembali</button>
@@ -235,6 +246,7 @@
         $(document).on('change', "#username", function(e) {
             $('select[name="petname"]').attr('disabled','disabled').find('option:nth-of-type(n+2)').remove()
                 var user = $(e.target).find(':selected').val();
+                if (cage != null && cage != '') {
                 $.ajax({
                     type:'POST',
                     url:"{{ route('admin/refPetsBreeds') }}",
@@ -269,6 +281,7 @@
                         $('select[name="petname"]').removeAttr('disabled')
                     }
                 })
+            }
         });
 
         $(document).on('change', "#petname", function(e) {
@@ -404,26 +417,37 @@
                     icon: response.status,
                     title: response.message
                     })
-                    console.log(response.breeds.status);
+                    console.log(response.breeds.cages.type_cages);
                     $('#updatePetName').val(response.breeds.pet_id).trigger('change');
                     $('#updatePetMale').val(response.breeds.pet_male).trigger('change');
                     $('#updateStartAt').val(response.breeds.start_at);
                     $("#updateStatus").val(response.breeds.status).trigger('change');
+                    $('#updateCages').val(response.breeds.cage_id).trigger('change');
                     $('#breeds_id').val(response.breeds.id);
 
                     data = response.petUser;
+                    cage = response.cages;
                     console.log(data);
                     
                     var el = $(document).find('#updatePetName option');
                     el.remove();
-                    $('select[name="updatePetName"]').append($('<option>', { 
-                            value: response.breeds.pet_id,
-                            text : response.breeds.pets.name
-                        }));
                     $.each(data,function (j,data){
                         $('select[name="updatePetName"]').append($('<option>', { 
                             value: data['id'],
                             text : data['name'] 
+                        }));
+                    });
+
+                    var el2 = $(document).find('#updateCages option');
+                    el2.remove();
+                    $('select[name="updateCages"]').append($('<option>', { 
+                            value: response.breeds.cage_id,
+                            text : response.breeds.cages.type_cages.alias+ '-' + response.breeds.cages.number
+                    }));
+                    $.each(cage,function (j,data){
+                        $('select[name="updateCages"]').append($('<option>', { 
+                            value: data['id'],
+                            text : data.type_cages['alias']+ '-' + data['number'] 
                         }));
                     });
                 }
@@ -464,6 +488,7 @@
                 'petMale': $('#updatePetMale').val(),
                 'start_at': $('#updateStartAt').val(),
                 'status': $('#updateStatus').val(),
+                'cage_id': $('#updateCages').val()
             }
 
             $.ajax({

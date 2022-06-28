@@ -56,19 +56,20 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form action="" method="post" class="forms-sample">
+            <form action="" method="" class="forms-sample">
                 @csrf
                 <div class="modal-body">
+                    <input type="hidden" id="hotels_id">
                     <div class="row">
                         <div class="form-group">
                             <label for="username">Kondisi Makan</label>
                                 <div class="form-check">
                                 <label class="form-check-label">
-                                  <input type="checkbox" class="form-check-input" name="food" value="Baik"> Baik <i class="input-helper"></i></label>
+                                  <input type="checkbox" class="form-check-input" name="food" value="Normal"> Baik <i class="input-helper"></i></label>
                                 </div>
                                 <div class="form-check">
                                     <label class="form-check-label">
-                                    <input type="checkbox" class="form-check-input" name="food" value="Tidak Baik"> Tidak Baik <i class="input-helper"></i></label>
+                                    <input type="checkbox" class="form-check-input" name="food" value="Tidak Normal"> Tidak Baik <i class="input-helper"></i></label>
                                 </div>
                           </div>
                     </div>
@@ -85,7 +86,17 @@
                                 </div>
                           </div>
                     </div>
-                </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <label for="username">Keterangan</label>
+                            <textarea name="notes" id="notes" cols="10" rows="5" class="form-control"></textarea>
+                          </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="photo" >Upload Photo</label>
+                        <input type="file" class="form-control-file" id="photo" name="photo[]" multiple>
+                      </div>
+                    </div>
                 <div class="modal-footer justify-content-between">
                     <button type="button" class="btn btn-gradient-light btn-fw close" data-dismiss="modal">Kembali</button>
                     <button type="submit" class="btn btn-gradient-primary btn-fw tambah_data">Simpan</button>
@@ -98,35 +109,100 @@
 
 @push('scripts')
     <script>
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }   
+        });
+
         $(document).ready(function () {
             $(document).on('click', '#monit-data', function(e) {
                 $('#modal-create').modal('show');
-                var hours = moment().valueOf();
-                var limit1 = moment('8:00am', 'h:mma').valueOf();
-                var limit2 = moment('1:00pm', 'h:mma').valueOf();
-                var limit3 = moment('8:00pm', 'h:mma').valueOf();
-                console.log(limit2);
+            });
+
+            
+            $(document).on('click', '.tambah_data', function (e) {
+                e.preventDefault();
+                var data = {
+                    'food': $("input[name='food']:checked").val(),
+                    'temperature': $("input[name='temperature']:checked").val(),
+                    'notes': $('#notes').val(),
+                    'hotel_id': $('#monit-data').val(),
+                }
+
+                // var food = $("input[name='food']:checked").val();
+                // var temperature = $("input[name='temperature']:checked").val();
+                // var notes = $('#notes').val();
+                // var hotel_id = $('#monit-data').val();
+                
+                // var form_data = new FormData();
+                // var totalfiles = document.getElementById('photo').files.length;
+                // for (var index = 0; index < totalfiles; index++) {
+                //     form_data.append("photo[]", document.getElementById('photo').files[index]);
+                // }
+
+
+                $.ajax({
+                    type: "POST",
+                    url: "{{ route('admin/monitoringsHotelStore') }}",
+                    data: data,
+                    dataType: "json",
+                    success: function (data) {
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        didOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                        }
+                        })
+                        Toast.fire({
+                        icon: data.status,
+                        title: data.message
+                        })
+                    },
+                    complete:function() {
+                        $('#modal-create').modal('hide');
+                    },
+                    error: function (err) {
+                    if (err.status == 422) {
+                        $.each(err.responseJSON.errors, function (i, error) {
+                            var el = $(document).find('[name="'+i+'"]');
+                            el.after($('<span style="color: red;">'+error[0]+'</span>'));
+                        });
+                        $('.tambah_data').text('Simpan').removeAttr('disabled')
+                    }
+                    }
+                });
             });
         });
 
-        $(function() {
-            var now = new Date();
-            var hours = moment().valueOf();
-            var limit =moment('5:00pm', 'h:mma').valueOf();
-            $button = $('.tambah_data');
+        // $(function() {
+        // var hours = moment().valueOf();
+        //     var limit1 = moment('8:00am', 'h:mma').valueOf();
+        //     var limit2 = moment('1:00pm', 'h:mma').valueOf();
+        //     var limit3 = moment('8:00pm', 'h:mma').valueOf();
+        //     console.log(limit2);
+        //     var now = new Date();
+        //     var hours = moment().valueOf();
+        //     var limit =moment('5:00pm', 'h:mma').valueOf();
+        //     $button = $('.tambah_data');
 
-            if ( hours < limit) {
-                $button.prop( "disabled", "disabled" );
-            } else {
-                $button.prop( "disabled", false ); 
-                }
+        //     if ( hours < limit) {
+        //         $button.prop( "disabled", "disabled" );
+        //     } else {
+        //         $button.prop( "disabled", false ); 
+        //         }
 
-            $button.click(function() {
-                if ($(this).is(':disabled')) {
-                    alert('We are not accepting entries during weekends.')
-                    return;
-                }
-            });
-        });
+        //     $button.click(function() {
+        //         if ($(this).is(':disabled')) {
+        //             alert('We are not accepting entries during weekends.')
+        //             return;
+        //         }
+        //     });
+        // });
     </script>
 @endpush

@@ -211,7 +211,7 @@
                     $('#modal-create').find('input').val('');
                 },
                 complete: function(err){
-                    $('#modal-create').modal('hide');
+                    $('#modal-create .close').click();
                     $('.tambah_data').text('Simpan').removeAttr('disabled');
                     fetch();
                 },

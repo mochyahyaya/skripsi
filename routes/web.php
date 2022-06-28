@@ -15,6 +15,9 @@ use App\Http\Controllers\Admin\Cages;
 use App\Http\Controllers\Admin\Reports;
 use App\Http\Controllers\Admin\Dummy;
 
+//Vetrinarian
+use App\Http\Controllers\Veterinarian\DashboardVet;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -64,6 +67,7 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function() {
         Route::post('hotels-ref-cage', [Hotels::class, 'refCages'])->name('admin/refCages');
 
         Route::get('monitorings-hotel', [MonitoringsHotel::class, 'index'])->name('admin/monitoringsHotel');
+        Route::post('monitorings-hotel-store', [MonitoringsHotel::class, 'store'])->name('admin/monitoringsHotelStore');
 
         Route::get('breeds', [Breeds::class, 'index'])->name('admin/breeds');
         Route::get('breeds-fetch', [Breeds::class, 'fetch'])->name('admin/breedsFetch');
@@ -75,6 +79,8 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function() {
         Route::post('breeds-ref-cage', [Breeds::class, 'refCages'])->name('admin/refCagesBreeds');
 
         Route::get('monitorings-breed', [MonitoringsBreed::class, 'index'])->name('admin/monitoringsBreed');
+        Route::post('monitorings-breed-store', [MonitoringsBreed::class, 'store'])->name('admin/monitoringsBreedStore');
+        
 
         Route::get('users', [Users::class, 'index'])->name('admin/users');
         Route::get('users-fetch', [Users::class, 'fetch'])->name('admin/usersFetch');
@@ -98,6 +104,10 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function() {
         Route::get('cages-delete/{id}', [Cages::class, 'destroy'])->name('admin/cagesDestroy');
 
         Route::get('reports', [Reports::class, 'index'])->name('admin/reports');
+    });
+
+    Route::prefix('veterinarian')->group(function () {
+        Route::get('dashboard', [DashboardVet::class, 'index'])->name('veterinarian/dashboard');
     });
 
 });

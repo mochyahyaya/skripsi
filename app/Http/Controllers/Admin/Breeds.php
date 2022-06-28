@@ -83,8 +83,12 @@ class Breeds extends Controller
 
     public function edit($id)
     {
-        $breeds = Breed::find($id);
+        $breeds = Breed::with('cages.type_cages', 'pets')->find($id);
         $petUsers = Pet::where('user_id', $breeds->pets->user_id )->get();
+        $cages = Cage::with('type_cages')
+                ->where('type_cage_id',  3)
+                ->whereRaw('counter < count')
+                ->get(); 
         if($breeds)
         {
             return response()->json([
@@ -92,6 +96,7 @@ class Breeds extends Controller
                 'message' => 'Data breeding berhasil ditampilkan',
                 'breeds'=> $breeds,
                 'petUser' => $petUsers,
+                'cages' => $cages
             ]);
         }
         else
@@ -107,7 +112,8 @@ class Breeds extends Controller
     {
             $data = $request->all();
             $data = Breed::find($id);
-            if($data)
+            $cages = Cage::find($data->cage_id);
+            if($data->cage_id == $request['cage_id'])
             {
                 if($request['status'] == 'Selesai'){
                     $start = new Carbon($request['start_at']);
@@ -124,7 +130,7 @@ class Breeds extends Controller
                     $data->price = $priceformat;
                     $data->update();
                     $data->save();
-                    $cages = Cage::find($data->cage_id);
+
                     if($cages->counter > 0){
                         $cages->counter = $cages->counter - 2;
                         $cages->save();
@@ -148,16 +154,78 @@ class Breeds extends Controller
                         'status' => 'success',
                         'message' => 'Data boarding berhasil diubah'
                     ];
-
-
                 }
             }
-            else
-            { 
+            elseif($data->cage_id != $request['cage_id']){
+                if($request['status'] == 'Selesai'){
+                    $start = new Carbon($request['start_at']);
+                    $end = Carbon::now();
+                    $day =  $start->diff($end)->format('%a');
+                    $price = $day * 20000; 
+                    $priceformat = number_format($price,0,".",".");
+
+
+                    if($cages->counter > 0){
+                        $cages->counter = $cages->counter - 2;
+                        $cages->save();
+                    }
+            
+                    $data->pet_id = $request['petname'];
+                    $data->pet_male = $request['petMale'];
+                    $data->start_at = $request['start_at'];
+                    $data->end_at = $end;
+                    $data->status = $request['status'];
+                    $data->cage_id = $request['cage_id'];
+                    $data->price = $priceformat;
+                    $data->update();
+                    $data->save();
+
+                    // $updateCountCage = Cage::find($data->cage_id);
+                    // if($updateCountCage->counter < $updateCountCage->count ) {
+                    //     $updateCountCage->counter = $updateCountCage->counter + 2;
+                    //     $updateCountCage->save();
+                    // }
+
+                    $data = [
+                        'data' => $data,
+                        'status' => 'success',
+                        'message' => 'Data boarding berhasil diubah'
+                    ];
+                }
+
+                else {
+                    
+                    if($cages->counter > 0){
+                        $cages->counter = $cages->counter - 2;
+                        $cages->save();
+                    }
+
+                    $data->pet_id = $request['petname'];
+                    $data->pet_male = $request['petMale'];
+                    $data->start_at = $request['start_at'];
+                    $data->status = $request['status'];
+                    $data->cage_id = $request['cage_id'];
+                    $data->update();
+
+                    $updateCountCage = Cage::find($data->cage_id);
+                    if($updateCountCage->counter < $updateCountCage->count ) {
+                        $updateCountCage->counter = $updateCountCage->counter + 2;
+                        $updateCountCage->save();
+                    }
+
+                    $data = [
+                        'data' => $data,
+                        'status' => 'success',
+                        'message' => 'Data breeding berhasil diubah'
+                    ];
+
+                }
+            } 
+            else { 
                 $data = [
                     'data' => $data,
                     'status' => 'error',
-                    'message' => 'Gagal mengubah data boarding'
+                    'message' => 'Gagal mengubah data breeding'
                 ];
             }
             return response()->json($data);

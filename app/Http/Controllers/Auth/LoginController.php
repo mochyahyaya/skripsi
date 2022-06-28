@@ -33,7 +33,7 @@ class LoginController extends Controller
         if(Auth::user()->role_id == 1){
             return 'admin/dashboard';
         } elseif(Auth::user()->role_id==2){
-            return '';
+            return 'veterinarian/dashboard';
         } else {
             return '';
         }
