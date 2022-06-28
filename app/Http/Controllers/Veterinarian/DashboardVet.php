@@ -20,6 +20,6 @@ class DashboardVet extends Controller
         $cages = Cage::all()->count();
         $pets = Pet::where('user_id', 3)->count();
         $users = User::where('role_id', 3)->count();
-        return view('admin.dashboard', compact('users', 'cages', 'pets'));
+        return view('veterinarian.dashboard', compact('users', 'cages', 'pets'));
     }
 }

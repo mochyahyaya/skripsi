@@ -14,6 +14,7 @@
           <i class="mdi mdi-bookmark-check text-success nav-profile-badge"></i>
         </a>
       </li>
+      @if(Auth::user()->role_id == 1)
       <li class="nav-item">
         <a class="nav-link" href="{{route('admin/dashboard')}}">
           <span class="menu-title">Dashboard</span>
@@ -53,5 +54,21 @@
           </ul>
         </div>
       </li>
+      @endif
+
+      @if (Auth::user()->role_id == 2)
+      <li class="nav-item">
+        <a class="nav-link" href="{{route('admin/grooms')}}">
+          <span class="menu-title">Rekam Medis</span>
+          <i class="mdi mdi-broom menu-icon"></i>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{{route('admin/hotels')}}">
+          <span class="menu-title">Penitipan Hewan Sakit</span>
+          <i class="mdi mdi-hotel menu-icon"></i>
+        </a>
+      </li>
+      @endif
     </ul>
   </nav>

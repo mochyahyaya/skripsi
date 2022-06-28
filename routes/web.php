@@ -18,6 +18,10 @@ use App\Http\Controllers\Admin\Dummy;
 //Vetrinarian
 use App\Http\Controllers\Veterinarian\DashboardVet;
 
+//User
+use App\Http\Controllers\User\DashboardUser;
+
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -108,6 +112,10 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function() {
 
     Route::prefix('veterinarian')->group(function () {
         Route::get('dashboard', [DashboardVet::class, 'index'])->name('veterinarian/dashboard');
+    });
+
+    Route::prefix('user')->group(function () {
+        Route::get('dashboard', [DashboardUser::class, 'index'])->name('user/dashboard');
     });
 
 });
