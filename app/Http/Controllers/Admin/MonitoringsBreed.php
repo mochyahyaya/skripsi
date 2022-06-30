@@ -35,12 +35,27 @@ class MonitoringsBreed extends Controller
         else
         {
             $data = $request->all();
+            $breeds = Breed::find($request['breed_id']);
             $data = BreedMonitoring::create([
                 'food' => $request['food'],
                 'temperature'=> $request['temperature'],
                 'notes'=> $request['notes'],
                 'breed_id' => $request['breed_id']
             ]);
+
+            $data->save();
+
+            if($request->has("images")){
+                $files=$request->file("images");
+                foreach($files as $file){
+                    $imageName=str_replace(' ', '', time().'_'.$file->getClientOriginalName());
+                    $file->move(\public_path("/images/hotelmonitoring"),$imageName);
+                    ImageMonitoringHotel::create([
+                        'filename' => $imageName,
+                        'pet_id' => $data->hotel_id
+                    ]);
+                }
+             }
 
             $data = [
                 'status' => 'success',

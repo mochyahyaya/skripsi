@@ -41,7 +41,7 @@
         <div class="container d-flex align-items-center justify-content-between">
 
         <div class="logo">
-            <h1><a href="index.html">Garden</a></h1>
+            <h1><a href="{{"route('user/dashboard')"}}">Garden</a></h1>
             <!-- Uncomment below if you prefer to use an image logo -->
             <!-- <a href="index.html"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
         </div>
@@ -49,14 +49,16 @@
         <nav id="navbar" class="navbar">
             <ul>
             <li><a class="nav-link scrollto active" href="#hero">Home</a></li>
-            <li><a class="nav-link scrollto" href="#features">Grooming</a></li>
-            <li><a class="nav-link scrollto" href="#gallery">Boarding</a></li>
-            <li><a class="nav-link scrollto" href="#pricing">Breeding</a></li>
+            <li><a class="nav-link scrollto" href="#grooms">Grooming</a></li>
+            <li><a class="nav-link scrollto" href="#boards">Boarding</a></li>
+            <li><a class="nav-link scrollto" href="#breeds">Breeding</a></li>
             <li><a class="nav-link scrollto" href="#contact">Contact</a></li>
             <li class="dropdown"><a href="#"><span>{{Auth::user()->name}}</span> <i class="bi bi-chevron-down"></i></a>
                 <ul>
-                <li><a href="#">Drop Down 1</a></li>
-                <li class="dropdown"><a href="#"><span>Deep Drop Down</span> <i class="bi bi-chevron-right"></i></a>
+                <li><a href="#">Profil</a></li>
+                <li><a href="#">Monitoring Pet</a></li>
+                <li><a href="#">Riwayat Aktivitas</a></li>
+                {{-- <li class="dropdown"><a href="#"><span>Deep Drop Down</span> <i class="bi bi-chevron-right"></i></a>
                     <ul>
                     <li><a href="#">Deep Drop Down 1</a></li>
                     <li><a href="#">Deep Drop Down 2</a></li>
@@ -64,13 +66,24 @@
                     <li><a href="#">Deep Drop Down 4</a></li>
                     <li><a href="#">Deep Drop Down 5</a></li>
                     </ul>
+                </li> --}}
+                @if (Auth::check())
+                <li>                
+                    <a class="nav-link scrollto" href="{{ route('logout') }}"
+                    onclick="event.preventDefault();
+                    document.getElementById('logout-form').submit();">
+                    <i class="mdi mdi-logout me-2 text-primary"></i> {{ __('Logout') }}
+                    </a>
+                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="nav-link scrollto d-none">
+                        @csrf
+                    </form>
                 </li>
-                <li><a href="#">Drop Down 2</a></li>
-                <li><a href="#">Drop Down 3</a></li>
-                <li><a href="#">Drop Down 4</a></li>
+                @endif
                 </ul>
-            </li>
-            <li><a class="getstarted scrollto dropdown" href="#">Get Started</a></li>
+            </li> 
+            @if (!Auth::check())         
+            <li><a class="getstarted scrollto dropdown" href="{{route('login')}}">Login</a></li>
+            @endif
             </ul>
             <i class="bi bi-list mobile-nav-toggle"></i>
         </nav><!-- .navbar -->
@@ -78,34 +91,13 @@
         </div>
     </header><!-- End Header -->
 
-    <!-- ======= Hero Section ======= -->
-    <section id="hero" class="d-flex align-items-center">
-
-        <div class="container">
-        <div class="row">
-            <div class="col-lg-6 d-lg-flex flex-lg-column justify-content-center align-items-stretch pt-5 pt-lg-0 order-2 order-lg-1" data-aos="fade-up">
-            <div>
-                <h1>App landing page template</h1>
-                <h2>Lorem ipsum dolor sit amet, tota senserit percipitur ius ut, usu et fastidii forensibus voluptatibus. His ei nihil feugait</h2>
-                <a href="#" class="download-btn"><i class="bx bxl-play-store"></i> Google Play</a>
-                <a href="#" class="download-btn"><i class="bx bxl-apple"></i> App Store</a>
-            </div>
-            </div>
-            <div class="col-lg-6 d-lg-flex flex-lg-column align-items-stretch order-1 order-lg-2 hero-img" data-aos="fade-up">
-            <img src={!! asset('Appland/assets/img/hero-img.png') !!} class="img-fluid" alt="">
-            </div>
-        </div>
-        </div>
-
-    </section><!-- End Hero -->
-
     <main id="main">
         @yield('content')
     </main>
 
-    <footer id="footer">
+    <footer id="footer" class="bg-white">
 
-        <div class="footer-newsletter">
+        {{-- <div class="footer-newsletter">
         <div class="container">
             <div class="row justify-content-center">
             <div class="col-lg-6">
@@ -117,9 +109,9 @@
             </div>
             </div>
         </div>
-        </div>
+        </div> --}}
 
-        <div class="footer-top">
+        {{-- <div class="footer-top">
         <div class="container">
             <div class="row">
 
@@ -170,9 +162,9 @@
 
             </div>
         </div>
-        </div>
+        </div> --}}
 
-        <div class="container py-4">
+        <div class="container py-4 bg-white">
         <div class="copyright">
             &copy; Copyright <strong><span>Appland</span></strong>. All Rights Reserved
         </div>

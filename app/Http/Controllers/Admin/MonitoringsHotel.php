@@ -15,7 +15,8 @@ class MonitoringsHotel extends Controller
     public function index()
     {
         $hotels = Hotel::with('pets', 'cages')->where('status', 'Dalam Kandang')->get();
-        return view('admin.monitorings-hotel', compact('hotels'));
+        $image = ImageMonitoringHotel::all();
+        return view('admin.monitorings-hotel', compact('hotels', 'image'));
     }
 
     public function store(Request $request)
@@ -37,6 +38,7 @@ class MonitoringsHotel extends Controller
         else
         {
             $data = $request->all();
+            $hotels = Hotel::find($request['hotel_id']);
             $data = HotelMonitoring::create([
                 'food' => $request['food'],
                 'temperature'=> $request['temperature'],
@@ -44,22 +46,20 @@ class MonitoringsHotel extends Controller
                 'hotel_id' => $request['hotel_id']
             ]);
 
-            if($request->photo > 0)
-            {
-                   
-               for ($x = 0; $x < $request->photo; $x++) 
-               {
-                   if ($request->hasFile('photo'.$x)) 
-                    {
-                        $file      = $request->file('images'.$x);
-                        $path = $file->store('public/HotelMonitoring');
-                        $name = $file->getClientOriginalName();
-                        $insert[$x]['name'] = $name;
-                        $insert[$x]['path'] = $path;
-                    }
-               }
-                ImageMonitoringHotel::insert($insert);
-            }
+            $data->save();
+
+            if($request->has("images")){
+                $files=$request->file("images");
+                foreach($files as $file){
+                    $imageName=str_replace(' ', '', time().'_'.$file->getClientOriginalName());
+                    $file->move(\public_path("/images/hotelmonitoring"),$imageName);
+                    ImageMonitoringHotel::create([
+                        'filename' => $imageName,
+                        'pet_id' => $data->hotel_id
+                    ]);
+                }
+             }
+
             $data = [
                 'status' => 'success',
                 'message' => 'Data monitoring berhasil ditambahkan',

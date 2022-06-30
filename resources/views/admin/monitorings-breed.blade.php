@@ -36,6 +36,7 @@
                         <p class="card-text">Tanggal Masuk: <span>{{ \Carbon\Carbon::parse($value->start_at)->translatedFormat('d F Y')}}</span></p>
                         <p class="card-text">Tanggal Keluar: <span>{{ \Carbon\Carbon::parse($value->end_at)->translatedFormat('d F Y')}}</span></p>
                         <button class="btn btn-gradient-primary btn-sm" value="{{$value->id}}" id="monit-data"><i class="fa-solid fa-house-medical"></i></button>
+                        <button class="btn btn-gradient-primary btn-sm" value="{{$value->id}}" id="monit-image"><i class="fa-solid fa-house-medical"></i></button>
                         </div>
                     </div>
                 </div>
@@ -91,6 +92,12 @@
                             <textarea name="notes" id="notes" cols="10" rows="5" class="form-control"></textarea>
                           </div>
                     </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <label for="username">Upload Foto</label>
+                            <input type="file" class="form-control-file" id="images" name="images[]" enctype="multipart/form-data" multiple>
+                        </div>
+                    </div>
                 </div>
                 <div class="modal-footer justify-content-between">
                     <button type="button" class="btn btn-gradient-light btn-fw close" data-bs-dismiss="modal">Kembali</button>
@@ -117,6 +124,20 @@
 
             $(document).on('click', '.tambah_data', function (e) {  
                 e.preventDefault();
+
+                let image_upload = new FormData();
+                let TotalImages = $('#images')[0].files.length;  //Total Images
+                let images = $('#images')[0];  
+
+                for (let i = 0; i < TotalImages; i++) {
+                    image_upload.append('images[' + i + ']' , images.files[i]);
+                }
+                image_upload.append('TotalImages', TotalImages);
+                image_upload.append('notes', $('#notes').val());
+                image_upload.append('food', $("input[name='food']:checked").val());
+                image_upload.append('temperature', $("input[name='temperature']:checked").val());
+                image_upload.append('hotel_id', $('#monit-data').val());
+
                 var data = {
                     'food': $("input[name='food']:checked").val(),
                     'temperature': $("input[name='temperature']:checked").val(),
@@ -126,7 +147,7 @@
                 $.ajax({
                     type: "POST",
                     url: "{{ route('admin/monitoringsBreedStore') }}",
-                    data: data,
+                    data: image_upload,
                     dataType: "json",
                     success: function (data) {
                     const Toast = Swal.mixin({

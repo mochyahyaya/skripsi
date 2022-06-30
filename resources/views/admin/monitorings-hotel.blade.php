@@ -36,6 +36,7 @@
                         <p class="card-text">Tanggal Masuk: <span>{{ \Carbon\Carbon::parse($value->start_at)->translatedFormat('d F Y')}}</span></p>
                         <p class="card-text">Tanggal Keluar: <span>{{ \Carbon\Carbon::parse($value->end_at)->translatedFormat('d F Y')}}</span></p>
                         <button class="btn btn-gradient-primary btn-sm" value="{{$value->id}}" id="monit-data"><i class="fa-solid fa-house-medical"></i></button>
+                        <button class="btn btn-gradient-primary btn-sm" value="{{$value->id}}" id="monit-data"><i class="fa-solid fa-house-medical"></i></button>
                         </div>
                     </div>
                 </div>
@@ -59,7 +60,6 @@
             <form action="" method="" class="forms-sample">
                 @csrf
                 <div class="modal-body">
-                    <input type="hidden" id="hotels_id">
                     <div class="row">
                         <div class="form-group">
                             <label for="username">Kondisi Makan</label>
@@ -86,22 +86,17 @@
                                 </div>
                           </div>
                     </div>
-                    {{-- <div class="row">
+                    <div class="row">
                         <div class="form-group">
                             <label for="username">Keterangan</label>
                             <textarea name="notes" id="notes" cols="10" rows="5" class="form-control"></textarea>
                           </div>
-                    </div> --}}
+                    </div>
                     <div class="row">
                         <div class="form-group">
-                            <label for="username">Keterangan</label>
-                            <input type="text" name="notes" id="notes" class="form-control">
+                            <label for="username">Upload Foto</label>
+                            <input type="file" class="form-control-file" id="images" name="images[]" enctype="multipart/form-data" multiple>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="photo" >Upload Photo</label>
-                        <input type="file" class="form-control-file" id="photo" name="photo[]" multiple>
-                      </div>
                     </div>
                 <div class="modal-footer justify-content-between">
                     <button type="button" class="btn btn-gradient-light btn-fw close" data-dismiss="modal">Kembali</button>
@@ -111,6 +106,7 @@
         </div>
     </div>
 </div>
+
 @endsection
 
 @push('scripts')
@@ -125,20 +121,22 @@
             $(document).on('click', '#monit-data', function(e) {
                 $('#modal-create').modal('show');
             });
-
             
             $(document).on('click', '.tambah_data', function (e) {
                 e.preventDefault();
 
-                var form = new FormData();
-                var totalfiles = document.getElementById('photo').files.length;
-                for (var index = 0; index < totalfiles; index++) {
-                    form.append("photo[]", document.getElementById('photo').files[index]);
+                let image_upload = new FormData();
+                let TotalImages = $('#images')[0].files.length;  //Total Images
+                let images = $('#images')[0];  
+
+                for (let i = 0; i < TotalImages; i++) {
+                    image_upload.append('images[' + i + ']' , images.files[i]);
                 }
-                form.append('notes', $('#notes').val());
-                form.append('food', $("input[name='food']:checked").val());
-                form.append('temperature', $("input[name='temperature']:checked").val());
-                form.append('hotel_id', $('#monit-data').val());
+                image_upload.append('TotalImages', TotalImages);
+                image_upload.append('notes', $('#notes').val());
+                image_upload.append('food', $("input[name='food']:checked").val());
+                image_upload.append('temperature', $("input[name='temperature']:checked").val());
+                image_upload.append('hotel_id', $('#monit-data').val());
                 
                 var data = {
                     'food': $("input[name='food']:checked").val(),
@@ -147,22 +145,10 @@
                     'hotel_id': $('#monit-data').val(),
                 }
 
-                // var food = $("input[name='food']:checked").val();
-                // var temperature = $("input[name='temperature']:checked").val();
-                // var notes = $('#notes').val();
-                // var hotel_id = $('#monit-data').val();
-                
-                // var form_data = new FormData();
-                // var totalfiles = document.getElementById('photo').files.length;
-                // for (var index = 0; index < totalfiles; index++) {
-                //     form_data.append("photo[]", document.getElementById('photo').files[index]);
-                // }
-
-
                 $.ajax({
                     type: "POST",
                     url: "{{ route('admin/monitoringsHotelStore') }}",
-                    data: form,
+                    data: image_upload,
                     dataType: "json",
                     contentType: false,
                     processData: false,
@@ -197,6 +183,7 @@
                     }
                 });
             });
+
         });
 
         // $(function() {

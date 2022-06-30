@@ -13,13 +13,21 @@ use App\Http\Controllers\Admin\Users;
 use App\Http\Controllers\Admin\Pets;
 use App\Http\Controllers\Admin\Cages;
 use App\Http\Controllers\Admin\Reports;
+use App\Http\Controllers\Admin\Profile;
 use App\Http\Controllers\Admin\Dummy;
 
 //Vetrinarian
 use App\Http\Controllers\Veterinarian\DashboardVet;
+use App\Http\Controllers\Veterinarian\MedicalRecords;
 
 //User
 use App\Http\Controllers\User\DashboardUser;
+use App\Http\Controllers\User\UserGrooms;
+use App\Http\Controllers\User\UserHotels;
+use App\Http\Controllers\User\UserBreeds;
+use App\Http\Controllers\User\UserActivity;
+use App\Http\Controllers\User\UserMonitoring;
+use App\Http\Controllers\User\UserProfile;
 
 
 /*
@@ -40,13 +48,6 @@ Route::get('/', function () {
 Auth::routes();
 
 // Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
-Route::get('students', [Dummy::class, 'index']);
-Route::post('students', [Dummy::class, 'store']);
-Route::get('fetch-students', [Dummy::class, 'fetchstudent']);
-Route::get('edit-student/{id}', [Dummy::class, 'edit']);
-Route::put('update-student/{id}', [Dummy::class, 'update']);
-Route::delete('delete-student/{id}', [Dummy::class, 'destroy']);
 
 Route::group(['middleware' => ['auth:sanctum', 'verified']], function() {
     Route::prefix('admin')->group(function () {
@@ -72,6 +73,7 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function() {
 
         Route::get('monitorings-hotel', [MonitoringsHotel::class, 'index'])->name('admin/monitoringsHotel');
         Route::post('monitorings-hotel-store', [MonitoringsHotel::class, 'store'])->name('admin/monitoringsHotelStore');
+        Route::post('monitorings-hotel-store-image', [MonitoringsHotel::class, 'storeImage'])->name('admin/monitoringsHotelStoreImage');
 
         Route::get('breeds', [Breeds::class, 'index'])->name('admin/breeds');
         Route::get('breeds-fetch', [Breeds::class, 'fetch'])->name('admin/breedsFetch');
@@ -108,14 +110,18 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function() {
         Route::get('cages-delete/{id}', [Cages::class, 'destroy'])->name('admin/cagesDestroy');
 
         Route::get('reports', [Reports::class, 'index'])->name('admin/reports');
+
+        Route::get('profile', [Profile::class, 'index'])->name('admin/profile');
     });
 
     Route::prefix('veterinarian')->group(function () {
         Route::get('dashboard', [DashboardVet::class, 'index'])->name('veterinarian/dashboard');
+        Route::get('medical-records', [MedicalRecords::class, 'index'])->name('veterinarian/medicalRecords');
     });
 
     Route::prefix('user')->group(function () {
         Route::get('dashboard', [DashboardUser::class, 'index'])->name('user/dashboard');
+        Route::get('user-grooms', [UserGrooms::class, 'index'])->name('user/userGrooms');
     });
 
 });

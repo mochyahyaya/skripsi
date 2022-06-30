@@ -218,10 +218,10 @@
       var myChart = new Chart(ctx, {
         type: 'bar',
         data: {
-            labels: ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG'],
+            labels: ['JAN', 'FEB', 'MAR', 'APR', 'MEI', 'JUN', 'JUL', 'AUG', 'SEP', 'OKT', 'NOV', 'DES'],
             datasets: [
               {
-                label: "CHN",
+                label: "GROOMS",
                 borderColor: gradientStrokeViolet,
                 backgroundColor: gradientStrokeViolet,
                 hoverBackgroundColor: gradientStrokeViolet,
@@ -230,10 +230,10 @@
                 fill: false,
                 borderWidth: 1,
                 fill: 'origin',
-                data: [20, 40, 15, 35, 25, 50, 30, 20]
+                data: [20, 40, 15, 35, 25, 50, 30, 20, 10, 12, 60, 40]
               },
               {
-                label: "USA",
+                label: "BOARDS",
                 borderColor: gradientStrokeRed,
                 backgroundColor: gradientStrokeRed,
                 hoverBackgroundColor: gradientStrokeRed,
@@ -242,10 +242,10 @@
                 fill: false,
                 borderWidth: 1,
                 fill: 'origin',
-                data: [40, 30, 20, 10, 50, 15, 35, 40]
+                data: [40, 30, 20, 10, 50, 15, 35, 40, 10, 12, 60, 40]
               },
               {
-                label: "UK",
+                label: "BREEDS",
                 borderColor: gradientStrokeBlue,
                 backgroundColor: gradientStrokeBlue,
                 hoverBackgroundColor: gradientStrokeBlue,
@@ -254,7 +254,7 @@
                 fill: false,
                 borderWidth: 1,
                 fill: 'origin',
-                data: [70, 10, 30, 40, 25, 50, 15, 30]
+                data: [70, 10, 30, 40, 25, 50, 15, 30, 10, 12, 60, 40]
               }
           ]
         },
@@ -337,10 +337,10 @@
       var myChart = new Chart(ctx, {
         type: 'bar',
         data: {
-            labels: ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG'],
+            labels: ['JAN', 'FEB', 'MAR', 'APR', 'MEI', 'JUN', 'JUL', 'AUG', 'SEP', 'OKT', 'NOV', 'DES'],
             datasets: [
               {
-                label: "CHN",
+                label: "GROOMS",
                 borderColor: gradientStrokeViolet,
                 backgroundColor: gradientStrokeViolet,
                 hoverBackgroundColor: gradientStrokeViolet,
@@ -349,10 +349,10 @@
                 fill: false,
                 borderWidth: 1,
                 fill: 'origin',
-                data: [20, 40, 15, 35, 25, 50, 30, 20]
+                data: [20, 40, 15, 35, 25, 50, 30, 20, 10, 12, 60, 40]
               },
               {
-                label: "USA",
+                label: "BOARDS",
                 borderColor: gradientStrokeRed,
                 backgroundColor: gradientStrokeRed,
                 hoverBackgroundColor: gradientStrokeRed,
@@ -361,10 +361,10 @@
                 fill: false,
                 borderWidth: 1,
                 fill: 'origin',
-                data: [40, 30, 20, 10, 50, 15, 35, 40]
+                data: [40, 30, 20, 10, 50, 15, 35, 40, 10, 12, 60, 40]
               },
               {
-                label: "UK",
+                label: "BREEDS",
                 borderColor: gradientStrokeBlue,
                 backgroundColor: gradientStrokeBlue,
                 hoverBackgroundColor: gradientStrokeBlue,
@@ -373,7 +373,7 @@
                 fill: false,
                 borderWidth: 1,
                 fill: 'origin',
-                data: [70, 10, 30, 40, 25, 50, 15, 30]
+                data: [70, 10, 30, 40, 25, 50, 15, 30, 10, 12, 60, 40]
               }
           ]
         },
@@ -477,9 +477,9 @@
     
         // These labels appear in the legend and in the tooltips when hovering different arcs
         labels: [
-          'Search Engines',
-          'Direct Click',
-          'Bookmarks Click',
+          'Grooming',
+          'Breeding',
+          'Boarding',
         ]
       };
       var trafficChartOptions = {
