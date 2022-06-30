@@ -44,6 +44,22 @@ class MonitoringsHotel extends Controller
                 'hotel_id' => $request['hotel_id']
             ]);
 
+            if($request->photo > 0)
+            {
+                   
+               for ($x = 0; $x < $request->photo; $x++) 
+               {
+                   if ($request->hasFile('photo'.$x)) 
+                    {
+                        $file      = $request->file('images'.$x);
+                        $path = $file->store('public/HotelMonitoring');
+                        $name = $file->getClientOriginalName();
+                        $insert[$x]['name'] = $name;
+                        $insert[$x]['path'] = $path;
+                    }
+               }
+                ImageMonitoringHotel::insert($insert);
+            }
             $data = [
                 'status' => 'success',
                 'message' => 'Data monitoring berhasil ditambahkan',

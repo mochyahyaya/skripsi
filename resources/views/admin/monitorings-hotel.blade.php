@@ -86,11 +86,17 @@
                                 </div>
                           </div>
                     </div>
-                    <div class="row">
+                    {{-- <div class="row">
                         <div class="form-group">
                             <label for="username">Keterangan</label>
                             <textarea name="notes" id="notes" cols="10" rows="5" class="form-control"></textarea>
                           </div>
+                    </div> --}}
+                    <div class="row">
+                        <div class="form-group">
+                            <label for="username">Keterangan</label>
+                            <input type="text" name="notes" id="notes" class="form-control">
+                        </div>
                     </div>
                     <div class="form-group">
                         <label for="photo" >Upload Photo</label>
@@ -123,6 +129,17 @@
             
             $(document).on('click', '.tambah_data', function (e) {
                 e.preventDefault();
+
+                var form = new FormData();
+                var totalfiles = document.getElementById('photo').files.length;
+                for (var index = 0; index < totalfiles; index++) {
+                    form.append("photo[]", document.getElementById('photo').files[index]);
+                }
+                form.append('notes', $('#notes').val());
+                form.append('food', $("input[name='food']:checked").val());
+                form.append('temperature', $("input[name='temperature']:checked").val());
+                form.append('hotel_id', $('#monit-data').val());
+                
                 var data = {
                     'food': $("input[name='food']:checked").val(),
                     'temperature': $("input[name='temperature']:checked").val(),
@@ -145,8 +162,10 @@
                 $.ajax({
                     type: "POST",
                     url: "{{ route('admin/monitoringsHotelStore') }}",
-                    data: data,
+                    data: form,
                     dataType: "json",
+                    contentType: false,
+                    processData: false,
                     success: function (data) {
                     const Toast = Swal.mixin({
                         toast: true,

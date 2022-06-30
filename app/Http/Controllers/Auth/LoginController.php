@@ -35,7 +35,7 @@ class LoginController extends Controller
         } elseif(Auth::user()->role_id==2){
             return 'veterinarian/dashboard';
         } else {
-            return '';
+            return 'user/dashboard';
         }
     }
     // protected $redirectTo = RouteServiceProvider::HOME;

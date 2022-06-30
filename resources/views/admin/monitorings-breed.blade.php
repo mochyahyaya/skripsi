@@ -56,7 +56,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form action="" method="post" class="forms-sample">
+            <form action="admin/monitoringsBreedStore" method="post" class="forms-sample">
                 @csrf
                 <div class="modal-body">
                     <div class="row">
