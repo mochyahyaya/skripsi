@@ -60,4 +60,4 @@
 
 @push('scripts')
 
-@endpush
+@endpush 

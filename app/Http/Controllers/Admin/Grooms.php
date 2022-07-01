@@ -18,6 +18,12 @@ class Grooms extends Controller
     public function index()
     {   
         $users = User::where('role_id', 3)->get();
+        $test = DB::table('grooms')
+                ->select(DB::Raw('sum(price) as sumprice'))
+                ->addselect(DB::Raw('month(created_at) as monthprice'))
+                // ->where(DB::Raw('month(created_at) = 6'))
+                ->get();
+                // dd($test);
         $pets = Pet::all();
         $grooms = Groom::all();
         return view('admin.grooms', compact('grooms', 'users', 'pets'));
