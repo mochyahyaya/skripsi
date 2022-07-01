@@ -269,7 +269,8 @@
             'service': $('#service').val(),
             'price': $('#price').val(),
             'status': 'Diproses',
-            'pickup' : 'Tidak'
+            'pickup' : 'Tidak', 
+            'service_id': 1
         }
 
         $.ajax({

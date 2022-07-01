@@ -129,21 +129,24 @@
                 let TotalImages = $('#images')[0].files.length;  //Total Images
                 let images = $('#images')[0];  
 
+               alert(image_upload);
+
                 for (let i = 0; i < TotalImages; i++) {
                     image_upload.append('images[' + i + ']' , images.files[i]);
                 }
+
                 image_upload.append('TotalImages', TotalImages);
                 image_upload.append('notes', $('#notes').val());
                 image_upload.append('food', $("input[name='food']:checked").val());
                 image_upload.append('temperature', $("input[name='temperature']:checked").val());
                 image_upload.append('hotel_id', $('#monit-data').val());
                 
-                var data = {
-                    'food': $("input[name='food']:checked").val(),
-                    'temperature': $("input[name='temperature']:checked").val(),
-                    'notes': $('#notes').val(),
-                    'hotel_id': $('#monit-data').val(),
-                }
+                // var data = {
+                //     'food': $("input[name='food']:checked").val(),
+                //     'temperature': $("input[name='temperature']:checked").val(),
+                //     'notes': $('#notes').val(),
+                //     'hotel_id': $('#monit-data').val(),
+                // }
 
                 $.ajax({
                     type: "POST",

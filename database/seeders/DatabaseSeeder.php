@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
             TypeCageSeeder::class,
             TypePetSeeder::class,
             PetSeeder::class,
+            ServiceSeeder::class,
         ]);
     }
 }

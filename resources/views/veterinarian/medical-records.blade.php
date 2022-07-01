@@ -250,36 +250,33 @@
 <div class="container">
 <div class="row">
     <div class="col-lg-4 col-xl-4">
+        @foreach ($pets as $value)
         <div class="card-box text-center">
             <img src="https://bootdey.com/img/Content/avatar/avatar7.png" class="rounded-circle avatar-xl img-thumbnail" alt="profile-image">
 
-            <h4 class="mb-0">Nama Pet</h4>
-            <p class="text-muted">Kucing/Anjing</p>
+            <h4 class="mb-0">{{$value->name}}</h4>
+            <p class="text-muted">{{$value->typePets->name}}</p>
 
             <div class="text-left mt-3">
-                <p class="text-muted mb-2 font-13"><strong>Nama:</strong> <span class="ml-2">Nik G. Patel</span></p>
-
-                <p class="text-muted mb-2 font-13"><strong>BOD :</strong><span class="ml-2">(123)
-                        123 1234</span></p>
-
-                <p class="text-muted mb-2 font-13"><strong>Ras :</strong> <span class="ml-2 ">user@email.domain</span></p>
-
-                <p class="text-muted mb-1 font-13"><strong>Berat :</strong> <span class="ml-2">USA</span></p>
-                <p class="text-muted mb-1 font-13"><strong>Gender :</strong> <span class="ml-2">USA</span></p>
-                <p class="text-muted mb-1 font-13"><strong>Warna :</strong> <span class="ml-2">USA</span></p>
+                <p class="text-muted mb-2 font-13"><strong>Pemilik:</strong> <span class="ml-2">{{$value->users->name}}</span></p>
+                <p class="text-muted mb-2 font-13"><strong>BOD :</strong><span class="ml-2">{{$value->birthday}}</span></p>
+                <p class="text-muted mb-2 font-13"><strong>Ras :</strong> <span class="ml-2 ">{{$value->race}}</span></p>
+                <p class="text-muted mb-1 font-13"><strong>Berat :</strong> <span class="ml-2">{{$value->weight}}</span></p>
+                <p class="text-muted mb-1 font-13"><strong>Warna :</strong> <span class="ml-2">{{$value->colour}}</span></p>
+                <p class="text-muted mb-1 font-13"><strong>Gender :</strong> <span class="ml-2">{{$value->gender}}</span></p>
             </div>
         </div> <!-- end card-box -->
+        @endforeach
 
         <div class="card-box">
             <h4 class="header-title">Pet lain yang di miliki</h4>
 
             <div class="pt-1">
-                <a href="">
-                   <img src="https://bootdey.com/img/Content/avatar/avatar7.png" class="rounded-circle avatar-xl img-thumbnail mb-1 mt-1" alt="profile-image">
-                </a> 
-                <img src="https://bootdey.com/img/Content/avatar/avatar7.png" class="rounded-circle avatar-xl img-thumbnail mb-1 mt-1" alt="profile-image">
-                <img src="https://bootdey.com/img/Content/avatar/avatar7.png" class="rounded-circle avatar-xl img-thumbnail mb-1 mt-1" alt="profile-image">
-                <img src="https://bootdey.com/img/Content/avatar/avatar7.png" class="rounded-circle avatar-xl img-thumbnail mb-1 mt-1" alt="profile-image">
+                @foreach ($otherpets as $value)
+                <a href="{{route('veterinarian/medicalRecords', $value->id)}}">
+                    <img src="" class="rounded-circle avatar-xl img-thumbnail mb-1 mt-1" alt="{{$value->name}}">
+                 </a> 
+                @endforeach
             </div>
         </div> <!-- end card-box-->
 
@@ -319,8 +316,11 @@
 
                     <h5 class="mb-3 mt-4 text-uppercase"><i class="mdi mdi-cards-variant mr-1"></i>
                         Tabel Kunjungan</h5>
+                        <button class="btn btn-primary mb-2">
+                            Tambah Data Medical Record
+                        </button>
                     <div class="table-responsive">
-                        <table class="table table-borderless mb-0">
+                        <table class="table table-borderless mb-0" id="table-medical-records">
                             <thead class="thead-light">
                                 <tr>
                                     <th>#</th>
@@ -387,3 +387,12 @@
 </div>
 </div>
 @endsection
+
+@push('scripts')
+<script>
+    $(document).ready(function () {
+        $('#table-medical-records').DataTable();
+    });
+</script>
+    
+@endpush

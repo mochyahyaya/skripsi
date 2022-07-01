@@ -352,7 +352,8 @@
                 'end_at': $('#end_at').val(),
                 'cage_id': $('#cage_id').val(),
                 'status': 'Dalam Kandang',
-                'pickup' : 'Tidak'
+                'pickup' : 'Tidak',
+                'service_id': 2
             }
 
             $.ajax({

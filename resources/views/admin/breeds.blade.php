@@ -246,7 +246,7 @@
         $(document).on('change', "#username", function(e) {
             $('select[name="petname"]').attr('disabled','disabled').find('option:nth-of-type(n+2)').remove()
                 var user = $(e.target).find(':selected').val();
-                if (cage != null && cage != '') {
+                if (user != null && user != '') {
                 $.ajax({
                     type:'POST',
                     url:"{{ route('admin/refPetsBreeds') }}",
@@ -345,7 +345,8 @@
                     'start_at': $('#start_at').val(),
                     'cage_id': $('#cage_id').val(),
                     'status': 'Proses',
-                    'pickup' : 'Tidak'
+                    'pickup' : 'Tidak',
+                    'service_id': 3
                 }
 
                 $.ajax({

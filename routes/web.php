@@ -19,6 +19,8 @@ use App\Http\Controllers\Admin\Dummy;
 //Vetrinarian
 use App\Http\Controllers\Veterinarian\DashboardVet;
 use App\Http\Controllers\Veterinarian\MedicalRecords;
+use App\Http\Controllers\Veterinarian\MedicalRecordUsers;
+use App\Http\Controllers\Veterinarian\MedicalRecordPets;
 
 //User
 use App\Http\Controllers\User\DashboardUser;
@@ -116,7 +118,10 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function() {
 
     Route::prefix('veterinarian')->group(function () {
         Route::get('dashboard', [DashboardVet::class, 'index'])->name('veterinarian/dashboard');
-        Route::get('medical-records', [MedicalRecords::class, 'index'])->name('veterinarian/medicalRecords');
+        Route::get('medical-records/{id}', [MedicalRecords::class, 'index'])->name('veterinarian/medicalRecords');
+        Route::get('medical-records-user', [MedicalRecordUsers::class, 'index'])->name('veterinarian/medicalRecordUsers');
+        Route::get('medical-records-pet/{id}', [MedicalRecordPets::class, 'index'])->name('veterinarian/medicalRecordPets');
+
     });
 
     Route::prefix('user')->group(function () {

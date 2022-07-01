@@ -58,7 +58,7 @@
 
       @if (Auth::user()->role_id == 2)
       <li class="nav-item">
-        <a class="nav-link" href="{{route('admin/grooms')}}">
+        <a class="nav-link" href="{{route('veterinarian/medicalRecordUsers')}}">
           <span class="menu-title">Rekam Medis</span>
           <i class="mdi mdi-broom menu-icon"></i>
         </a>

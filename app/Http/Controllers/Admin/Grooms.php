@@ -67,6 +67,7 @@ class Grooms extends Controller
                 'service' => $request['service'],
                 'status' => $request['status'],
                 'pickup' => $request['pickup'],
+                'service_id' => $request['service_id']
             ]);
             if($data->wasRecentlyCreated  ){
                 $data = [

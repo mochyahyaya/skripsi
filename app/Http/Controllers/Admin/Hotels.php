@@ -70,7 +70,8 @@ class Hotels extends Controller
                 'price' => $priceformat,
                 'status' => $request['status'],
                 'pickup' => $request['pickup'],
-                'cage_id' => $request['cage_id']
+                'cage_id' => $request['cage_id'],
+                'service_id' => $request['service_id']
             ]);
             $data->save();
             $cage = Cage::find($data->cage_id);

@@ -64,6 +64,7 @@ class Breeds extends Controller
                 'pickup' => $request['pickup'],
                 'cage_id' => $request['cage_id'],
                 'price' => 0,
+                'service_id' => $request['service_id']
             ]);
             $data->save();
             $cage = Cage::find($data->cage_id);
