@@ -105,63 +105,44 @@
     <div class="col-12 grid-margin">
       <div class="card">
         <div class="card-body">
-          <h4 class="card-title">Recent Tickets</h4>
+          <h4 class="card-title">Transaksi Terakhir</h4>
           <div class="table-responsive">
             <table class="table">
               <thead>
                 <tr>
-                  <th> Assignee </th>
-                  <th> Subject </th>
+                  <th> # </th>
+                  <th> Nama Pet </th>
+                  <th> Service </th>
                   <th> Status </th>
-                  <th> Last Update </th>
-                  <th> Tracking ID </th>
+                  <th> Update Terakhir </th>
                 </tr>
               </thead>
               <tbody>
+                @foreach ($joins as $value)
+                {{-- {{dd(count($value))}} --}}
+                @for($i = 0; $i < count($value) ; $i++)
+                @php
+                  $indeks = 1;
+                @endphp
                 <tr>
                   <td>
-                    <img src="{!!asset('PurpleAdmin/assets/images/faces/face1.jpg')!!}" class="me-2" alt="image"> David Grey
+                    {{$loop->index}}
                   </td>
-                  <td> Fund is not recieved </td>
                   <td>
-                    <label class="badge badge-gradient-success">DONE</label>
+                    <img src="{!!asset('PurpleAdmin/assets/images/faces/face1.jpg')!!}" class="me-2" alt="image"> {{$value[$i]->name}}
                   </td>
-                  <td> Dec 5, 2017 </td>
-                  <td> WD-12345 </td>
+                  @if ($value[$i]->service_id == 1)
+                    <td><span class="badge badge-success">Grooms</span></td>
+                  @elseif($value[$i]->service_id == 2)
+                    <td><span class="badge badge-danger">Hotels</span></td>
+                  @else
+                    <td><span class="badge badge-info">Breeds</span></td>
+                  @endif
+                  <td>{{$value[$i]->status}}</td>
+                  <td>{{ \Carbon\Carbon::parse($value[$i]->created_at)->locale('id')->format('d M Y')}}</td>
                 </tr>
-                <tr>
-                  <td>
-                    <img src="{!!asset('PurpleAdmin/assets/images/faces/face2.jpg')!!}" class="me-2" alt="image"> Stella Johnson
-                  </td>
-                  <td> High loading time </td>
-                  <td>
-                    <label class="badge badge-gradient-warning">PROGRESS</label>
-                  </td>
-                  <td> Dec 12, 2017 </td>
-                  <td> WD-12346 </td>
-                </tr>
-                <tr>
-                  <td>
-                    <img src="{!!asset('PurpleAdmin/assets/images/faces/face3.jpg')!!}" class="me-2" alt="image"> Marina Michel
-                  </td>
-                  <td> Website down for one week </td>
-                  <td>
-                    <label class="badge badge-gradient-info">ON HOLD</label>
-                  </td>
-                  <td> Dec 16, 2017 </td>
-                  <td> WD-12347 </td>
-                </tr>
-                <tr>
-                  <td>
-                    <img src="{!!asset('PurpleAdmin/assets/images/faces/face4.jpg')!!}" class="me-2" alt="image"> John Doe
-                  </td>
-                  <td> Loosing control on server </td>
-                  <td>
-                    <label class="badge badge-gradient-danger">REJECTED</label>
-                  </td>
-                  <td> Dec 3, 2017 </td>
-                  <td> WD-12348 </td>
-                </tr>
+                @endfor  
+                @endforeach
               </tbody>
             </table>
           </div>
@@ -171,3 +152,6 @@
   </div>
 </div>  
 @endsection
+
+@push('scripts')
+@endpush

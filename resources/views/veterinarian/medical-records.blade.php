@@ -257,14 +257,34 @@
             <h4 class="mb-0">{{$value->name}}</h4>
             <p class="text-muted">{{$value->typePets->name}}</p>
 
-            <div class="text-left mt-3">
-                <p class="text-muted mb-2 font-13"><strong>Pemilik:</strong> <span class="ml-2">{{$value->users->name}}</span></p>
-                <p class="text-muted mb-2 font-13"><strong>BOD :</strong><span class="ml-2">{{$value->birthday}}</span></p>
-                <p class="text-muted mb-2 font-13"><strong>Ras :</strong> <span class="ml-2 ">{{$value->race}}</span></p>
-                <p class="text-muted mb-1 font-13"><strong>Berat :</strong> <span class="ml-2">{{$value->weight}}</span></p>
-                <p class="text-muted mb-1 font-13"><strong>Warna :</strong> <span class="ml-2">{{$value->colour}}</span></p>
-                <p class="text-muted mb-1 font-13"><strong>Gender :</strong> <span class="ml-2">{{$value->gender}}</span></p>
-            </div>
+            <table class="table table-borderless text-left">
+                <thead>
+                    <tr>
+                        <td ><strong>Pemilik</strong> </td>
+                        <td><span class=""> {{$value->users->name}}</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>BOD</strong>  </td>
+                        <td><span class="">{{ \Carbon\Carbon::parse($value->birthday)->locale('id')->format('d M Y')}}</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Ras</strong>  </td>
+                        <td><span class="">{{$value->race}}</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Berat</strong>  </td>
+                        <td><span class="">{{$value->weight}}</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Warna</strong>  </td>
+                        <td><span class="">{{$value->colour}}</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Gender</strong>  </td>
+                        <td><span class="">{{$value->gender}}</span></td>
+                    </tr>
+                </thead>
+            </table>
         </div> <!-- end card-box -->
         @endforeach
 
@@ -298,32 +318,26 @@
 
                     <h5 class="mb-4 text-uppercase"><i class="mdi mdi-briefcase mr-1"></i>
                         Jadwal Berkunjung</h5>
-
+                    @foreach ($medicalrecords as $value)
                     <ul class="list-unstyled timeline-sm">
                         <li class="timeline-sm-item">
-                            <span class="timeline-sm-date">2015 - 19</span>
-                            <h5 class="mt-0 mb-1">Lead designer / Developer</h5>
-                        </li>
-                        <li class="timeline-sm-item">
-                            <span class="timeline-sm-date">2012 - 15</span>
-                            <h5 class="mt-0 mb-1">Senior Graphic Designer</h5>
-                        </li>
-                        <li class="timeline-sm-item">
-                            <span class="timeline-sm-date">2010 - 12</span>
-                            <h5 class="mt-0 mb-1">Graphic Designer</h5>
+                            <span class="timeline-sm-date">{{$value->created_at}}</span>
+                            <h5 class="mt-0 mb-1">{{$value->needed}}</h5>
                         </li>
                     </ul>
+                    @endforeach
 
                     <h5 class="mb-3 mt-4 text-uppercase"><i class="mdi mdi-cards-variant mr-1"></i>
                         Tabel Kunjungan</h5>
-                        <button class="btn btn-primary mb-2">
-                            Tambah Data Medical Record
-                        </button>
+                        @foreach ($pets as $value)
+                            <button class="btn btn-primary mb-2" data-toggle="modal" data-target="#modal-create" data-id= "{{$value->id}}">
+                                Tambah Data Rekam Medis
+                            </button>
+                        @endforeach
                     <div class="table-responsive">
                         <table class="table table-borderless mb-0" id="table-medical-records">
                             <thead class="thead-light">
                                 <tr>
-                                    <th>#</th>
                                     <th>Keperluan</th>
                                     <th>Gejala</th>
                                     <th>Penanangan</th>
@@ -332,47 +346,19 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>1</td>
-                                    <td>App design and development</td>
-                                    <td>01/01/2015</td>
-                                    <td>10/15/2018</td>
-                                    <td><span class="badge badge-info">Work in Progress</span></td>
-                                    <td>Halette Boivin</td>
-                                </tr>
-                                <tr>
-                                    <td>2</td>
-                                    <td>Coffee detail page - Main Page</td>
-                                    <td>21/07/2016</td>
-                                    <td>12/05/2018</td>
-                                    <td><span class="badge badge-success">Pending</span></td>
-                                    <td>Durandana Jolicoeur</td>
-                                </tr>
-                                <tr>
-                                    <td>3</td>
-                                    <td>Poster illustation design</td>
-                                    <td>18/03/2018</td>
-                                    <td>28/09/2018</td>
-                                    <td><span class="badge badge-pink">Done</span></td>
-                                    <td>Lucas Sabourin</td>
-                                </tr>
-                                <tr>
-                                    <td>4</td>
-                                    <td>Drinking bottle graphics</td>
-                                    <td>02/10/2017</td>
-                                    <td>07/05/2018</td>
-                                    <td><span class="badge badge-purple">Work in Progress</span></td>
-                                    <td>Donatien Brunelle</td>
-                                </tr>
-                                <tr>
-                                    <td>5</td>
-                                    <td>Landing page design - Home</td>
-                                    <td>17/01/2017</td>
-                                    <td>25/05/2021</td>
-                                    <td><span class="badge badge-warning">Coming soon</span></td>
-                                    <td>Karel Auberjo</td>
-                                </tr>
-
+                                @foreach ($medicalrecords as $value)
+                                    <tr>
+                                        <td>{{$value->needed}}</td>
+                                        <td>{{$value->indication}}</td>
+                                        <td>{{$value->treatment}}</td>
+                                        <td>{{$value->created_at}}</td>
+                                        @if ($value->status == 'Sehat')
+                                            <td><label class="badge badge-success">{{$value->status}}</label></td>
+                                        @else
+                                            <td><label class="badge badge-danger">{{$value->status}}</label></td>
+                                        @endif
+                                    </tr>
+                                @endforeach
                             </tbody>
                         </table>
                     </div>
@@ -386,12 +372,317 @@
     </div> <!-- end col -->
 </div>
 </div>
+
+{{-- Modal create --}}
+<div class="modal fade" id="modal-create">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title">Tambah Data</h6>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="" method="" class="forms-sample">
+                @csrf
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="forms-group">
+                            <label for="username">Keperluan</label>
+                            <input type="text" class="form-control" name="needed" id="needed">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="forms-group">
+                            <label for="username">Gejala</label>
+                            <input type="text" class="form-control" name="indication" id="indication">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="forms-group">
+                            <label for="username">Penanganan</label>
+                            <input type="text" class="form-control" name="treatment" id="treatment">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="forms-group">
+                            <label for="username">Status</label>
+                            <select name="status" id="status" class="form-control select2bs4">
+                                <option value="" disabled selected>--Keadaan Hewan--</option>
+                                <option value="Sehat">Sehat</option>
+                                <option value="Sakit">Sakit</option>
+                            </select>
+                        </div>
+                  </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-gradient-light btn-fw close" data-dismiss="modal">Kembali</button>
+                    <button type="submit" class="btn btn-gradient-primary btn-fw tambah_data">Simpan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{{-- Modal Update --}}
+<div class="modal fade" id="modal-update">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h6 class="modal-title">Ubah Data</h6>
+            <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+            <form action="" method="" class="forms-sample">
+                @csrf
+                <div class="modal-body">
+                  <input type="hidden" id="medical_id">
+                    <div class="row">
+                        <div class="forms-group">
+                            <label for="petname" class="col-form-label">Keperluan</label>
+                            <input type="text" class="form-control" name="updateNeeded" id="updateNeeded">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="forms-group">
+                            <label for="petname" class="col-form-label">Gejala</label>
+                            <input type="text" class="form-control" name="updateIndication" id="updateIndication">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="forms-group">
+                            <label for="petname" class="col-form-label">Penanganan</label>
+                            <input type="text" class="form-control" name="updateTreatment" id="updateTreatment">
+                        </div>
+                    </div>
+                    <div class="row">
+                      <div class="forms-group">
+                          <label for="status" class="col-form-label">Status</label>
+                          <select id="updateStatus" class="form-control select2bs4">
+                            <option value="Sakit">Proses</option>
+                            <option value="Sehat">Selesai</option>
+                        </select>
+                      </div>
+                  </div>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-gradient-light btn-fw" data-bs-dismiss="modal">Kembali</button>
+                    <button type="submit" class="btn btn-gradient-primary btn-fw update_data">Simpan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+  </div>
+
 @endsection
 
 @push('scripts')
 <script>
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+
     $(document).ready(function () {
         $('#table-medical-records').DataTable();
+        // fetch();
+
+        // function fetch() {
+        //     $.ajax({
+        //         type: "GET",
+        //         url : "{{route('veterinarian/medicalRecordsFetch')}}",
+        //         dataType :"json",
+        //         success: function (reponse) {
+        //             $('tbody').html("");
+        //             $.each(reponse.medical, function (key,item) {
+        //                 if (item.status == 'Sehat') {
+        //                 var status_badge = '<td><label class="badge badge-success">'+item.status+'</label></td>'
+        //                 } else {
+        //                     var status_badge = '<td><label class="badge badge-danger">'+item.status+'</label></td>'
+        //                 }
+        //                 $('tbody').append('<tr>\
+        //                     <td>' + item.needed + '</td>\
+        //                     <td>' + item.indication + '</td>\
+        //                     <td>' + item.treatment + '</td>\
+        //                     <td>' + moment(item.created_at).locale('id').format('LL') + '</td>\
+        //                     ' + status_badge + '\
+        //                 \</tr>');
+        //             });
+        //             $('#table-medical-records').DataTable();
+        //         }
+        //     });
+        // }
+        
+        $('#modal-create').on('show.bs.modal', function (e) {
+            // e.preventDefault();
+
+            var link = $(e.relatedTarget);
+            var modal = $(this);
+
+            var id = link.data('id')
+            console.log(id);
+
+            modal.find('button[type="submit').on('click', function(e) {
+            $(this).text('Progress....').attr('disabled', 'disabled')
+            // $('#table-medical-records').DataTable().clear();
+            // $('#table-medical-records').DataTable().destroy();
+            // var find = $('#table-medical-records tbody').find('tr');
+            // if (find) {
+            //     $('#table-medical-records tbody').empty();
+            // }
+
+            var data = {
+                'needed': $('#needed').val(),
+                'indication': $('#indication').val(),
+                'treatment': $('#treatment').val(),
+                'status': $('#status').val(),
+                'id': id
+            }
+
+            $.ajax({
+                type: "POST",
+                url: "{{ route('veterinarian/medicalRecordsStore') }}",
+                data: data,
+                dataType: "json",
+                success: function (data) {
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                    })
+                    Toast.fire({
+                    icon: data.status,
+                    title: data.message
+                    })
+                },
+                complete: function(err){
+                    $('.tambah_data').text('Simpan').removeAttr('disabled')
+                    $('#status').val(null).trigger('change');
+                    $('#modal-create .close').click();
+                },
+                error: function (err) {
+                if (err.status == 422) {
+                    $.each(err.responseJSON.errors, function (i, error) {
+                        var el = $(document).find('[name="'+i+'"]');
+                        el.after($('<span style="color: red;">'+error[0]+'</span>'));
+                    });
+                    $('.tambah_data').text('Simpan').removeAttr('disabled')
+                    }
+                }
+            });
+            });
+        });
+
+        $(document).on('click', '.edit_data', function (e) {
+            e.preventDefault();
+            var medical_id = $(this).val();
+            $('#modal-update').modal('show');
+            $.ajax({
+                type: "GET",
+                url: "medical-records/" + medical_id,
+                success: function (response) {
+                if (response != null){
+                    const Toast = Swal.mixin({
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                    })
+                    Toast.fire({
+                    icon: response.status,
+                    title: response.message
+                    })
+                        $('#updateNeeded').val(response.medical.pet_id);
+                        $('#updateIndication').val(response.medical.service);
+                        $('#updateTreatment').val(response.medical.status);
+                        $('#updateStatus').val(response.medical.status).trigger('change');
+                        $('#medical_id').val(response.medical.id);
+                    }
+                },
+                complete: function(err) {
+                    // fetch();
+                    $('#modal-update').modal('hide');
+                },
+                error: function (err) {
+                    if (err.status == 422) {
+                        $.each(err.responseJSON.errors, function (i, error) {
+                            var el = $(document).find('[name="'+i+'"]');
+                            el.after($('<span style="color: red;">'+error[0]+'</span>'));
+                        });
+                    }
+                }
+            });
+        });
+
+        $(document).on('click', '.update_data', function (e) {
+            e.preventDefault();
+
+            $(this).text('Progress....').attr('disabled', 'disabled')
+            // $('#table-medical-records').DataTable().clear();
+            // $('#table-medical-records').DataTable().destroy();
+            // var find = $('#table-medical-records tbody').find('tr');
+            // if (find) {
+            //     $('#table-medical-records tbody').empty();
+            // }
+            var id = $('#medical_id').val();
+
+            var data = {
+                'needed': $('#updateNeeded').val(),
+                'indication': $('#updateIndication').val(),
+                'treatment': $('#updateTreatment').val(),
+                'status': $('#updateStatus').val(),
+            }
+
+            $.ajax({
+                type: "PUT",
+                url: "medical-records-update/" + id,
+                data: data,
+                dataType: "json",
+                success: function (data) {
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                    })
+                    Toast.fire({
+                    icon: data.status,
+                    title: data.message
+                    })
+                $('#modal-update').modal('hide');
+                },
+                complete: function(){
+                        $('.update_data').text('Simpan').removeAttr('disabled')
+                        $('#modal-update').modal('hide');
+                        fetch();
+                },
+                error: function (err) {
+                    if (err.status == 422) { 
+                        $.each(err.responseJSON.errors, function (i, error) {
+                            var el = $(document).find('[name="'+i+'"]');
+                            el.after($('<span style="color: red;">'+error[0]+'</span>'));
+                        });
+                    }
+                }
+            });
+        });
     });
 </script>
     

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
+use App\Models\Galery;
 use App\Models\Pet;
 use App\Models\User;
 use App\Models\TypePet;
@@ -53,16 +54,35 @@ class Pets extends Controller
         {
             $data = $request->all();
             // dd($data);
-            $data = Pet::create([
-                'name' => $request['name'],
-                'race' => $request['race'],
-                'weight' => $request['weight'],
-                'colour' => $request['colour'],
-                'birthday' => $request['birthday'],
-                'gender' => $request['gender'],
-                'user_id' => $request['users'],
-                'type_pet_id' => $request['type']
-            ]);
+            // if($request->has("images")){
+            //     $files=$request->file("images");
+            //     $imageName=str_replace(' ', '', time().'_'.$files->getClientOriginalName());
+            //     $files->move(\public_path("/images/featured_image"),$imageName);
+                $data = Pet::create([
+                    'name' => $request['name'],
+                    'race' => $request['race'],
+                    'weight' => $request['weight'],
+                    'colour' => $request['colour'],
+                    'birthday' => $request['birthday'],
+                    'gender' => $request['gender'],
+                    'user_id' => $request['users'],
+                    'type_pet_id' => $request['type'],
+                    // 'filename' => $request['images']
+                ]);
+            // }       
+            $data->save();
+
+            if($request->has("galery")){
+                $files=$request->file("galery");
+                foreach($files as $file){
+                    $imageName=str_replace(' ', '', time().'_'.$file->getClientOriginalName());
+                    $file->move(\public_path("/images/galery"),$imageName);
+                    Galery::create([
+                        'filename' => $imageName,
+                        'pet_id' => $data->id
+                    ]);
+                }
+             }
 
             $data = [
                 'status' => 'success',

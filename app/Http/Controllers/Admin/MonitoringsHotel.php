@@ -55,7 +55,7 @@ class MonitoringsHotel extends Controller
                     $file->move(\public_path("/images/hotelmonitoring"),$imageName);
                     ImageMonitoringHotel::create([
                         'filename' => $imageName,
-                        'pet_id' => $data->hotel_id
+                        'pet_id' => $data->hotels->pet_id
                     ]);
                 }
              }

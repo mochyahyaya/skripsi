@@ -230,7 +230,7 @@
                 fill: false,
                 borderWidth: 1,
                 fill: 'origin',
-                data: [20, 40, 15, 35, 25, 50, 30, 20, 10, 12, 60, 40]
+                data: [20, 40, 15, 35, 25, 50, 50, 20, 10, 12, 60, 40]
               },
               {
                 label: "BOARDS",

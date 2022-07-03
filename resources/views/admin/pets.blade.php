@@ -114,6 +114,18 @@
                           </select>
                         </div>
                       </div>
+                      <div class="row">
+                        <div class="form-group">
+                            <label for="username">Upload Foto</label>
+                            <input type="file" class="form-control-file" id="images" name="images">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <label for="username">Upload Galeri</label>
+                            <input type="file" class="form-control-file" id="galery" name="galery[]" enctype="multipart/form-data" multiple>
+                        </div>
+                    </div>
                   </div>
                 <div class="modal-footer justify-content-between">
                     <button type="button" class="btn btn-gradient-light btn-fw" data-dismiss="modal">Kembali</button>
@@ -268,8 +280,7 @@
                     }
                 });
             }
-
-            
+  
             $(document).on('click', '.tambah_data', function (e) {
                 e.preventDefault();
 
@@ -280,23 +291,47 @@
                 if (find) {
                     $('#table-users tbody').empty();
                 }
+                // var user = $('#users').trigger('change').val();
+                // console.log(user);
 
-                var data = {
-                    'name': $('#name').val(),
-                    'race': $('#race').val(),
-                    'type':  $('#type').val(),
-                    'weight': $('#weight').val(),
-                    'colour' : $('#colour').val(),
-                    'users': $('#users').val(),
-                    'birthday': $('#birthday').val(),
-                    'gender': $('#gender').val(),
+                let image_upload = new FormData();
+                let TotalGalery= $('#galery')[0].files.length;  //Total Images
+                let galery = $('#galery')[0];  
+                let images = $('#images').val();  
+
+                for (let i = 0; i < TotalGalery; i++) {
+                    image_upload.append('galery[' + i + ']' , galery.files[i]);
                 }
+
+                image_upload.append('TotalGalery', TotalGalery);
+                image_upload.append('images', images);
+                image_upload.append('name', $('#name').val());
+                image_upload.append('race', $('#race').val());
+                image_upload.append('weight', $('#weight').val());
+                image_upload.append('colour', $('#colour').val());
+                image_upload.append('birthday', $('#birthday').val());
+                image_upload.append('type', $('#type').trigger('change').val());
+                image_upload.append('gender', $('#gender').trigger('change').val());
+                image_upload.append('users', $('#users').trigger('change').val());
+
+                // var data = {
+                //     'name': $('#name').val(),
+                //     'race': $('#race').val(),
+                //     'type':  $('#type').val(),
+                //     'weight': $('#weight').val(),
+                //     'colour' : $('#colour').val(),
+                //     'users': $('#users').val(),
+                //     'birthday': $('#birthday').val(),
+                //     'gender': $('#gender').val(),
+                // }
 
                 $.ajax({
                     type: "POST",
                     url: "{{ route('admin/petsStore') }}",
-                    data: data,
+                    data: image_upload,
                     dataType: "json",
+                    contentType: false,
+                    processData: false,
                     success: function (data) {
                     const Toast = Swal.mixin({
                         toast: true,

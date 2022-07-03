@@ -31,6 +31,7 @@ use App\Http\Controllers\User\UserActivity;
 use App\Http\Controllers\User\UserMonitoring;
 use App\Http\Controllers\User\UserProfile;
 
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -44,7 +45,7 @@ use App\Http\Controllers\User\UserProfile;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('auth.login');
 });
 
 Auth::routes();
@@ -121,6 +122,10 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function() {
         Route::get('medical-records/{id}', [MedicalRecords::class, 'index'])->name('veterinarian/medicalRecords');
         Route::get('medical-records-user', [MedicalRecordUsers::class, 'index'])->name('veterinarian/medicalRecordUsers');
         Route::get('medical-records-pet/{id}', [MedicalRecordPets::class, 'index'])->name('veterinarian/medicalRecordPets');
+        Route::get('medical-records-pet-fetch', [MedicalRecords::class, 'fetch'])->name('veterinarian/medicalRecordsFetch');
+        Route::post('medical-records-pet-store/', [MedicalRecords::class, 'store'])->name('veterinarian/medicalRecordsStore');
+        Route::get('medical-records-pet-edit/{id}', [MedicalRecords::class, 'edit'])->name('veterinarian/medicalRecordsEdit');
+        Route::put('medical-records-pet-update/{id}', [MedicalRecords::class, 'update'])->name('veterinarian/medicalRecordsUpdate');
 
     });
 

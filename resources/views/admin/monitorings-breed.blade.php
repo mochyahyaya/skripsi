@@ -35,9 +35,7 @@
                         <p class="card-text">Jenis Pet: <span>{{$value->pets->typePets->name}}</span></p>
                         <p class="card-text">Tanggal Masuk: <span>{{ \Carbon\Carbon::parse($value->start_at)->translatedFormat('d F Y')}}</span></p>
                         <p class="card-text">Tanggal Keluar: <span>{{ \Carbon\Carbon::parse($value->end_at)->translatedFormat('d F Y')}}</span></p>
-                        <button class="btn btn-gradient-primary btn-sm" value="{{$value->id}}" id="monit-data"><i class="fa-solid fa-house-medical"></i></button>
-                        <button class="btn btn-gradient-primary btn-sm" value="{{$value->id}}" id="monit-image"><i class="fa-solid fa-house-medical"></i></button>
-                        </div>
+                        <button class="btn btn-gradient-primary btn-sm" value="{{$value->id}}" id="monit-data"><i class="fa-solid fa-house-medical"></i></button>                        </div>
                     </div>
                 </div>
                 @endforeach
@@ -136,7 +134,7 @@
                 image_upload.append('notes', $('#notes').val());
                 image_upload.append('food', $("input[name='food']:checked").val());
                 image_upload.append('temperature', $("input[name='temperature']:checked").val());
-                image_upload.append('hotel_id', $('#monit-data').val());
+                image_upload.append('breed_id', $('#monit-data').val());
 
                 var data = {
                     'food': $("input[name='food']:checked").val(),
@@ -149,6 +147,8 @@
                     url: "{{ route('admin/monitoringsBreedStore') }}",
                     data: image_upload,
                     dataType: "json",
+                    contentType: false,
+                    processData: false,
                     success: function (data) {
                     const Toast = Swal.mixin({
                         toast: true,

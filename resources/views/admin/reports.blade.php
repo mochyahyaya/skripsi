@@ -31,9 +31,7 @@
               @endphp
               <tr>
                 <td>
-                  @php 
-                    $indeks++;
-                  @endphp
+                  {{$indeks ++}}
                 </td>
                 <td>{{$value[$i]->price}}</td>
                 @if ($value[$i]->service_id == 1)
@@ -64,7 +62,7 @@
         // var table = $('#table-reports').DataTable();
         // var a = table.column( 0 ).data().sum();
         // console.log(a);
-        $('#table-reports').DataTable( {
+        $('#table-reports').DataTable({
           drawCallback: function () {
             var api = this.api();
             var total = api
@@ -74,7 +72,25 @@
             var format_total = total + '000';
             $( api.column( 0 ).footer() ).html('Total');
             $( api.column( 1 ).footer() ).html(format_total);
-          }
+          },
+          dom: 'Bfrtip',
+          buttons: [{
+            extend: 'pdf',
+            title: 'Laporan Bulanan Garden Petshop',
+            filename: 'laporan_bulanan_garden_petshop'
+          }, {
+            extend: 'excel',
+            title: 'Laporan Bulanan Garden Petshop',
+            filename: 'laporan_bulanan_garden_petshop'
+          }, {
+            extend: 'csv',
+            title: 'Laporan Bulanan Garden Petshop',
+            filename: 'laporan_bulanan_garden_petshop'
+          }, {
+            extend: 'print',
+            title: 'Laporan Bulanan Garden Petshop',
+            filename: 'laporan_bulanan_garden_petshop'
+          }], 
         });
       });
     </script>

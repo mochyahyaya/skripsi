@@ -7,6 +7,9 @@ use Illuminate\Http\Request;
 
 use App\Models\Breed;
 use App\Models\BreedMonitoring;
+use App\Models\ImageMonitoringBreed;
+use App\Models\ImageMonitoringHotel;
+
 
 class MonitoringsBreed extends Controller
 {
@@ -44,19 +47,17 @@ class MonitoringsBreed extends Controller
             ]);
 
             $data->save();
-
             if($request->has("images")){
                 $files=$request->file("images");
                 foreach($files as $file){
                     $imageName=str_replace(' ', '', time().'_'.$file->getClientOriginalName());
-                    $file->move(\public_path("/images/hotelmonitoring"),$imageName);
-                    ImageMonitoringHotel::create([
+                    $file->move(\public_path("/images/breedmonitoring"),$imageName);
+                    ImageMonitoringBreed::create([
                         'filename' => $imageName,
-                        'pet_id' => $data->hotel_id
+                        'pet_id' => $data->breeds->pet_id
                     ]);
                 }
-             }
-
+            }
             $data = [
                 'status' => 'success',
                 'message' => 'Data monitoring berhasil ditambahkan',
