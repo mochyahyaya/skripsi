@@ -13,18 +13,44 @@
       <div class="card">
         <div class="card-body">
           <h4 class="card-title">Laporan Bulanan</h4>
-          <table class="table table-striped" id="table-users">
+          <table class="table table-striped" id="table-reports">
             <thead>
               <tr>
+                <th> #</th>
                 <th> Jumlah Transaksi </th>
+                <th> Jenis Transaksi </th>
                 <th> Tanggal Transaksi</th>
-                <th> Nama Pet </th>
-                <th> Nama Pemilik </th>
-                <th> Aksi </th>
               </tr>
             </thead>
             <tbody>
+              @foreach ($joins as $value)
+              {{-- {{dd(count($value))}} --}}
+              @for($i = 0; $i < count($value) ; $i++)
+              @php
+                $indeks = 1;
+              @endphp
+              <tr>
+                <td>
+                  @php 
+                    $indeks++;
+                  @endphp
+                </td>
+                <td>{{$value[$i]->price}}</td>
+                @if ($value[$i]->service_id == 1)
+                  <td><span class="badge badge-success">Grooms</span></td>
+                @elseif($value[$i]->service_id == 2)
+                  <td><span class="badge badge-danger">Hotels</span></td>
+                @else
+                  <td><span class="badge badge-info">Breeds</span></td>
+                @endif
+                <td>{{$value[$i]->created_at}}</td>
+              </tr>
+              @endfor  
+              @endforeach
             </tbody>
+            <tfoot>
+              <tr><th></th><th></th></tr>
+            </tfoot>
           </table>
         </div>
       </div>
@@ -33,5 +59,23 @@
 @endsection
 
 @push('scripts')
-    
+    <script>
+      $(document).ready(function() {
+        // var table = $('#table-reports').DataTable();
+        // var a = table.column( 0 ).data().sum();
+        // console.log(a);
+        $('#table-reports').DataTable( {
+          drawCallback: function () {
+            var api = this.api();
+            var total = api
+                .column( 1 )
+                .data()
+                .sum();
+            var format_total = total + '000';
+            $( api.column( 0 ).footer() ).html('Total');
+            $( api.column( 1 ).footer() ).html(format_total);
+          }
+        });
+      });
+    </script>
 @endpush
