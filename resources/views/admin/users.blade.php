@@ -51,7 +51,7 @@
                 @csrf
                 <div class="modal-body">
                     <div class="row">
-                        <div class="forms-group">
+                        <div class="form-group">
                             <label for="name">Nama Pengguna</label>
                             <input type="text" name="name" id="name" class="form-control">
                           </div>
@@ -60,25 +60,25 @@
                         <input type="hidden" name="password" id="password">
                     </div>
                     <div class="row">
-                        <div class="forms-group">
+                        <div class="form-group">
                             <label for="email" class="col-form-label">Email</label>
                             <input type="email" name="email" id="email" class="form-control">
                         </div>
                     </div>
                     <div class="row">
-                        <div class="forms-group">
+                        <div class="form-group">
                             <label for="address" class="col-form-label">Alamat</label>
                             <input type="text" name="address" id="address" class="form-control">
                         </div>
                     </div>
                     <div class="row">
-                        <div class="forms-group">
+                        <div class="form-group">
                             <label for="phone_number" class="col-form-label">Nomor HP</label>
                             <input type="text" name="phone_number" id="phone_number" class="form-control">
                         </div>
                     </div>
                     <div class="row">
-                      <div class="forms-group">
+                      <div class="form-group">
                           <label for="roles" class="col-form-label">Pilih Role</label>
                           <select id="roles" name="roles" id="roles" class="form-control select2bs4">
                             <option value="" selected disabled>--Pilih Role--</option>
@@ -87,6 +87,12 @@
                             @endforeach
                         </select>
                       </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <label for="username">Upload Foto</label>
+                            <input type="file" class="form-control-file" id="images" name="images">
+                        </div>
                     </div>
                   </div>
                 <div class="modal-footer justify-content-between">
@@ -219,6 +225,17 @@
                 $('#table-users tbody').empty();
             }
 
+                let image_upload = new FormData(); 
+                let images = $('#images')[0].files[0];  
+
+                image_upload.append('images', images);
+                image_upload.append('name', $('#name').val());
+                image_upload.append('email', $('#email').val());
+                image_upload.append('password', $('#password').val('gardepet'));
+                image_upload.append('address', $('#address').val());
+                image_upload.append('phone_number', $('#phone_number').val());
+                image_upload.append('role_id', $('#roles').trigger('change').val());
+
             var data = {
                 'name': $('#name').val(),
                 'email': $('#email').val(),
@@ -231,7 +248,9 @@
             $.ajax({
                 type: "POST",
                 url: "{{ route('admin/usersStore') }}",
-                data: data,
+                data: image_upload,
+                contentType: false,
+                processData: false,
                 dataType: "json",
                 success: function (data) {
                 const Toast = Swal.mixin({

@@ -54,10 +54,10 @@ class Pets extends Controller
         {
             $data = $request->all();
             // dd($data);
-            // if($request->has("images")){
-            //     $files=$request->file("images");
-            //     $imageName=str_replace(' ', '', time().'_'.$files->getClientOriginalName());
-            //     $files->move(\public_path("/images/featured_image"),$imageName);
+            if($request->has("images")){
+                $images = $request->file("images");
+                $imageName=str_replace(' ', '', time().'_'.$images->getClientOriginalName());
+                $images->move(\public_path("/images/featured_image"),$imageName);
                 $data = Pet::create([
                     'name' => $request['name'],
                     'race' => $request['race'],
@@ -67,9 +67,9 @@ class Pets extends Controller
                     'gender' => $request['gender'],
                     'user_id' => $request['users'],
                     'type_pet_id' => $request['type'],
-                    // 'filename' => $request['images']
+                    'filename' => $imageName
                 ]);
-            // }       
+            }       
             $data->save();
 
             if($request->has("galery")){

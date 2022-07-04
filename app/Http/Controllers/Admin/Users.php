@@ -50,15 +50,20 @@ class Users extends Controller
         {
             $data = $request->all();
             // dd($data);
-            $data = User::create([
-                'name' => $request['name'],
-                'email' => $request['email'],
-                'password' => Hash::make($request['password']),
-                'address' => $request['address'],
-                'phone_number' => $request['phone_number'],
-                'role_id' => $request['role_id'],
-            ]);
-
+            if($request->has("images")){
+                $images = $request->file("images");
+                $imageName=str_replace(' ', '', time().'_'.$images->getClientOriginalName());
+                $images->move(\public_path("/images/user_featured_image"),$imageName);
+                $data = User::create([
+                    'name' => $request['name'],
+                    'email' => $request['email'],
+                    'password' => Hash::make($request['password']),
+                    'address' => $request['address'],
+                    'phone_number' => $request['phone_number'],
+                    'role_id' => $request['role_id'],
+                    'photo' => $imageName
+                ]);
+            }
             $data = [
                 'status' => 'success',
                 'message' => 'Data pengguna berhasil ditambahkan',

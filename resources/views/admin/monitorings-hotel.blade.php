@@ -28,7 +28,12 @@
                 @foreach ($hotels as $value)
                 <div class="col-lg-3 mb-4">
                     <div class="card">
-                        <img src="https://images.unsplash.com/photo-1477862096227-3a1bb3b08330?ixlib=rb-1.2.1&auto=format&fit=crop&w=700&q=60" alt="" class="card-img-top">
+                        @if ($value->pets->type_pet_id == 1)
+                            <img src="{!! asset('PurpleAdmin/assets/images/CatCage.jpg') !!}" alt="" class="card-img-top">
+                        @else
+                            <img src="{!! asset('PurpleAdmin/assets/images/DogCage.jpg') !!}" alt="" class="card-img-top">
+                        @endif
+                        <img src="" alt="" class="card-img-top">
                         <div class="card-body">
                         <h5 class="card-title">{{$value->cages->type_cages->alias}} - {{$value->cages->number}} </h5>
                         <p class="card-text">Nama Pet: <span>{{$value->pets->name}}</span></p>

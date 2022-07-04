@@ -297,7 +297,7 @@
                 let image_upload = new FormData();
                 let TotalGalery= $('#galery')[0].files.length;  //Total Images
                 let galery = $('#galery')[0];  
-                let images = $('#images').val();  
+                let images = $('#images')[0].files[0];  
 
                 for (let i = 0; i < TotalGalery; i++) {
                     image_upload.append('galery[' + i + ']' , galery.files[i]);
