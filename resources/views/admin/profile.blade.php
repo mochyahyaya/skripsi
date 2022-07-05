@@ -76,28 +76,30 @@
                         <div class="col-xxl-8 mb-5 mb-xxl-0">
                             <div class="bg-secondary-soft px-4 py-5 rounded">
                                 <div class="row g-3">
+                                    @foreach ($user as $value)
                                     <h4 class="mb-4 mt-0">Informasi Umum</h4>
                                     <!-- First Name -->
                                     <div class="col-md-6">
                                         <label class="form-label">Nama *</label>
-                                        <input type="text" class="form-control" placeholder="" aria-label="First name" value="Scaralet">
+                                        <input type="text" class="form-control" placeholder="" aria-label="First name" value="{{$value->name}}">
                                     </div>
                                     <!-- Phone number -->
                                     <div class="col-md-6">
                                         <label class="form-label">Nomor Telepon *</label>
-                                        <input type="text" class="form-control" placeholder="" aria-label="Phone number" value="(333) 000 555">
+                                        <input type="text" class="form-control" placeholder="" aria-label="Phone number" value="{{$value->phone_number}}">
                                     </div>
                                     <!-- Email -->
                                     <div class="col-md-6">
                                         <label for="inputEmail4" class="form-label">Email *</label>
-                                        <input type="email" class="form-control" id="inputEmail4" value="example@homerealty.com">
+                                        <input type="email" class="form-control" id="inputEmail4" value="{{$value->email}}">
                                     </div>
                                     <!-- Skype -->
                                     <div class="col-md-6">
                                         <label class="form-label">Alamat *</label>
-                                        <input type="text" class="form-control" placeholder="" aria-label="Phone number" value="Scaralet D">
+                                        <input type="text" class="form-control" placeholder="" aria-label="Phone number" value="{{$value->address}}">
                                     </div>
                                 </div> <!-- Row END -->
+                                @endforeach
                             </div>
                         </div>
                         <!-- Upload profile -->
@@ -106,15 +108,17 @@
                                 <div class="row g-3">
                                     <h4 class="mb-4 mt-0">Upload Foto Profile Kamu</h4>
                                     <div class="text-center">
-                                        <!-- Image upload -->
-                                        <div class="square position-relative display-2 mb-3">
-                                            <i class="fas fa-fw fa-user position-absolute top-50 start-50 translate-middle text-secondary"></i>
-                                        </div>
-                                        <!-- Button -->
-                                        <input type="file" id="customFile" name="file" hidden="">
-                                        <label class="btn btn-success-soft btn-block" for="customFile">Upload</label>
-                                        <!-- Content -->
-                                        <p class="text-muted mt-3 mb-0"><span class="me-1">Note:</span>Minimum size 300px x 300px</p>
+                                        @foreach ($user as $value)            
+                                            <!-- Image upload -->
+                                            <div class="square position-relative display-2 mb-3">
+                                                {{-- <i class="fas fa-fw fa-user position-absolute top-50 start-50 translate-middle text-secondary"></i> --}}
+                                                <img src="{{asset('images/user_featured_image/'.$value->photo)}}" alt="" class="fas fa-fw fa-user position-absolute top-50 start-50 translate-middle text-secondary">
+                                            </div>
+                                            <!-- Button -->
+                                            <input type="file" id="file" name="file" hidden="">
+                                            <label class="btn btn-success-soft btn-block" for="customFile">Upload</label>
+                                            <!-- Content -->
+                                        @endforeach
                                     </div>
                                 </div>
                             </div>
@@ -149,7 +153,7 @@
                         </div>
                     </div> <!-- Row END -->
                     <!-- button -->
-                    <div class="gap-3 d-md-flex justify-content-md-end text-center">
+                    <div class="gap-3 d-md-flex justify-content-md-end text-center mb-5">
                         <button type="button" class="btn bg-gradient-primary btn-lg">Update profile</button>
                     </div>
                 </form> <!-- Form END -->

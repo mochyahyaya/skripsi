@@ -82,7 +82,7 @@
             <li><i class="bi bi-check"></i> Vitamin & Cemilan*</li>
           </ul>
           <p>
-            <button class="btn btn-outline-primary">
+            <button type="button" class="get-started-btn btn btn-outline-primary rounded-pill" data-toggle="modal" data-target="#modal-create-hotels">
               Titipkan Sekarang
             </button>
           </p>
@@ -112,7 +112,9 @@
               <li><i class="bx bx-check"></i> Anti Tick Shampoo</li>
               <li><i class="bx bx-check"></i> Tick Treatment</li>
             </ul>
-            <a href="#" class="get-started-btn">Grooms</a>
+              <button type="button" class="get-started-btn btn btn-outline-primary" data-toggle="modal" data-target="#modal-create-grooms">
+                Groom
+              </button>
           </div>
   
           <div class="col-lg-4 box featured" data-aos="fade-up">
@@ -125,7 +127,9 @@
               <li><i class="bx bx-check"></i> Anti Mold Powder</li>
               <li><i class="bx bx-check"></i> Mold Treatment</li>
             </ul>
-            <a href="#" class="get-started-btn">Get Started</a>
+            <button type="button" class="get-started-btn btn btn-outline-primary" data-toggle="modal" data-target="#modal-create-grooms">
+              Groom
+            </button>
           </div>
   
           <div class="col-lg-4 box" data-aos="fade-left">
@@ -139,7 +143,9 @@
               <li><i class="bx bx-check"></i> Tick Treatment</li>
               <li><i class="bx bx-check"></i> Mold Treatment</li>
             </ul>
-            <a href="#" class="get-started-btn">Get Started</a>
+            <button type="button" class="get-started-btn btn btn-outline-primary" data-toggle="modal" data-target="#modal-create-grooms">
+              Groom
+            </button>
           </div>
   
         </div>
@@ -150,18 +156,14 @@
   <!-- ======= Gallery Section ======= -->
   <section id="gallery" class="gallery section-bg">
     <div class="container" data-aos="fade-up">
-
       <div class="section-title">
         <h2>Gallery Pet Breeding</h2>
         <p class="item-center">
-          <a href="">
-            <button class="btn btn-outline-primary">
-              Lihat Menu Breeding
-            </button>
-          </a>
+          <button class="btn btn-outline-primary rounded-pill" data-toggle="modal" data-target="#modal-create-breeds">
+            Breeding
+          </button>
         </p>
       </div>
-
     </div>
 
     <div class="container-fluid" data-aos="fade-up">
@@ -178,7 +180,11 @@
           <div class="swiper-slide"><a href={!! asset('Appland/assets/img/gallery/gallery-9.png') !!} class="gallery-lightbox" data-gall="gallery-carousel"><img src={!! asset('Appland/assets/img/gallery/gallery-9.png') !!}  class="img-fluid" alt=""></a></div>
           <div class="swiper-slide"><a href={!! asset('Appland/assets/img/gallery/gallery-10.png') !!} class="gallery-lightbox" data-gall="gallery-carousel"><img src={!! asset('Appland/assets/img/gallery/gallery-10.png') !!}  class="img-fluid" alt=""></a></div>
           <div class="swiper-slide"><a href={!! asset('Appland/assets/img/gallery/gallery-11.png') !!} class="gallery-lightbox" data-gall="gallery-carousel"><img src={!! asset('Appland/assets/img/gallery/gallery-11.png') !!}  class="img-fluid" alt=""></a></div>
-          <div class="swiper-slide"><a href={!! asset('Appland/assets/img/gallery/gallery-12.png') !!} class="gallery-lightbox" data-gall="gallery-carousel"><img src={!! asset('Appland/assets/img/gallery/gallery-12.png') !!} class="img-fluid" alt=""></a></div>
+          <div class="swiper-slide">
+            <a href={!! asset('Appland/assets/img/gallery/gallery-12.png') !!} class="gallery-lightbox" data-gall="gallery-carousel">
+              <img src={!! asset('Appland/assets/img/gallery/gallery-12.png') !!} class="img-fluid" alt="">
+            </a>
+          </div>
         </div>
         <div class="swiper-pagination"></div>
       </div>
@@ -313,4 +319,160 @@
 
     </div>
   </section><!-- End Contact Section -->
+
+  {{-- Modal Create Grooms --}}
+  <div class="modal fade" id="modal-create-grooms">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title">Tambah Data</h6>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="" method="post" class="forms-sample">
+                @csrf
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="forms-group">
+                            <label for="petname" class="col-form-label">Nama Pet</label>
+                            <select id="petname" class="form-control select2bs4" name="petname">
+                              <option value="" selected disabled>--Pilih Nama Pet--</option>
+                              @foreach ($pets as $value)
+                                  <option value="{{$value->id}}">{{$value->name}}</option>
+                              @endforeach
+                          </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                      <div class="forms-group">
+                          <label for="service" class="col-form-label">Jenis Grooming</label>
+                          <select id="service" name="service" class="form-control select2bs4">
+                            <option value="" selected disabled>--Pilih Grooming--</option>
+                            <option value="Lengkap">Lengkap</option>
+                            <option value="Jamur">Jamur</option>
+                            <option value="Kutu">Kutu</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div>
+                      <input type="hidden" name="price" id="price">
+                    </div>
+                  </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-gradient-light btn-fw close" data-dismiss="modal">Kembali</button>
+                    <button type="submit" class="btn btn-primary tambah_data">Simpan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+  </div>
+
+  {{-- Modal Create Hotels --}}
+  <div class="modal fade" id="modal-create-hotels">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title">Tambah Data</h6>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="" method="post" class="forms-sample">
+                @csrf
+                <div class="modal-body">
+                  <div class="alert alert-primary" role="alert">
+                    Biaya yang akan dikenakan sebesar Rp 20.000 untuk semalam <br>
+                    Biaya tidak termasuk tambahan lain.
+                  </div>
+                    <div class="row">
+                        <div class="forms-group">
+                            <label for="petname" class="col-form-label">Nama Pet</label>
+                            <select id="petname" class="form-control select2bs4" name="petname">
+                              <option value="" selected disabled>--Pilih Nama Pet--</option>
+                              @foreach ($pets as $value)
+                                  <option value="{{$value->id}}">{{$value->name}}</option>
+                              @endforeach
+                          </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                      <div class="forms-group">
+                          <label for="service" class="col-form-label">Jenis Grooming</label>
+                          <select id="service" name="service" class="form-control select2bs4">
+                            <option value="" selected disabled>--Pilih Grooming--</option>
+                            <option value="Lengkap">Lengkap</option>
+                            <option value="Jamur">Jamur</option>
+                            <option value="Kutu">Kutu</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div>
+                      <input type="hidden" name="price" id="price">
+                    </div>
+                  </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-gradient-light btn-fw close" data-dismiss="modal">Kembali</button>
+                    <button type="submit" class="btn btn-primary tambah_data">Simpan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+  </div>
+
+  {{-- Modal Create Breeding --}}
+  <div class="modal fade" id="modal-create-breeds">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title">Tambah Data</h6>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="" method="post" class="forms-sample">
+                @csrf
+                <div class="modal-body">
+                    <div class="alert alert-primary alert-dismissible fade show" role="alert">
+                      Biaya yang akan dikenakan sebesar Rp 25.000 untuk semalam <br>
+                      Biaya tidak termasuk tambahan lain. <br>
+                      Batas waktu sampai dengan betina hamil.
+                      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="row">
+                        <div class="forms-group">
+                            <label for="petname" class="col-form-label">Nama Pet</label>
+                            <select id="petname" class="form-control select2bs4" name="petname">
+                              <option value="" selected disabled>--Pilih Nama Pet--</option>
+                              @foreach ($pets as $value)
+                                  <option value="{{$value->id}}">{{$value->name}}</option>
+                              @endforeach
+                          </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                      <div class="forms-group">
+                          <label for="service" class="col-form-label">Jenis Grooming</label>
+                          <select id="service" name="service" class="form-control select2bs4">
+                            <option value="" selected disabled>--Pilih Grooming--</option>
+                            <option value="Lengkap">Lengkap</option>
+                            <option value="Jamur">Jamur</option>
+                            <option value="Kutu">Kutu</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div>
+                      <input type="hidden" name="price" id="price">
+                    </div>
+                  </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-gradient-light btn-fw close" data-dismiss="modal">Kembali</button>
+                    <button type="submit" class="btn btn-primary tambah_data">Simpan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+  </div>
 @endsection

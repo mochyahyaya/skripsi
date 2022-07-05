@@ -246,13 +246,23 @@
             margin-bottom: 10px;
         }
     }
+    .middle {
+        transition: .5s ease;
+        opacity: 0;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        -ms-transform: translate(-50%, -50%);
+        text-align: center;
+    }
 </style>
 <div class="container">
 <div class="row">
     <div class="col-lg-4 col-xl-4">
         @foreach ($pets as $value)
         <div class="card-box text-center">
-            <img src="https://bootdey.com/img/Content/avatar/avatar7.png" class="rounded-circle avatar-xl img-thumbnail" alt="profile-image">
+            <img src="{!!asset('images/featured_image/'.$value->filename) !!}" class="rounded-circle avatar-xl img-thumbnail" alt="profile-image">
 
             <h4 class="mb-0">{{$value->name}}</h4>
             <p class="text-muted">{{$value->typePets->name}}</p>
@@ -265,7 +275,7 @@
                     </tr>
                     <tr>
                         <td><strong>BOD</strong>  </td>
-                        <td><span class="">{{ \Carbon\Carbon::parse($value->birthday)->locale('id')->format('d M Y')}}</span></td>
+                        <td><span class="">{{ \Carbon\Carbon::parse($value->birthday)->locale('id')->format('d F Y')}}</span></td>
                     </tr>
                     <tr>
                         <td><strong>Ras</strong>  </td>
@@ -294,7 +304,7 @@
             <div class="pt-1">
                 @foreach ($otherpets as $value)
                 <a href="{{route('veterinarian/medicalRecords', $value->id)}}">
-                    <img src="" class="rounded-circle avatar-xl img-thumbnail mb-1 mt-1" alt="{{$value->name}}">
+                    <img src="{!!asset('images/featured_image/'.$value->filename) !!}" class="rounded-circle avatar-xl img-thumbnail mb-1 mt-1" alt="{{$value->name}}">
                  </a> 
                 @endforeach
             </div>
@@ -321,7 +331,7 @@
                     @foreach ($medicalrecords as $value)
                     <ul class="list-unstyled timeline-sm">
                         <li class="timeline-sm-item">
-                            <span class="timeline-sm-date">{{$value->created_at}}</span>
+                            <span class="timeline-sm-date">{{ \Carbon\Carbon::parse($value->created_at)->locale('id')->format('d F Y')}}</span>
                             <h5 class="mt-0 mb-1">{{$value->needed}}</h5>
                         </li>
                     </ul>
@@ -351,7 +361,7 @@
                                         <td>{{$value->needed}}</td>
                                         <td>{{$value->indication}}</td>
                                         <td>{{$value->treatment}}</td>
-                                        <td>{{$value->created_at}}</td>
+                                        <td>{{ \Carbon\Carbon::parse($value->created_at)->locale('id')->format('d F Y')}}</td>
                                         @if ($value->status == 'Sehat')
                                             <td><label class="badge badge-success">{{$value->status}}</label></td>
                                         @else

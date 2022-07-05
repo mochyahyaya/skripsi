@@ -40,64 +40,15 @@
   <div class="row">
     <div class="col-md-4 stretch-card grid-margin">
       <div class="card bg-gradient-danger card-img-holder text-white">
-        <a href="{{route('admin/users')}}">
+        <a href="{{route('veterinarian/medicalRecordUsers')}}">
           <div class="card-body">
             <img src="{!!asset('PurpleAdmin/assets/images/dashboard/circle.svg')!!}" class="card-img-absolute" alt="circle-image" />
-            <h4 class="font-weight-normal mb-3">Pengguna <i class="mdi mdi-chart-line mdi-24px float-right"></i>
+            <h4 class="font-weight-normal mb-3">Rekam Medis <i class="mdi mdi-chart-line mdi-24px float-right"></i>
             </h4>
-            <h2 class="mb-5">{{$users}}</h2>
+            <h2 class="mb-5"></h2>
             {{-- <h6 class="card-text">Increased by 60%</h6> --}}
           </div>
         </a>
-      </div>
-    </div>
-    <div class="col-md-4 stretch-card grid-margin">
-      <div class="card bg-gradient-info card-img-holder text-white">
-        <a href="{{route('admin/pets')}}">
-          <div class="card-body">
-            <img src="{!! asset('PurpleAdmin/assets/images/dashboard/circle.svg') !!}" class="card-img-absolute" alt="circle-image" />
-            <h4 class="font-weight-normal mb-3">Hewan Peliharan <i class="mdi mdi-bookmark-outline mdi-24px float-right"></i>
-            </h4>
-            <h2 class="mb-5">{{$pets}}</h2>
-            {{-- <h6 class="card-text">Decreased by 10%</h6> --}}
-          </div>
-        </a>
-      </div>
-    </div>
-    
-    <div class="col-md-4 stretch-card grid-margin">
-      <div class="card bg-gradient-success card-img-holder text-white">
-        <a href="{{route('admin/cages')}}" class="font-weight-normal mb-3">
-        <div class="card-body">
-          <img src="{!!asset('PurpleAdmin/assets/images/dashboard/circle.svg')!!}" class="card-img-absolute" alt="circle-image" />
-            <h4 class="font-weight-normal mb-3">Kandang <i class="mdi mdi-diamond mdi-24px float-right"></i>
-            </h4>
-            <h2 class="mb-5">{{$cages}}</h2>
-            {{-- <h6 class="card-text">Increased by 5%</h6> --}}
-          </div>
-        </a>
-      </div>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-md-7 grid-margin stretch-card">
-      <div class="card">
-        <div class="card-body">
-          <div class="clearfix">
-            <h4 class="card-title float-left">Laporan Bulanan</h4>
-            <div id="visit-sale-chart-legend" class="rounded-legend legend-horizontal legend-top-right float-right"></div>
-          </div>
-          <canvas id="visit-sale-chart" class="mt-4"></canvas>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-5 grid-margin stretch-card">
-      <div class="card">
-        <div class="card-body">
-          <h4 class="card-title">Jumlah Transaksi</h4>
-          <canvas id="traffic-chart"></canvas>
-          <div id="traffic-chart-legend" class="rounded-legend legend-vertical legend-bottom-left pt-4"></div>
-        </div>
       </div>
     </div>
   </div>
@@ -110,58 +61,25 @@
             <table class="table">
               <thead>
                 <tr>
-                  <th> Assignee </th>
-                  <th> Subject </th>
-                  <th> Status </th>
-                  <th> Last Update </th>
-                  <th> Tracking ID </th>
+                  <th> # </th>
+                  <th> Nama Pet </th>
+                  <th> Nama Pemilik</th>
+                  <th> Keperluan </th>
+                  <th> Waktu Kunjungan</th>
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>
-                    <img src="{!!asset('PurpleAdmin/assets/images/faces/face1.jpg')!!}" class="me-2" alt="image"> David Grey
-                  </td>
-                  <td> Fund is not recieved </td>
-                  <td>
-                    <label class="badge badge-gradient-success">DONE</label>
-                  </td>
-                  <td> Dec 5, 2017 </td>
-                  <td> WD-12345 </td>
-                </tr>
-                <tr>
-                  <td>
-                    <img src="{!!asset('PurpleAdmin/assets/images/faces/face2.jpg')!!}" class="me-2" alt="image"> Stella Johnson
-                  </td>
-                  <td> High loading time </td>
-                  <td>
-                    <label class="badge badge-gradient-warning">PROGRESS</label>
-                  </td>
-                  <td> Dec 12, 2017 </td>
-                  <td> WD-12346 </td>
-                </tr>
-                <tr>
-                  <td>
-                    <img src="{!!asset('PurpleAdmin/assets/images/faces/face3.jpg')!!}" class="me-2" alt="image"> Marina Michel
-                  </td>
-                  <td> Website down for one week </td>
-                  <td>
-                    <label class="badge badge-gradient-info">ON HOLD</label>
-                  </td>
-                  <td> Dec 16, 2017 </td>
-                  <td> WD-12347 </td>
-                </tr>
-                <tr>
-                  <td>
-                    <img src="{!!asset('PurpleAdmin/assets/images/faces/face4.jpg')!!}" class="me-2" alt="image"> John Doe
-                  </td>
-                  <td> Loosing control on server </td>
-                  <td>
-                    <label class="badge badge-gradient-danger">REJECTED</label>
-                  </td>
-                  <td> Dec 3, 2017 </td>
-                  <td> WD-12348 </td>
-                </tr>
+                @foreach ($medical as $value)
+                  <tr>
+                    <td></td>
+                    <td>
+                      <img src="{!!asset('images/featured_image/'.$value->pets->filename)!!}" class="me-2" alt="image"> {{$value->pets->name}}
+                    </td>
+                    <td> {{$value->pets->users->name}}</td>
+                    <td> {{$value->needed}} </td>
+                    <td> {{ \Carbon\Carbon::parse($value->created_at)->locale('id')->format('d F Y')}} </td>
+                  </tr>   
+                @endforeach
               </tbody>
             </table>
           </div>

@@ -11,7 +11,7 @@ class MedicalRecordPets extends Controller
 {
     public function index($id)
     {
-        $pets = Pet::where('user_id', $id)->get();
+        $pets = Pet::with('typePets')->where('user_id', $id)->get();
        return view('veterinarian.medical-records-pet', compact('pets')); 
     }
 }

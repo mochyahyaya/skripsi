@@ -21,6 +21,7 @@ use App\Http\Controllers\Veterinarian\DashboardVet;
 use App\Http\Controllers\Veterinarian\MedicalRecords;
 use App\Http\Controllers\Veterinarian\MedicalRecordUsers;
 use App\Http\Controllers\Veterinarian\MedicalRecordPets;
+use App\Http\Controllers\Veterinarian\VetProfile;
 
 //User
 use App\Http\Controllers\User\DashboardUser;
@@ -126,6 +127,7 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function() {
         Route::post('medical-records-pet-store/', [MedicalRecords::class, 'store'])->name('veterinarian/medicalRecordsStore');
         Route::get('medical-records-pet-edit/{id}', [MedicalRecords::class, 'edit'])->name('veterinarian/medicalRecordsEdit');
         Route::put('medical-records-pet-update/{id}', [MedicalRecords::class, 'update'])->name('veterinarian/medicalRecordsUpdate');
+        Route::get('profile', [VetProfile::class, 'index'])->name('veterinarian/profile');
 
     });
 

@@ -929,6 +929,7 @@ section {
   color: #47536e;
   font-size: 14px;
   background: #eff2f8;
+  position: fixed;
 }
 #footer .footer-newsletter {
   padding: 50px 0;
