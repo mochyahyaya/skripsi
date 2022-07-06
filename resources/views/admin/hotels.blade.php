@@ -228,12 +228,17 @@
                         } else {
                             var status_badge = '<td><label class="badge badge-warning">'+item.status+'</label></td>'
                         }
+                        if(item.cage_id == null){
+                            var cages = '<td><label>'+'Belum diisi'+'</label></td>'
+                        } else {
+                            var cages = '<td><label>'+ item.cages.type_cages.alias + ' - ' + item.cages.number +'</label></td>'
+                        }
                         $('tbody').append('<tr>\
                             <td>' + item.pets.name + '</td>\
                             <td>' + moment(item.start_at).locale('id').format('LL') + '</td>\
                             <td>' + moment(item.end_at).locale('id').format('LL') + '</td>\
                             <td>' + item.price + '</td>\
-                            <td>' + item.cages.type_cages.alias + ' - ' + item.cages.number + '</td>\
+                                ' + cages+ '\
                                 ' + status_badge+ '\
                             <td class="text-center"><button type="button" value="' + item.id + '" class="btn btn-gradient-info btn-rounded btn-sm edit_data">Edit</button>\
                                 <button type="button" value="' + item.id + '" class="btn btn-gradient-danger btn-rounded btn-sm hapus_data">Hapus</button>\
@@ -332,7 +337,6 @@
             }
 
         });
-
 
         $(document).on('click', '.tambah_data', function (e) {
             e.preventDefault();

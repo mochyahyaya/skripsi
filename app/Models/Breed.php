@@ -18,6 +18,11 @@ class Breed extends Model
         return $this->belongsTo(Pet::class, 'pet_id');
     }
 
+    // public function petsMale()
+    // {
+    //     return $this->belongsTo(Pet::class, 'pet_male');
+    // }
+
     public function cages()
     {
         return $this->belongsTo(Cage::class, 'cage_id');

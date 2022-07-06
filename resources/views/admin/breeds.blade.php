@@ -35,6 +35,7 @@
                 <th> Nama Betina </th>
                 <th> Tanggal Masuk </th>
                 <th> Harga </th>
+                <th> Kandang </th>
                 <th> Status </th>
                 <th> Aksi </th>
               </tr>
@@ -227,11 +228,18 @@
                         } else {
                             var status_badge = '<td><label class="badge badge-warning">'+item.status+'</label></td>'
                         }
+
+                        if(item.cage_id == null){
+                            var cages = '<td><label>'+'Belum diisi'+'</label></td>'
+                        } else {
+                            var cages = '<td><label>'+ item.cages.type_cages.alias + ' - ' + item.cages.number +'</label></td>'
+                        }
                         $('tbody').append('<tr>\
                             <td>' + item.pet_male + '</td>\
                             <td>' + item.pets.name + '</td>\
                             <td>' + moment(item.start_at).locale('id').format('LL') + '</td>\
                             <td>' + item.price + '</td>\
+                                ' + cages+ '\
                                 ' + status_badge+ '\
                             <td class="text-center"><button type="button" value="' + item.id + '" class="btn btn-gradient-info btn-rounded btn-sm edit_data">Edit</button>\
                                 <button type="button" value="' + item.id + '" class="btn btn-gradient-danger btn-rounded btn-sm hapus_data">Hapus</button>\
@@ -429,7 +437,11 @@
                     data = response.petUser;
                     cage = response.cages;
                     console.log(data);
-                    
+                    var status = $("#updateStatus").val();
+                    console.log(status);
+                    if(status == 'Selesai'){
+                        $(document).find('#updateStatus option').attr("disabled", "disabled");
+                    }
                     var el = $(document).find('#updatePetName option');
                     el.remove();
                     $.each(data,function (j,data){

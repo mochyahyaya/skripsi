@@ -63,7 +63,7 @@ class Grooms extends Controller
             $priceformat = number_format($price,0,".",".");
             $data = Groom::create([
                 'pet_id' => $request['petname'],
-                'price' => $priceformat,
+                'price' => $price,
                 'service' => $request['service'],
                 'status' => $request['status'],
                 'pickup' => $request['pickup'],
@@ -72,7 +72,7 @@ class Grooms extends Controller
             if($data->wasRecentlyCreated  ){
                 $data = [
                     'status' => 'success',
-                    'message' => 'Data grooming berhasil ditambahkan',
+                    'message' => 'Berhasil menambahkan data grooming',
                     'data' => $data,
                 ];
             } else { 

@@ -70,7 +70,7 @@
                     <hr>
                 </div>
                 <!-- Form START -->
-                <form class="file-upload">
+                <form class="file-upload" id="update-profile" enctype="multipart/form-data">
                     <div class="row mb-5 gx-5">
                         <!-- Contact detail -->
                         <div class="col-xxl-8 mb-5 mb-xxl-0">
@@ -81,22 +81,22 @@
                                     <!-- First Name -->
                                     <div class="col-md-6">
                                         <label class="form-label">Nama *</label>
-                                        <input type="text" class="form-control" placeholder="" aria-label="First name" value="{{$value->name}}">
+                                        <input type="text" class="form-control" placeholder="" id="name" name="name" aria-label="First name" value="{{$value->name}}">
                                     </div>
                                     <!-- Phone number -->
                                     <div class="col-md-6">
                                         <label class="form-label">Nomor Telepon *</label>
-                                        <input type="text" class="form-control" placeholder="" aria-label="Phone number" value="{{$value->phone_number}}">
+                                        <input type="text" class="form-control" placeholder="" id="phone_number" aria-label="Phone number" value="{{$value->phone_number}}" name="phone_number">
                                     </div>
                                     <!-- Email -->
                                     <div class="col-md-6">
                                         <label for="inputEmail4" class="form-label">Email *</label>
-                                        <input type="email" class="form-control" id="inputEmail4" value="{{$value->email}}">
+                                        <input type="email" class="form-control" id="email" value="{{$value->email}}" name="email">
                                     </div>
                                     <!-- Skype -->
                                     <div class="col-md-6">
                                         <label class="form-label">Alamat *</label>
-                                        <input type="text" class="form-control" placeholder="" aria-label="Phone number" value="{{$value->address}}">
+                                        <input type="text" class="form-control" placeholder="" aria-label="Phone number" value="{{$value->address}}" name="address">
                                     </div>
                                 </div> <!-- Row END -->
                                 @endforeach
@@ -115,7 +115,7 @@
                                                 <img src="{{asset('images/user_featured_image/'.$value->photo)}}" alt="" class="fas fa-fw fa-user position-absolute top-50 start-50 translate-middle text-secondary">
                                             </div>
                                             <!-- Button -->
-                                            <input type="file" id="file" name="file" hidden="">
+                                            <input type="file" name="file" >
                                             <label class="btn btn-success-soft btn-block" for="customFile">Upload</label>
                                             <!-- Content -->
                                         @endforeach
@@ -133,20 +133,22 @@
                             <div class="bg-secondary-soft px-4 py-5 rounded">
                                 <div class="row g-3">
                                     <h4 class="my-4">Change Password</h4>
+                                    @foreach ($user as $value)
                                     <!-- Old password -->
                                     <div class="col-md-6">
-                                        <label for="exampleInputPassword1" class="form-label">Old password *</label>
-                                        <input type="password" class="form-control" id="exampleInputPassword1">
+                                        <label for="exampleInputPassword1" class="form-label">Passwor Lama *</label>
+                                        <input type="password" class="form-control" id="old_password" name="old_password">
                                     </div>
+                                    @endforeach
                                     <!-- New password -->
                                     <div class="col-md-6">
-                                        <label for="exampleInputPassword2" class="form-label">New password *</label>
-                                        <input type="password" class="form-control" id="exampleInputPassword2">
+                                        <label for="exampleInputPassword2" class="form-label">Password Baru *</label>
+                                        <input type="password" class="form-control" id="new_password" name="new_password">
                                     </div>
                                     <!-- Confirm password -->
                                     <div class="col-md-12">
-                                        <label for="exampleInputPassword3" class="form-label">Confirm Password *</label>
-                                        <input type="password" class="form-control" id="exampleInputPassword3">
+                                        <label for="exampleInputPassword3" class="form-label">Konfirmasi Password *</label>
+                                        <input type="password" class="form-control" id="confirm_password" name="confirm_password">
                                     </div>
                                 </div>
                             </div>
@@ -154,10 +156,55 @@
                     </div> <!-- Row END -->
                     <!-- button -->
                     <div class="gap-3 d-md-flex justify-content-md-end text-center mb-5">
-                        <button type="button" class="btn bg-gradient-primary btn-lg">Update profile</button>
+                        <button type="submit" class="btn bg-gradient-primary btn-lg btn-update">Update profile</button>
                     </div>
                 </form> <!-- Form END -->
             </div>
         </div>
         </div>
 @endsection
+
+@push('scripts')
+    <script>
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
+        $(document).ready(function () {
+            $("form#update-profile").submit(function(e) {
+                e.preventDefault();    
+                var formData = new FormData(this);
+                formData.append('_method', 'put')
+                // var data =  $(this).serialize()
+                // console.log(formData);
+                $.ajax({
+                    url: "{{route('admin/profileUpdate')}}",
+                    method  : 'post',
+                    data: formData,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    success: function (data) {
+                        const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        didOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                        }
+                        })
+                        Toast.fire({
+                        icon: data.status,
+                        title: data.message
+                        })
+                    },
+                });
+            });
+        })
+    </script>
+@endpush

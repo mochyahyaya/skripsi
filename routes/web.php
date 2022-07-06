@@ -91,7 +91,6 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function() {
         Route::get('monitorings-breed', [MonitoringsBreed::class, 'index'])->name('admin/monitoringsBreed');
         Route::post('monitorings-breed-store', [MonitoringsBreed::class, 'store'])->name('admin/monitoringsBreedStore');
         
-
         Route::get('users', [Users::class, 'index'])->name('admin/users');
         Route::get('users-fetch', [Users::class, 'fetch'])->name('admin/usersFetch');
         Route::post('users-store', [Users::class, 'store'])->name('admin/usersStore');
@@ -114,8 +113,10 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function() {
         Route::get('cages-delete/{id}', [Cages::class, 'destroy'])->name('admin/cagesDestroy');
 
         Route::get('reports', [Reports::class, 'index'])->name('admin/reports');
+        Route::post('ref-month', [Reports::class, 'refMonth'])->name('admin/refMonths');
 
         Route::get('profile', [Profile::class, 'index'])->name('admin/profile');
+        Route::put('profile-update', [Profile::class, 'update'])->name('admin/profileUpdate');
     });
 
     Route::prefix('veterinarian')->group(function () {
@@ -128,12 +129,16 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function() {
         Route::get('medical-records-pet-edit/{id}', [MedicalRecords::class, 'edit'])->name('veterinarian/medicalRecordsEdit');
         Route::put('medical-records-pet-update/{id}', [MedicalRecords::class, 'update'])->name('veterinarian/medicalRecordsUpdate');
         Route::get('profile', [VetProfile::class, 'index'])->name('veterinarian/profile');
+        Route::put('vet-profile-update', [VetProfile::class, 'update'])->name('veterinarian/profileUpdate');
 
     });
 
     Route::prefix('user')->group(function () {
         Route::get('dashboard', [DashboardUser::class, 'index'])->name('user/dashboard');
-        Route::get('user-grooms', [UserGrooms::class, 'index'])->name('user/userGrooms');
+        Route::post('user-grooms', [DashboardUser::class, 'grooms'])->name('user/userGroomsStore');
+        Route::post('user-hotels', [DashboardUser::class, 'hotels'])->name('user/userHotelsStore');
+        Route::post('user-breeds', [DashboardUser::class, 'breeds'])->name('user/userBreedsStore');
+        
     });
 
 });

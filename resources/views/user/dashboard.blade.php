@@ -168,22 +168,12 @@
 
     <div class="container-fluid" data-aos="fade-up">
       <div class="gallery-slider swiper">
-        <div class="swiper-wrapper">
-          <div class="swiper-slide"><a href={!! asset('Appland/assets/img/gallery/gallery-1.png') !!} class="gallery-lightbox" data-gall="gallery-carousel"><img src={!! asset('Appland/assets/img/gallery/gallery-1.png') !!}  class="img-fluid" alt=""></a></div>
-          <div class="swiper-slide"><a href={!! asset('Appland/assets/img/gallery/gallery-2.png') !!} class="gallery-lightbox" data-gall="gallery-carousel"><img src={!! asset('Appland/assets/img/gallery/gallery-2.png') !!}  class="img-fluid" alt=""></a></div>
-          <div class="swiper-slide"><a href={!! asset('Appland/assets/img/gallery/gallery-3.png') !!} class="gallery-lightbox" data-gall="gallery-carousel"><img src={!! asset('Appland/assets/img/gallery/gallery-3.png') !!} class="img-fluid" alt=""></a></div>
-          <div class="swiper-slide"><a href={!! asset('Appland/assets/img/gallery/gallery-4.png') !!} class="gallery-lightbox" data-gall="gallery-carousel"><img src={!! asset('Appland/assets/img/gallery/gallery-4.png') !!}  class="img-fluid" alt=""></a></div>
-          <div class="swiper-slide"><a href={!! asset('Appland/assets/img/gallery/gallery-5.png') !!} class="gallery-lightbox" data-gall="gallery-carousel"><img src={!! asset('Appland/assets/img/gallery/gallery-5.png') !!}  class="img-fluid" alt=""></a></div>
-          <div class="swiper-slide"><a href={!! asset('Appland/assets/img/gallery/gallery-6.png') !!} class="gallery-lightbox" data-gall="gallery-carousel"><img src={!! asset('Appland/assets/img/gallery/gallery-6.png') !!}  class="img-fluid" alt=""></a></div>
-          <div class="swiper-slide"><a href={!! asset('Appland/assets/img/gallery/gallery-7.png') !!} class="gallery-lightbox" data-gall="gallery-carousel"><img src={!! asset('Appland/assets/img/gallery/gallery-7.png') !!} class="img-fluid" alt=""></a></div>
-          <div class="swiper-slide"><a href={!! asset('Appland/assets/img/gallery/gallery-8.png') !!} class="gallery-lightbox" data-gall="gallery-carousel"><img src={!! asset('Appland/assets/img/gallery/gallery-8.png') !!}  class="img-fluid" alt=""></a></div>
-          <div class="swiper-slide"><a href={!! asset('Appland/assets/img/gallery/gallery-9.png') !!} class="gallery-lightbox" data-gall="gallery-carousel"><img src={!! asset('Appland/assets/img/gallery/gallery-9.png') !!}  class="img-fluid" alt=""></a></div>
-          <div class="swiper-slide"><a href={!! asset('Appland/assets/img/gallery/gallery-10.png') !!} class="gallery-lightbox" data-gall="gallery-carousel"><img src={!! asset('Appland/assets/img/gallery/gallery-10.png') !!}  class="img-fluid" alt=""></a></div>
-          <div class="swiper-slide"><a href={!! asset('Appland/assets/img/gallery/gallery-11.png') !!} class="gallery-lightbox" data-gall="gallery-carousel"><img src={!! asset('Appland/assets/img/gallery/gallery-11.png') !!}  class="img-fluid" alt=""></a></div>
-          <div class="swiper-slide">
-            <a href={!! asset('Appland/assets/img/gallery/gallery-12.png') !!} class="gallery-lightbox" data-gall="gallery-carousel">
-              <img src={!! asset('Appland/assets/img/gallery/gallery-12.png') !!} class="img-fluid" alt="">
-            </a>
+        <div class="swiper-wrapper" style="max-height: 600px">
+          @foreach ($pets as $value)
+          <a href="{!! asset('images/featured_image/'.$value->filename) !!}" class="gallery-lightbox" data-gall="gallery-carousel">
+            <img src="{!! asset('images/featured_image/'.$value->filename) !!}" class="img-fluid m-3" style="height: 400px; width: 400px" alt="">
+          </a>
+          @endforeach
           </div>
         </div>
         <div class="swiper-pagination"></div>
@@ -320,12 +310,67 @@
     </div>
   </section><!-- End Contact Section -->
 
+    {{-- Modal Create Breeding --}}
+    <div class="modal fade" id="modal-create-breeds">
+      <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <h6 class="modal-title">Breeding</h6>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                  </button>
+              </div>
+              <form action="" method="post" class="forms-sample">
+                  @csrf
+                  <div class="modal-body">
+                      <div class="alert alert-primary" role="alert">
+                        Biaya yang akan dikenakan sebesar Rp 25.000 untuk semalam <br>
+                        Biaya tidak termasuk tambahan lain. <br>
+                        Batas waktu sampai dengan betina hamil.
+                      </div>
+                      <div class="row">
+                          <div class="forms-group">
+                              <label for="petname" class="col-form-label">Nama Pet</label>
+                              <select id="petnameBreeds" class="form-control select2bs4" name="petname">
+                                <option value="" selected disabled>--Pilih Nama Pet--</option>
+                                @foreach ($petsBreeds as $value)
+                                    <option value="{{$value->id}}">{{$value->name}}</option>
+                                @endforeach
+                            </select>
+                          </div>
+                      </div>
+                      <div class="row">
+                        <div class="forms-group">
+                            <label for="petMale" class="col-form-label">Nama Jantan</label>
+                            <select id="petMale" class="form-control select2bs4" name="petMale">
+                              <option value="" selected disabled>--Pilih Nama Pet--</option>
+                              @foreach ($petAdmin as $value)
+                                  <option value="{{$value->name}}">{{$value->name}}</option>
+                              @endforeach
+                          </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                      <div class="forms-group">
+                          <label for="start_at" class="col-form-label">Tanggal Masuk</label>
+                          <input type="text" placeholder="dd/mm/yyyy" name="start_at" id="start_at_breeds" class="form-control">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="modal-footer justify-content-between">
+                      <button type="button" class="btn btn-gradient-light btn-fw close" data-dismiss="modal">Kembali</button>
+                      <button type="submit" class="btn btn-primary create_breeds">Simpan</button>
+                  </div>
+              </form>
+          </div>
+      </div>
+    </div>
   {{-- Modal Create Grooms --}}
   <div class="modal fade" id="modal-create-grooms">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h6 class="modal-title">Tambah Data</h6>
+                <h6 class="modal-title">Grooming</h6>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -334,18 +379,18 @@
                 @csrf
                 <div class="modal-body">
                     <div class="row">
-                        <div class="forms-group">
+                        <div class="form-group">
                             <label for="petname" class="col-form-label">Nama Pet</label>
-                            <select id="petname" class="form-control select2bs4" name="petname">
+                            <select id="petname" name="petname" class="form-control select2bs4">
                               <option value="" selected disabled>--Pilih Nama Pet--</option>
-                              @foreach ($pets as $value)
+                              @foreach ($petsGrooms as $value)
                                   <option value="{{$value->id}}">{{$value->name}}</option>
                               @endforeach
                           </select>
                         </div>
                     </div>
                     <div class="row">
-                      <div class="forms-group">
+                      <div class="form-group">
                           <label for="service" class="col-form-label">Jenis Grooming</label>
                           <select id="service" name="service" class="form-control select2bs4">
                             <option value="" selected disabled>--Pilih Grooming--</option>
@@ -361,7 +406,7 @@
                   </div>
                 <div class="modal-footer justify-content-between">
                     <button type="button" class="btn btn-gradient-light btn-fw close" data-dismiss="modal">Kembali</button>
-                    <button type="submit" class="btn btn-primary tambah_data">Simpan</button>
+                    <button type="submit" class="btn btn-primary create_grooms">Simpan</button>
                 </div>
             </form>
         </div>
@@ -373,7 +418,7 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h6 class="modal-title">Tambah Data</h6>
+                <h6 class="modal-title">Hotels</h6>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -388,91 +433,237 @@
                     <div class="row">
                         <div class="forms-group">
                             <label for="petname" class="col-form-label">Nama Pet</label>
-                            <select id="petname" class="form-control select2bs4" name="petname">
+                            <select id="petnameHotels" class="form-control select2bs4" name="petname">
                               <option value="" selected disabled>--Pilih Nama Pet--</option>
-                              @foreach ($pets as $value)
+                              @foreach ($petsHotels as $value)
                                   <option value="{{$value->id}}">{{$value->name}}</option>
                               @endforeach
                           </select>
                         </div>
                     </div>
                     <div class="row">
-                      <div class="forms-group">
-                          <label for="service" class="col-form-label">Jenis Grooming</label>
-                          <select id="service" name="service" class="form-control select2bs4">
-                            <option value="" selected disabled>--Pilih Grooming--</option>
-                            <option value="Lengkap">Lengkap</option>
-                            <option value="Jamur">Jamur</option>
-                            <option value="Kutu">Kutu</option>
-                        </select>
+                      <div class="form-group">
+                          <label for="service" class="col-form-label">Tanggal Masuk</label>
+                          <input type="text" placeholder="dd/mm/yyyy" name="start_at" id="start_at" class="form-control"> 
                       </div>
                     </div>
-                    <div>
-                      <input type="hidden" name="price" id="price">
+                    <div class="row">
+                      <div class="form-group">
+                          <label for="service" class="col-form-label">Tanggal Keluar</label>
+                          <input type="text" placeholder="dd/mm/yyyy" name="end_at" id="end_at" class="form-control">
+                      </div>
                     </div>
-                  </div>
                 <div class="modal-footer justify-content-between">
                     <button type="button" class="btn btn-gradient-light btn-fw close" data-dismiss="modal">Kembali</button>
-                    <button type="submit" class="btn btn-primary tambah_data">Simpan</button>
+                    <button type="submit" class="btn btn-primary create_hotels">Simpan</button>
                 </div>
             </form>
         </div>
     </div>
   </div>
 
-  {{-- Modal Create Breeding --}}
-  <div class="modal fade" id="modal-create-breeds">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h6 class="modal-title">Tambah Data</h6>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <form action="" method="post" class="forms-sample">
-                @csrf
-                <div class="modal-body">
-                    <div class="alert alert-primary alert-dismissible fade show" role="alert">
-                      Biaya yang akan dikenakan sebesar Rp 25.000 untuk semalam <br>
-                      Biaya tidak termasuk tambahan lain. <br>
-                      Batas waktu sampai dengan betina hamil.
-                      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                      </button>
-                    </div>
-                    <div class="row">
-                        <div class="forms-group">
-                            <label for="petname" class="col-form-label">Nama Pet</label>
-                            <select id="petname" class="form-control select2bs4" name="petname">
-                              <option value="" selected disabled>--Pilih Nama Pet--</option>
-                              @foreach ($pets as $value)
-                                  <option value="{{$value->id}}">{{$value->name}}</option>
-                              @endforeach
-                          </select>
-                        </div>
-                    </div>
-                    <div class="row">
-                      <div class="forms-group">
-                          <label for="service" class="col-form-label">Jenis Grooming</label>
-                          <select id="service" name="service" class="form-control select2bs4">
-                            <option value="" selected disabled>--Pilih Grooming--</option>
-                            <option value="Lengkap">Lengkap</option>
-                            <option value="Jamur">Jamur</option>
-                            <option value="Kutu">Kutu</option>
-                        </select>
-                      </div>
-                    </div>
-                    <div>
-                      <input type="hidden" name="price" id="price">
-                    </div>
-                  </div>
-                <div class="modal-footer justify-content-between">
-                    <button type="button" class="btn btn-gradient-light btn-fw close" data-dismiss="modal">Kembali</button>
-                    <button type="submit" class="btn btn-primary tambah_data">Simpan</button>
-                </div>
-            </form>
-        </div>
-    </div>
-  </div>
 @endsection
+@push('scripts')
+  <script>
+    $.ajaxSetup({
+      headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+      }
+    });
+
+    $(document).ready( function () {
+      $('#start_at').datepicker({
+        dateFormat: 'yy-mm-dd',
+        minDate: 0
+      });
+      $('#end_at').datepicker({
+        dateFormat: 'yy-mm-dd',
+        minDate: +1
+      });
+
+      $('#start_at_breeds').datepicker({
+        dateFormat: 'yy-mm-dd',
+        minDate: 0
+      });
+
+    });
+
+    $(document).ready(function (e) {
+      $(document).on('click', '.create_grooms', function (e) {
+        e.preventDefault();
+
+        var price = $('#service').val();
+        if(price == 'Lengkap'){
+          $('#price').val('50000');
+        } else if (price == 'Kutu' ) {
+          $('#price').val('40000');
+        } else {
+          $('#price').val('35000')
+        }
+
+        var data = {
+            'petname': $('#petname').val(),
+            'service': $('#service').val(),
+            'price': $('#price').val(),
+            'status': 'Diproses',
+            'pickup' : 'Ya', 
+            'service_id': 1
+        }
+
+        $.ajax({
+            type: "POST",
+            url: "{{ route('user/userGroomsStore') }}",
+            data: data,
+            dataType: "json",
+            success: function (data) {
+              const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                  toast.addEventListener('mouseenter', Swal.stopTimer)
+                  toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+                })
+                Toast.fire({
+                  icon: data.status,
+                  title: data.message
+                })
+            },
+            complete: function(err){
+                $('.create_grooms').text('Simpan').removeAttr('disabled')
+                $('#petname').val(null).trigger('change');
+                $('#service').val(null).trigger('change');
+                $('#username').val(null).trigger('change');
+                $('#modal-create-grooms .close').click();
+            },
+            error: function (err) {
+              if (err.status == 422) {
+                $.each(err.responseJSON.errors, function (i, error) {
+                    var el = $(document).find('[name="'+i+'"]');
+                    el.after($('<span style="color: red;">'+error[0]+'</span>'));
+                });
+                $('.create_grooms').text('Simpan').removeAttr('disabled')
+              }
+            }
+        });
+      });
+
+      $(document).on('click', '.create_hotels', function (e) {
+          e.preventDefault();
+
+          $(this).text('Progress....').attr('disabled', 'disabled')
+
+          var data = {
+              'petname': $('#petnameHotels').val(),
+              'service': $('#service').val(),
+              'start_at': $('#start_at').val(),
+              'end_at': $('#end_at').val(),
+              'status': 'Dalam Kandang',
+              'pickup' : 'Ya',
+              'service_id': 2
+          }
+
+          $.ajax({
+              type: "POST",
+              url: "{{ route('user/userHotelsStore') }}",
+              data: data,
+              dataType: "json",
+              success: function (data) {
+              const Toast = Swal.mixin({
+                  toast: true,
+                  position: 'top-end',
+                  showConfirmButton: false,
+                  timer: 3000,
+                  timerProgressBar: true,
+                  didOpen: (toast) => {
+                  toast.addEventListener('mouseenter', Swal.stopTimer)
+                  toast.addEventListener('mouseleave', Swal.resumeTimer)
+                  }
+                  })
+                  Toast.fire({
+                  icon: data.status,
+                  title: data.message
+                  })
+              },
+              complete: function(){
+                  $('.tambah_data').text('Simpan').removeAttr('disabled');
+                  $('#username').val(null).trigger('change');
+                  $('#petname').val(null).trigger('change');
+                  $('#start_at').val('');
+                  $('#end_at').val('');
+                  $('#modal-create-hotels .close').click();
+                  fetch();
+              },
+              error: function (err) {
+              if (err.status == 422) {
+                  $.each(err.responseJSON.errors, function (i, error) {
+                      var el = $(document).find('[name="'+i+'"]');
+                      el.after($('<span style="color: red;">'+error[0]+'</span>'));
+                  });
+                  $('.tambah_data').text('Simpan').removeAttr('disabled')
+              }
+            }
+          });
+      });
+
+      $(document).on('click', '.create_breeds', function (e) {
+            e.preventDefault();
+
+            $(this).text('Progress....').attr('disabled', 'disabled')
+
+            var data = {
+              'petname': $('#petnameBreeds').val(),
+              'petmale': $('#petMale').val(),
+              'start_at': $('#start_at_breeds').val(),
+              'status': 'Proses',
+              'pickup' : 'Ya',
+              'service_id': 3
+            }
+
+            $.ajax({
+                type: "POST",
+                url: "{{ route('user/userBreedsStore') }}",
+                data: data,
+                dataType: "json",
+                success: function (data) {
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                    })
+                    Toast.fire({
+                    icon: data.status,
+                    title: data.message
+                    })
+                },
+                complete: function(){
+                    $('.create_breeds').text('Simpan').removeAttr('disabled');
+                    $('#username').val(null).trigger('change');
+                    $('#petname').val(null).trigger('change');
+                    $('#start_at').val('');
+                    $('#end_at').val('');
+                    $('#modal-create-breeds .close').click();
+                },
+                error: function (err) {
+                if (err.status == 422) {
+                    $.each(err.responseJSON.errors, function (i, error) {
+                        var el = $(document).find('[name="'+i+'"]');
+                        el.after($('<span style="color: red;">'+error[0]+'</span>'));
+                    });
+                    $('.create_breeds').text('Simpan').removeAttr('disabled')
+                }
+                }
+            });
+      });
+    });
+  </script>
+@endpush

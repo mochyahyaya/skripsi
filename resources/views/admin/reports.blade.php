@@ -13,6 +13,16 @@
       <div class="card">
         <div class="card-body">
           <h4 class="card-title">Laporan Bulanan</h4>
+          {{-- <div class="dropdown mb-4">
+            <button class="btn btn-gradient-primary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Dropdown
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+              @foreach ($arrMonth as $value)
+                <button class="dropdown-item" type="button" value="{{$loop->index}}" id="btn-select-month">{{$value}}</button>
+              @endforeach
+            </div>
+          </div> --}}
           <table class="table table-striped" id="table-reports">
             <thead>
               <tr>
@@ -33,7 +43,7 @@
                 <td>
                   {{$indeks ++}}
                 </td>
-                <td>{{$value[$i]->price}}</td>
+                <td>{{number_format($value[$i]->price,0,".",".")}}</td>
                 @if ($value[$i]->service_id == 1)
                   <td><span class="badge badge-success">Grooms</span></td>
                 @elseif($value[$i]->service_id == 2)
@@ -41,13 +51,18 @@
                 @else
                   <td><span class="badge badge-info">Breeds</span></td>
                 @endif
-                <td>{{$value[$i]->created_at}}</td>
+                <td>{{ \Carbon\Carbon::parse($value[$i]->created_at)->locale('id')->format('d M Y')}}</td>
               </tr>
               @endfor  
               @endforeach
             </tbody>
             <tfoot>
-              <tr><th></th><th></th></tr>
+              <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
             </tfoot>
           </table>
         </div>
@@ -57,41 +72,95 @@
 @endsection
 
 @push('scripts')
-    <script>
-      $(document).ready(function() {
-        // var table = $('#table-reports').DataTable();
-        // var a = table.column( 0 ).data().sum();
-        // console.log(a);
-        $('#table-reports').DataTable({
-          drawCallback: function () {
-            var api = this.api();
-            var total = api
-                .column( 1 )
-                .data()
-                .sum();
-            var format_total = total + '000';
-            $( api.column( 0 ).footer() ).html('Total');
-            $( api.column( 1 ).footer() ).html(format_total);
-          },
-          dom: 'Bfrtip',
-          buttons: [{
-            extend: 'pdf',
-            title: 'Laporan Bulanan Garden Petshop',
-            filename: 'laporan_bulanan_garden_petshop'
-          }, {
-            extend: 'excel',
-            title: 'Laporan Bulanan Garden Petshop',
-            filename: 'laporan_bulanan_garden_petshop'
-          }, {
-            extend: 'csv',
-            title: 'Laporan Bulanan Garden Petshop',
-            filename: 'laporan_bulanan_garden_petshop'
-          }, {
-            extend: 'print',
-            title: 'Laporan Bulanan Garden Petshop',
-            filename: 'laporan_bulanan_garden_petshop'
-          }], 
-        });
-      });
-    </script>
+  <script>
+    $.ajaxSetup({
+      headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+      }
+    });
+    $(document).ready(function() {
+          var table = $('#table-reports').DataTable({
+            dom: 'Bfrtip',
+            buttons: [{
+              extend: 'pdf',
+              title: 'Laporan Bulanan Garden Petshop',
+              filename:'laporan_bulanan_garden_petshop',
+              footer: true
+            }, {
+              extend: 'excel',
+              title: 'Laporan Bulanan Garden Petshop',
+              filename:'laporan_bulanan_garden_petshop',
+              footer: true
+            }, {
+              extend: 'csv',
+              title: 'Laporan Bulanan Garden Petshop',
+              filename: 'laporan_bulanan_garden_petshop',
+              footer: true
+            }, {
+              extend: 'print',
+              title: 'Laporan Bulanan Garden Petshop',
+              filename: 'laporan_bulanan_garden_petshop',
+              footer: true
+            }], 
+          });
+          var arrPrice = table.column(1).data();
+          var totalPrice = parseFloat(arrPrice.reduce(function (a, b) { return parseFloat(a) + parseFloat(b); }, 0)).toFixed(3);
+          var formatPrice = totalPrice.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+
+          $("#table-reports tfoot").find('td').eq(0).text("Total");
+          $("#table-reports tfoot").find('td').eq(1).text(formatPrice);
+
+          $(document).on('click', '#btn-select-month', function (e) {
+            var data = {
+              'month': $('#btn-select-month').val()
+            }
+            console.log(data);
+            $.ajax({
+                type: "POST",
+                url: "{{ route('admin/refMonths') }}",
+                data: data,
+                dataType: "json",
+                success: function (data) {
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                    })
+                    Toast.fire({
+                    icon: data.status,
+                    title: data.message
+                    })
+                }, 
+                complete: function(response) {
+                  var data = response.responseJSON;
+
+                  if (data != null){
+                    data = data.joins;
+                    len = Object.keys(data).length;
+                    console.log(data);
+                    if(len > 0){
+                      for(var i = 0; i < len; i++ ){
+                        var lenS = data[i].length;
+                        // var len1 = data[1][0]['service_id'];
+                        // console.log(len1);
+                        for(var j = 0; j < lenS; j++ )
+                          var price = data[i][j]['service_id'];
+                          // var transaction = data[i][j]['service_id'];
+                          // var date = data[i][j]['created_at'];
+                          console.log(price);
+                      }
+                    }
+                  }
+
+                }
+            });
+          });
+    });
+  </script>
 @endpush

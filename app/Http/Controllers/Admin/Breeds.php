@@ -128,7 +128,7 @@ class Breeds extends Controller
                     $data->start_at = $request['start_at'];
                     $data->end_at = $end;
                     $data->status = $request['status'];
-                    $data->price = $priceformat;
+                    $data->price = $price;
                     $data->update();
                     $data->save();
 
@@ -165,10 +165,13 @@ class Breeds extends Controller
                     $price = $day * 20000; 
                     $priceformat = number_format($price,0,".",".");
 
-
-                    if($cages->counter > 0){
-                        $cages->counter = $cages->counter - 2;
-                        $cages->save();
+                    if($cages != null){
+                        if($cages->counter > 0){
+                            $cages->counter = $cages->counter - 2;
+                            $cages->save();
+                        }
+                    } else {
+                        
                     }
             
                     $data->pet_id = $request['petname'];
@@ -177,7 +180,7 @@ class Breeds extends Controller
                     $data->end_at = $end;
                     $data->status = $request['status'];
                     $data->cage_id = $request['cage_id'];
-                    $data->price = $priceformat;
+                    $data->price = $price;
                     $data->update();
                     $data->save();
 
@@ -238,7 +241,7 @@ class Breeds extends Controller
         $cages = Cage::find($breeds->cage_id);
         if($breeds)
         {
-            if($cage->counter > 0) {
+            if($cages->counter > 0) {
                 $cages->counter = $cages->counter - 2;
             }
             $breeds->delete();

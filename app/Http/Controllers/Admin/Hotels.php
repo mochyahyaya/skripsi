@@ -67,7 +67,7 @@ class Hotels extends Controller
                 'pet_id' => $request['petname'],
                 'start_at'=> $request['start_at'],
                 'end_at'=> $request['end_at'],
-                'price' => $priceformat,
+                'price' => $price,
                 'status' => $request['status'],
                 'pickup' => $request['pickup'],
                 'cage_id' => $request['cage_id'],
@@ -135,7 +135,7 @@ class Hotels extends Controller
                 $data->end_at = $request['end_at'];
                 $data->status = $request['status'];
                 $data->cage_id = $request['cage_id'];
-                $data->price = $priceformat;
+                $data->price = $price;
                 $data->update();
                 $data->save();
 
@@ -158,9 +158,13 @@ class Hotels extends Controller
                 $price = $day * 20000;
                 $priceformat = number_format($price,0,".",".");
 
-                if($cages->counter > 0){
-                    $cages->counter = $cages->counter - 1;
-                    $cages->save();
+                if($cages != null){
+                    if($cages->counter > 0){
+                        $cages->counter = $cages->counter - 1;
+                        $cages->save();
+                    }
+                } else {
+
                 }
 
                 $data->pet_id = $request['petname'];
