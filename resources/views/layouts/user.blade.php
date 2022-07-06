@@ -63,9 +63,9 @@
             <li><a class="nav-link scrollto" href="#contact">Contact</a></li>
             <li class="dropdown"><a href="#"><span>{{Auth::user()->name}}</span> <i class="bi bi-chevron-down"></i></a>
                 <ul>
-                <li><a href="#">Profil</a></li>
-                <li><a href="#">Monitoring Pet</a></li>
-                <li><a href="#">Riwayat Aktivitas</a></li>
+                <li><a href="{{route('user/userProfile')}}">Profil</a></li>
+                <li><a href="{{route('user/userMonitoring')}}">Monitoring Pet</a></li>
+                <li><a href="{{route('user/userMonitoring')}}">Riwayat Aktivitas</a></li>
                 {{-- <li class="dropdown"><a href="#"><span>Deep Drop Down</span> <i class="bi bi-chevron-right"></i></a>
                     <ul>
                     <li><a href="#">Deep Drop Down 1</a></li>
@@ -103,7 +103,7 @@
         @yield('content')
     </main>
 
-    <footer id="footer" class="bg-white">
+    <footer id="footer" class="bg-white fixed">
 
         {{-- <div class="footer-newsletter">
         <div class="container">

@@ -138,7 +138,10 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function() {
         Route::post('user-grooms', [DashboardUser::class, 'grooms'])->name('user/userGroomsStore');
         Route::post('user-hotels', [DashboardUser::class, 'hotels'])->name('user/userHotelsStore');
         Route::post('user-breeds', [DashboardUser::class, 'breeds'])->name('user/userBreedsStore');
-        
+        Route::get('user-profile', [UserProfile::class, 'index'])->name('user/userProfile');
+        Route::put('user-profile-update', [UserProfile::class, 'update'])->name('user/profileUpdate');
+        Route::get('user-monitoring',[UserMonitoring::class, 'index'])->name('user/userMonitoring');
+        // Route::get('user-activity', [UserActivity::class, 'index'])->name('user/userActivity');
     });
 
 });
