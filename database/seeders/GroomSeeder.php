@@ -6,7 +6,7 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Carbon\Carbon;
 
-use App\Models\Pet;
+use App\Models\Groom;
 
 class GroomSeeder extends Seeder
 {

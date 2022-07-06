@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('breeds', function (Blueprint $table) {
-            $table->string('pet_male');
+            $table->bigInteger('pet_male');
         });
     }
 

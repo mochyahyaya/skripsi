@@ -54,8 +54,8 @@ class PetSeeder extends Seeder
             'updated_at' => Carbon::now()
         ]);
         Pet::create([
-            'name' => 'Anjing',
-            'user_id' => 3,
+            'name' => 'Anjing Jantan',
+            'user_id' => 1,
             'weight' => 6,
             'race' => 'Bulldog',
             'colour' => 'Hitam',

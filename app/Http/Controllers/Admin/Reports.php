@@ -83,8 +83,9 @@ class Reports extends Controller
     public function refMonth(Request $request)
     {
         $data = $request->all();
-        // $month = $request['month'] + 1;
-        $month = Carbon::now()->format('m');
+        $month = 6;
+        $realmonth = $month +1;
+        // $month = Carbon::now()->format('m');
         $joins = [];
         $grooms = DB::table('grooms as g')
                 ->select('g.price', 'g.service_id', 'g.created_at')

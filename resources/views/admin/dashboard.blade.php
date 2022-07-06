@@ -108,7 +108,7 @@
         <div class="card-body">
           <h4 class="card-title">Transaksi Terakhir</h4>
           <div class="table-responsive">
-            <table class="table">
+            <table class="table" id="table-recent-update">
               <thead>
                 <tr>
                   <th> # </th>
@@ -121,16 +121,16 @@
               <tbody>
                 @foreach ($joins as $value)
                 {{-- {{dd(count($value))}} --}}
-                @for($i = 0; $i < count($value) ; $i++)
                 @php
                   $indeks = 1;
                 @endphp
+                @for($i = 0; $i < count($value) ; $i++)
                 <tr>
                   <td>
                     
                   </td>
                   <td>
-                    <img src="{!!asset('PurpleAdmin/assets/images/faces/face1.jpg')!!}" class="me-2" alt="image"> {{$value[$i]->name}}
+                    <img src="{!!asset('images/featured_image/'.$value[$i]->filename) ?? '' !!}" class="me-2" alt="image"> {{$value[$i]->name}}
                   </td>
                   @if ($value[$i]->service_id == 1)
                     <td><span class="badge badge-success">Grooms</span></td>
@@ -140,7 +140,7 @@
                     <td><span class="badge badge-info">Breeds</span></td>
                   @endif
                   <td>{{$value[$i]->status}}</td>
-                  <td>{{ \Carbon\Carbon::parse($value[$i]->created_at)->locale('id')->format('d M Y')}}</td>
+                  <td>{{ \Carbon\Carbon::parse($value[$i]->updated_at)->locale('id')->format('d F Y')}}</td>
                 </tr>
                 @endfor  
                 @endforeach
@@ -364,5 +364,8 @@
         options: trafficChartOptions
       });
       $("#traffic-chart-legend").html(trafficChart.generateLegend());   
+</script>
+<script>
+  $("#table-recent-update").DataTable();
 </script>
 @endpush

@@ -24,19 +24,19 @@ class Dashboard extends Controller
 
         $joins = [];
         $grooms = DB::table('grooms as g')
-                ->select('g.status', 'g.service_id', 'g.created_at', 'g.pet_id', 'p.name')
+                ->select('g.status', 'g.service_id', 'g.updated_at', 'g.pet_id', 'p.name', 'p.filename')
                 ->leftjoin('pets as p', 'g.pet_id', '=', 'p.id')
-                ->orderBy('created_at', 'ASC')
+                ->orderBy('updated_at', 'DESC')
                 ->get();
         $hotels = DB::table('hotels as h')
-                ->select('h.status', 'h.service_id', 'h.created_at', 'h.pet_id','p.name')
+                ->select('h.status', 'h.service_id', 'h.updated_at', 'h.pet_id','p.name', 'p.filename')
                 ->leftjoin('pets as p', 'h.pet_id', '=', 'p.id')
-                ->orderBy('created_at', 'ASC')
+                ->orderBy('updated_at', 'DESC')
                 ->get();
         $breeds = DB::table('breeds as b')
-                ->select('b.status', 'b.service_id', 'b.created_at', 'b.pet_id', 'p.name')
+                ->select('b.status', 'b.service_id', 'b.updated_at', 'b.pet_id', 'p.name', 'p.filename')
                 ->leftjoin('pets as p', 'b.pet_id', '=', 'p.id')
-                ->orderBy('created_at', 'ASC')
+                ->orderBy('updated_at', 'DESC')
                 ->get();
         array_push($joins, $grooms);
         array_push($joins, $hotels);
