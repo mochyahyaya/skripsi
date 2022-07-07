@@ -243,10 +243,9 @@
       scales: {
           yAxes: [{
               ticks: {
-                  display: false,
+                  display: true,
                   min: 0,
-                  stepSize: 20,
-                  max: 80
+                  stepSize: 100000, 
               },
               gridLines: {
                 drawBorder: false,
@@ -284,6 +283,7 @@
       var groomsCount =  {{ Js::from($groomsCount) }};
       var hotelsCount =  {{ Js::from($hotelsCount) }};
       var breedsCount =  {{ Js::from($breedsCount) }};
+      var total = groomsCount + hotelsCount + breedsCount;
 
       var gradientStrokeBlue = ctx.createLinearGradient(0, 0, 0, 181);
       gradientStrokeBlue.addColorStop(0, 'rgba(54, 215, 232, 1)');

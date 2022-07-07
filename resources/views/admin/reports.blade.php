@@ -51,18 +51,22 @@
                 @else
                   <td><span class="badge badge-info">Breeds</span></td>
                 @endif
-                <td>{{ \Carbon\Carbon::parse($value[$i]->created_at)->locale('id')->format('d F Y')}}</td>
+                <td>{{ \Carbon\Carbon::parse($value[$i]->created_at)->locale('id')->isoFormat('Do MMMM YYYY')}}</td>
               </tr>
               @endfor  
               @endforeach
             </tbody>
             <tfoot>
               <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
+                  <th colspan="1">Total:</th>
+                  <th colspan="3"></th>
               </tr>
+              {{-- <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr> --}}
             </tfoot>
           </table>
         </div>
@@ -80,106 +84,134 @@
     });
 
     $(document).ready(function() {
-          var table = $('#table-reports').DataTable({
-            dom: 'Bfrtip',
-            buttons: [{
-              extend: 'pdf',
-              title: 'Laporan Bulanan Garden Petshop',
-              filename:'laporan_bulanan_garden_petshop',
-              footer: true
-            }, {
-              extend: 'excel',
-              title: 'Laporan Bulanan Garden Petshop',
-              filename:'laporan_bulanan_garden_petshop',
-              footer: true
-            }, {
-              extend: 'csv',
-              title: 'Laporan Bulanan Garden Petshop',
-              filename: 'laporan_bulanan_garden_petshop',
-              footer: true
-            }, {
-              extend: 'print',
-              title: 'Laporan Bulanan Garden Petshop',
-              filename: 'laporan_bulanan_garden_petshop',
-              footer: true
-            }], 
-          });
-          var arrPrice = table.column(1).data();
-          var totalPrice = parseFloat(arrPrice.reduce(function (a, b) { return parseFloat(a) + parseFloat(b); }, 0)).toFixed(3);
+      var table = $('#table-reports').DataTable({
+        "footerCallback": function ( row, data, start, end, display ) {
+          var api = this.api(), data;
+
+          // Remove the formatting to get integer data for summation
+          var intVal = function ( i ) {
+              return typeof i === 'string' ?
+                  i.replace(/[\$,]/g, '')*1 :
+                  typeof i === 'number' ?
+                      i : 0;
+          };
+
+          // Total over all pages
+          total = api
+              .column(1)
+              .data();
+
+          console.log(total);
+          
+          var totalPrice = parseFloat(total.reduce(function (a, b) { return parseFloat(a) + parseFloat(b); }, 0)).toFixed(3);
           var formatPrice = totalPrice.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+          // Update footer
+          $( api.column( 1 ).footer() ).html(
+              'Rp'+ formatPrice 
+          );
+        },
+        destroy: true,
+        processing: true,
+        dom: 'Bfrtip',
+        buttons: [{
+          extend: 'pdf',
+          title: 'Laporan Bulanan Garden Petshop',
+          filename:'laporan_bulanan_garden_petshop',
+          footer: true
+        }, {
+          extend: 'excel',
+          title: 'Laporan Bulanan Garden Petshop',
+          filename:'laporan_bulanan_garden_petshop',
+          footer: true
+        }, {
+          extend: 'csv',
+          title: 'Laporan Bulanan Garden Petshop',
+          filename: 'laporan_bulanan_garden_petshop',
+          footer: true
+        }, {
+          extend: 'print',
+          title: 'Laporan Bulanan Garden Petshop',
+          filename: 'laporan_bulanan_garden_petshop',
+          footer: true
+        }], 
+      });
+          // var arrPrice = table.column(1, {page:'current'}).data();
+          // var totalPrice = parseFloat(arrPrice.reduce(function (a, b) { return parseFloat(a) + parseFloat(b); }, 0)).toFixed(3);
+          // var formatPrice = totalPrice.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
 
-          $("#table-reports tfoot").find('td').eq(0).text("Total");
-          $("#table-reports tfoot").find('td').eq(1).text(formatPrice);
+          // $("#table-reports tfoot").find('td').eq(0).text("Total");
+          // $("#table-reports tfoot").find('td').eq(1).text(formatPrice);
 
-          $(document).on('click', '#btn-select-month', function (e) {
-            var month = $(this).val();
-            // console.log(month);
-            $.ajax({
-                type: "POST",
-                url: "{{ route('admin/refMonths') }}",
-                data: month,
-                success: function (data) {
-                const Toast = Swal.mixin({
-                    toast: true,
-                    position: 'top-end',
-                    showConfirmButton: false,
-                    timer: 3000,
-                    timerProgressBar: true,
-                    didOpen: (toast) => {
-                    toast.addEventListener('mouseenter', Swal.stopTimer)
-                    toast.addEventListener('mouseleave', Swal.resumeTimer)
-                    }
-                    })
-                    Toast.fire({
-                    icon: data.data.status,
-                    title: data.data.messages
-                    })
-                }, 
-                complete: function(response) {
-                  var data = response.responseJSON;
+        $(document).on('click', '#btn-select-month', function (e) {
+          e.preventDefault();
+          var month = $(this).val();
+          // console.log(month);
+          $.ajax({
+            type: "POST",
+            url: "{{ route('admin/refMonths') }}",
+            data: month,
+            success: function (data) {
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+                })
+                Toast.fire({
+                icon: data.data.status,
+                title: data.data.messages
+                })
+            }, 
+            complete: function(response){
+              var data = response.responseJSON;
 
-                  if (data != null){
-                    data = data.joins;
-                    len = data.length;
-                    console.log(len);
-                    if(len > 0){
-                      $('#table-reports').DataTable().clear();
-                      $('#table-reports').DataTable().destroy();
-                      var find = $('#table-reports tbody').find('tr');
-                      if (find) {
-                          $('#table-reports tbody').empty();
-                          $('#table-reports tfoot').empty();
+              if (data != null){
+                data = data.joins;
+                len = data.length;
+                // console.log(len);
+                if(len > 0){
+                  $('#table-reports table tbody').DataTable().clear();
+                  $('#table-reports table tbody').DataTable().destroy();
+                  var find = $('#table-reports tbody').find('tr');
+                  if (find) {
+                      $('#table-reports tbody').empty();
+                      // $('#table-reports tfoot').empty();
+                  }
+                  for(var i = 0; i < len; i++ ){
+                    var lenS = data[i].length;
+                    for(var j = 0; j < lenS; j++ ){
+                      var price = data[i][j]['price'];
+                      var transaction = data[i][j]['service_id'];
+                      var date = data[i][j]['created_at'];
+                      var totalPrice = parseFloat(price.reduce(function (a, b) { return parseFloat(a) + parseFloat(b); }, 0)).toFixed(3);
+                      var tr_str = "<tr>" +
+                            "<td>" + j + "</td>" +
+                            "<td>" + totalPrice + "</td>" +
+                            "<td>" + transaction + "</td>" +
+                            "<td>" + moment(date).locale('id').format('LL') + "</td>" +
+                            "</tr>";
+                            $("#table-reports tbody").append(tr_str);
                       }
-                      for(var i = 0; i < len; i++ ){
-                        var lenS = data[i].length;
-                        for(var j = 0; j < lenS; j++ ){
-                          var price = data[i][j]['price'];
-                          var transaction = data[i][j]['service_id'];
-                          var date = data[i][j]['created_at'];
-                          var tr_str = "<tr>" +
-                                "<td'>" + i + "</td>" +
-                                "<td>" + price + "</td>" +
-                                "<td>" + transaction + "</td>" +
-                                "<td>" + date + "</td>" +
-                                "</tr>";
-                                $("#table-reports tbody").append(tr_str);
-                          var arrPrice = find.column(1).data();
-                          var totalPrice = parseFloat(arrPrice.reduce(function (a, b) { return parseFloat(a) + parseFloat(b); }, 0)).toFixed(3);
-                          var formatPrice = totalPrice.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
-
-                            $("#table-reports tfoot").find('td').eq(0).text("Total");
-                            $("#table-reports tfoot").find('td').eq(1).text(formatPrice);
-                        }
-                      }
                     }
-                    find = $('#table-reports table tbody').find('tr');
-                    if (find) {
-                        $('#table-reports table').DataTable();
-                    }
+                    var table = $("#table-reports").DataTable();
+                    // var total = table.column(1);
+                    // console.log(find);
+                    // $("#table-reports tfoot").find('th').eq(0).text("Total");
+                    // $("#table-reports tfoot").find('th').eq(1).text(total);
+                  }
+                  find = $('#table-reports table tbody').find('tr');
+                  if (find) {
+                      $('#table-reports table').DataTable();
                   }
                 }
-            });
+              }
           });
-      });
+        });
+    });
   </script>
 @endpush
