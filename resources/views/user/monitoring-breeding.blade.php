@@ -19,6 +19,9 @@
         padding-right: 1.5rem !important;
         padding-left: 1.5rem !important;
     }
+    p, h5 {
+      color: black;
+    }
 </style>
 <section class="inner-page">
   <div class="container">
@@ -44,25 +47,28 @@
                 <h4 class="card-title">List Monitoring</h4>
                 <section id="gallery">
                   <div class="row">
-                      {{-- @foreach ($breeds as $value)
-                      <div class="col-lg-3 mb-4">
-                          <div class="card">
-                              @if ($value->pets->type_pet_id == 1)
-                                  <img src="{!! asset('PurpleAdmin/assets/images/CatCage.jpg') !!}" alt="" class="card-img-top">
-                              @else
-                                  <img src="{!! asset('PurpleAdmin/assets/images/DogCage.jpg') !!}" alt="" class="card-img-top">
+                    @foreach ($breeds as $value)
+                    <div class="col-lg-3 mb-4">
+                      {{-- {{dd($value)}} --}}
+                        <div class="card">
+                            <img src="{!! asset('images/featured_image/'.$value->filename) !!}" alt="" class="card-img-top">
+                            <div class="card-body">
+                              @if ($value->cage_id == null)
+                                <h5 class="card-title">Kandang belum dipilih </h5>
+                              @else    
+                                <h5 class="card-title">{{$value->cages->type_cages->alias}}  - {{$value->cages->number}} </h5>
                               @endif
-                              <img src="" alt="" class="card-img-top">
-                              <div class="card-body">
-                              <h5 class="card-title">{{$value->cages->type_cages->alias}} - {{$value->cages->number}} </h5>
                               <p class="card-text">Nama Pet: <span>{{$value->pets->name}}</span></p>
+                              <p class="card-text">Nama Jantan: <span>{{$value->pet_male}}</span></p>
                               <p class="card-text">Jenis Pet: <span>{{$value->pets->typePets->name}}</span></p>
                               <p class="card-text">Tanggal Masuk: <span>{{ \Carbon\Carbon::parse($value->start_at)->translatedFormat('d F Y')}}</span></p>
-                              <p class="card-text">Tanggal Keluar: <span>{{ \Carbon\Carbon::parse($value->end_at)->translatedFormat('d F Y')}}</span></p>
-                              <button class="btn btn-gradient-primary btn-sm" value="{{$value->id}}" id="monit-data"><i class="fa-solid fa-house-medical"></i></button>                        </div>
-                          </div>
-                      </div>
-                      @endforeach --}}
+                              <p class="card-text"></p>
+                              <a href="{{route('user/userMonitoringPhoto', $value->pet_id)}}" class="card-text">Foto</a>
+                              <a href="{{route('user/userMonitoringTable', $value->id)}}" class="card-text">Tabel </a>
+                            </div>
+                        </div>
+                    </div>
+                    @endforeach
                   </div>
                 </section>
               </div>

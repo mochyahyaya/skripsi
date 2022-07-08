@@ -30,6 +30,8 @@ use App\Http\Controllers\User\UserHotels;
 use App\Http\Controllers\User\UserBreeds;
 use App\Http\Controllers\User\UserActivity;
 use App\Http\Controllers\User\UserMonitoring;
+use App\Http\Controllers\User\UserMonitoringPhoto;
+use App\Http\Controllers\User\UserMonitoringTable;
 use App\Http\Controllers\User\UserProfile;
 
 use Illuminate\Support\Facades\Auth;
@@ -141,8 +143,10 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function() {
         Route::get('user-profile', [UserProfile::class, 'index'])->name('user/userProfile');
         Route::put('user-profile-update', [UserProfile::class, 'update'])->name('user/profileUpdate');
         Route::get('user-monitoring',[UserMonitoring::class, 'index'])->name('user/userMonitoring');
-        Route::get('user-monitoring-photo/{$id}',[UserMonitoring::class, 'galery'])->name('user/userMonitoringPhoto');
-        Route::get('user-monitoring-table/{$id}',[UserMonitoring::class, 'table'])->name('user/userMonitoringTabel');
+        Route::get('user-monitoring-photo/{$id}',[UserMonitoringPhoto::class, 'boards'])->name('user/userMonitoringPhoto');
+        Route::get('user-monitoring-table/{$id}',[UserMonitoringTable::class, 'boards'])->name('user/userMonitoringTable');
+        Route::get('user-monitoring-photo-breed/{$id}',[UserMonitoringPhoto::class, 'breeds'])->name('user/userMonitoringPhotoBreeds');
+        Route::get('user-monitoring-table-breed/{$id}',[UserMonitoringTable::class, 'breeds'])->name('user/userMonitoringTableBreeds');
         Route::get('user-monitoring-breeds', [UserMonitoring::class, 'breeds'])->name('user/userMonitoringBreeds');
         Route::get('user-activity-grooms', [UserActivity::class, 'grooms'])->name('user/userActivityGrooms');
         Route::get('user-activity-boards', [UserActivity::class, 'boards'])->name('user/userActivityHotels');
