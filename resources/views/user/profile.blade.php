@@ -74,7 +74,7 @@
                     <form class="file-upload" id="update-profile" enctype="multipart/form-data">
                         <div class="row mb-5 gx-5">
                             <!-- Contact detail -->
-                            <div class="col-xxl-8 mb-5 mb-xxl-0">
+                            <div class="col-xxl-12 mb-5 mb-xxl-0">
                                 <div class="bg-secondary-soft px-4 py-5 rounded">
                                     <div class="row g-3">
                                         @foreach ($user as $value)
@@ -104,7 +104,7 @@
                                 </div>
                             </div>
                             <!-- Upload profile -->
-                            <div class="col-xxl-4">
+                            <div class="col-xxl-12">
                                 <div class="bg-secondary-soft px-4 py-5 rounded">
                                     <div class="row g-3">
                                         <h4 class="mb-4 mt-0">Upload Foto Profile Kamu</h4>
@@ -130,7 +130,7 @@
                         <div class="row mb-5 gx-5">
         
                             <!-- change password -->
-                            <div class="col-xxl-6">
+                            <div class="col-xxl-12">
                                 <div class="bg-secondary-soft px-4 py-5 rounded">
                                     <div class="row g-3">
                                         <h4 class="my-4">Change Password</h4>
@@ -162,8 +162,8 @@
                     </form> <!-- Form END -->
                 </div>
             </div>
-        </div>
-  </section>
+    </div>
+</section>
 @endsection
 @push('scripts')
     <script>

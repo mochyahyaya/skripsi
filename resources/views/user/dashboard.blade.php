@@ -61,128 +61,132 @@
       </div>
 
     </div>
-  </section><!-- End App Features Section -->
+</section><!-- End App Features Section -->
 
   <!-- ======= Details Section ======= -->
-  <section id="details" class="details section-bg">
-    <div class="container">
+<section id="hotels" class="details section-bg">
+  <div class="container">
 
-      <div class="row content">
-        <div class="col-md-4" data-aos="fade-right">
-          <img src={!! asset('Appland/assets/img/about-6.png') !!} class="img-fluid" alt="">
-        </div>
-        <div class="col-md-8 pt-4" data-aos="fade-up">
-          <h3>Titipkan Hewan Kesayangan Anda Disini</h3>
-          <p class="fst-italic">
-            Penginapan pet murah yang menjamin keselamatan dan kenyamanan bagi pet kesayangan anda.
-          </p>
-          <ul>
-            <li><i class="bi bi-check"></i> Makan 3x Sehari</li>
-            <li><i class="bi bi-check"></i> Selalu dalam pengawasan</li>
-            <li><i class="bi bi-check"></i> Vitamin & Cemilan*</li>
-          </ul>
-          <p>
-            <button type="button" class="get-started-btn btn btn-outline-primary rounded-pill" data-toggle="modal" data-target="#modal-create-hotels">
-              Titipkan Sekarang
-            </button>
-          </p>
-        </div>
+    <div class="row content">
+      <div class="col-md-4" data-aos="fade-right">
+        <img src={!! asset('Appland/assets/img/about-6.png') !!} class="img-fluid" alt="">
       </div>
-
-    </div>
-  </section><!-- End Details Section -->
-
-    <!-- ======= Pricing Section ======= -->
-    <section id="pricing" class="pricing">
-      <div class="container">
-  
-        <div class="section-title">
-          <h2>Groom</h2>
-          <p>Pilihan Grooming</p>
-        </div>
-  
-        <div class="row no-gutters">
-  
-          <div class="col-lg-4 box" data-aos="fade-right">
-            <h3>Jamur</h3>
-            <h4>35.000</h4>
-            <ul>
-              <li><i class="bx bx-check"></i> Nail Triming</li>
-              <li><i class="bx bx-check"></i> Hair Cut / Hair Shave</li>
-              <li><i class="bx bx-check"></i> Anti Tick Shampoo</li>
-              <li><i class="bx bx-check"></i> Tick Treatment</li>
-            </ul>
-              <button type="button" class="get-started-btn btn btn-outline-primary" data-toggle="modal" data-target="#modal-create-grooms">
-                Groom
-              </button>
-          </div>
-  
-          <div class="col-lg-4 box featured" data-aos="fade-up">
-            <h3>Kutu</h3>
-            <h4>40.000</h4>
-            <ul>
-              <li><i class="bx bx-check"></i> Nail Triming </li>
-              <li><i class="bx bx-check"></i> Hair Cut / Hair Shave</li>
-              <li><i class="bx bx-check"></i> Anti Mold Shampoo</li>
-              <li><i class="bx bx-check"></i> Anti Mold Powder</li>
-              <li><i class="bx bx-check"></i> Mold Treatment</li>
-            </ul>
-            <button type="button" class="get-started-btn btn btn-outline-primary" data-toggle="modal" data-target="#modal-create-grooms">
-              Groom
-            </button>
-          </div>
-  
-          <div class="col-lg-4 box" data-aos="fade-left">
-            <h3>Lengkap</h3>
-            <h4>50.000</h4>
-            <ul>
-              <li><i class="bx bx-check"></i> Nail Triming</li>
-              <li><i class="bx bx-check"></i> Hair Cut / Hair Shave</li>
-              <li><i class="bx bx-check"></i> Anti Mold & Tick Shampoo</li>
-              <li><i class="bx bx-check"></i> Anti Mold Powder</li>
-              <li><i class="bx bx-check"></i> Tick Treatment</li>
-              <li><i class="bx bx-check"></i> Mold Treatment</li>
-            </ul>
-            <button type="button" class="get-started-btn btn btn-outline-primary" data-toggle="modal" data-target="#modal-create-grooms">
-              Groom
-            </button>
-          </div>
-  
-        </div>
-  
-      </div>
-    </section><!-- End Pricing Section -->
-
-  <!-- ======= Gallery Section ======= -->
-  <section id="gallery" class="gallery section-bg">
-    <div class="container" data-aos="fade-up">
-      <div class="section-title">
-        <h2>Gallery Pet Breeding</h2>
-        <p class="item-center">
-          <button class="btn btn-outline-primary rounded-pill" data-toggle="modal" data-target="#modal-create-breeds">
-            Breeding
+      <div class="col-md-8 pt-4" data-aos="fade-up">
+        <h3>Titipkan Hewan Kesayangan Anda Disini</h3>
+        <p class="fst-italic">
+          Penginapan pet murah yang menjamin keselamatan dan kenyamanan bagi pet kesayangan anda.
+        </p>
+        <ul>
+          <li><i class="bi bi-check"></i> Makan 3x Sehari</li>
+          <li><i class="bi bi-check"></i> Selalu dalam pengawasan</li>
+          <li><i class="bi bi-check"></i> Vitamin & Cemilan*</li>
+        </ul>
+        <p>
+          <button type="button" class="get-started-btn btn btn-outline-primary rounded-pill" data-toggle="modal" data-target="#modal-create-hotels">
+            Titipkan Sekarang
           </button>
         </p>
       </div>
     </div>
 
-    <div class="container-fluid" data-aos="fade-up">
-      <div class="gallery-slider swiper">
-        <div class="swiper-wrapper" style="max-height: 600px">
-          @foreach ($pets as $value)
-          <a href="{!! asset('images/featured_image/'.$value->filename) !!}" class="gallery-lightbox" data-gall="gallery-carousel">
-            <img src="{!! asset('images/featured_image/'.$value->filename) !!}" class="img-fluid m-3" style="height: 400px; width: 400px" alt="">
-          </a>
-          @endforeach
-          </div>
-        </div>
-        <div class="swiper-pagination"></div>
-      </div>
+  </div>
+</section><!-- End Details Section -->
+
+<!-- ======= Pricing Section ======= -->
+<section id="grooms" class="pricing">
+  <div class="container">
+
+    <div class="section-title">
+      <h2>Groom</h2>
+      <p>Pilihan Grooming</p>
     </div>
-  </section><!-- End Gallery Section -->
+
+    <div class="row no-gutters">
+
+      <div class="col-lg-4 box" data-aos="fade-right">
+        <h3>Jamur</h3>
+        <h4>35.000</h4>
+        <ul>
+          <li><i class="bx bx-check"></i> Nail Triming</li>
+          <li><i class="bx bx-check"></i> Hair Cut / Hair Shave</li>
+          <li><i class="bx bx-check"></i> Anti Tick Shampoo</li>
+          <li><i class="bx bx-check"></i> Tick Treatment</li>
+        </ul>
+          <button type="button" class="get-started-btn btn btn-outline-primary" data-toggle="modal" data-target="#modal-create-grooms">
+            Groom
+          </button>
+      </div>
+
+      <div class="col-lg-4 box featured" data-aos="fade-up">
+        <h3>Kutu</h3>
+        <h4>40.000</h4>
+        <ul>
+          <li><i class="bx bx-check"></i> Nail Triming </li>
+          <li><i class="bx bx-check"></i> Hair Cut / Hair Shave</li>
+          <li><i class="bx bx-check"></i> Anti Mold Shampoo</li>
+          <li><i class="bx bx-check"></i> Anti Mold Powder</li>
+          <li><i class="bx bx-check"></i> Mold Treatment</li>
+        </ul>
+        <button type="button" class="get-started-btn btn btn-outline-primary" data-toggle="modal" data-target="#modal-create-grooms">
+          Groom
+        </button>
+      </div>
+
+      <div class="col-lg-4 box" data-aos="fade-left">
+        <h3>Lengkap</h3>
+        <h4>50.000</h4>
+        <ul>
+          <li><i class="bx bx-check"></i> Nail Triming</li>
+          <li><i class="bx bx-check"></i> Hair Cut / Hair Shave</li>
+          <li><i class="bx bx-check"></i> Anti Mold & Tick Shampoo</li>
+          <li><i class="bx bx-check"></i> Anti Mold Powder</li>
+          <li><i class="bx bx-check"></i> Tick Treatment</li>
+          <li><i class="bx bx-check"></i> Mold Treatment</li>
+        </ul>
+        <button type="button" class="get-started-btn btn btn-outline-primary" data-toggle="modal" data-target="#modal-create-grooms">
+          Groom
+        </button>
+      </div>
+
+    </div>
+
+  </div>
+</section><!-- End Pricing Section -->
+
+<!-- ======= Gallery Section ======= -->
+<section id="breeds" class="gallery section-bg">
+  <div class="container" data-aos="fade-up">
+    <div class="section-title">
+      <h2>Gallery Pet Breeding</h2>
+      <p class="item-center">
+        <button class="btn btn-outline-primary rounded-pill" data-toggle="modal" data-target="#modal-create-breeds">
+          Breeding
+        </button>
+      </p>
+    </div>
+  </div>
+
+  <div class="container-fluid" data-aos="fade-up">
+    <div class="gallery-slider swiper">
+      <div class="swiper-wrapper" style="max-height: 600px">
+        @foreach ($pets as $value)
+        <a href="{!! asset('images/featured_image/'.$value->filename) !!}" class="gallery-lightbox" data-gall="gallery-carousel">
+          <img src="{!! asset('images/featured_image/'.$value->filename) !!}" class="img-fluid m-3" style="height: 500px; width: 400px" alt="">
+        </a>
+        {{-- <a data-target="#modal-create-breeds" data-toggle="modal" id="modal-galery" 
+          href="#modal-create-breeds">
+          <img src="{!! asset('images/featured_image/'.$value->filename) !!}" class="img-fluid m-3" style="height: 500px; width: 400px" alt="">
+        </a> --}}
+        @endforeach
+        </div>
+      </div>
+      <div class="swiper-pagination"></div>
+    </div>
+  </div>
+</section><!-- End Gallery Section -->
 
   <!-- ======= Testimonials Section ======= -->
-  <section id="testimonials" class="testimonials">
+  {{-- <section id="testimonials" class="testimonials">
     <div class="container" data-aos="fade-up">
 
       <div class="section-title">
@@ -244,223 +248,274 @@
       </div>
 
     </div>
-  </section><!-- End Testimonials Section -->
+  </section> --}}
+  <!-- End Testimonials Section -->
 
-  <!-- ======= Contact Section ======= -->
-  <section id="contact" class="contact section-bg">
-    <div class="container" data-aos="fade-up">
+<!-- ======= Contact Section ======= -->
+<section id="contact" class="contact">
+  <div class="container" data-aos="fade-up">
 
-      <div class="section-title">
-        <h2>Hubungin Kami</h2>
-        <p>Jika terdapat keluhan atau masukkan , silahkan hubungi kami disini</p>
-      </div>
+    <div class="section-title">
+      <h2>Hubungin Kami</h2>
+      <p>Jika terdapat keluhan atau masukkan , silahkan hubungi kami disini</p>
+    </div>
 
-      <div class="row">
+    <div class="row">
 
-        <div class="col-lg-6">
-          <div class="row">
-            <div class="col-lg-6 info">
-              <i class="bx bx-map"></i>
-              <h4>Alamat</h4>
-              <p>Jl. Raya Jatiwaringin No.102 ,<br>RT.005/RW.002</p>
-            </div>
-            <div class="col-lg-6 info">
-              <i class="bx bx-phone"></i>
-              <h4>Telepon</h4>
-              <p>+021 1345 688<br>+021 4452 123</p>
-            </div>
-            <div class="col-lg-6 info">
-              <i class="bx bx-envelope"></i>
-              <h4>Email</h4>
-              <p>gardenpetshop@gmail.com</p>
-            </div>
-            <div class="col-lg-6 info">
-              <i class="bx bx-time-five"></i>
-              <h4>Jam Pelayanan</h4>
-              <p>Sen - Jum : 08.00 - 20.00<br>Sab - Minggu: 09.00 - 19.30 </p>
-            </div>
+      <div class="col-lg-6">
+        <div class="row">
+          <div class="col-lg-6 info">
+            <i class="bx bx-map"></i>
+            <h4>Alamat</h4>
+            <p>Jl. Raya Jatiwaringin No.102 ,<br>RT.005/RW.002</p>
+          </div>
+          <div class="col-lg-6 info">
+            <i class="bx bx-phone"></i>
+            <h4>Telepon</h4>
+            <p>+021 1345 688<br>+021 4452 123</p>
+          </div>
+          <div class="col-lg-6 info">
+            <i class="bx bx-envelope"></i>
+            <h4>Email</h4>
+            <p>gardenpetshop@gmail.com</p>
+          </div>
+          <div class="col-lg-6 info">
+            <i class="bx bx-time-five"></i>
+            <h4>Jam Pelayanan</h4>
+            <p>Sen - Jum : 08.00 - 20.00<br>Sab - Minggu: 09.00 - 19.30 </p>
           </div>
         </div>
+      </div>
 
-        <div class="col-lg-6">
-          <form action="forms/contact.php" method="post" role="form" class="php-email-form" data-aos="fade-up">
-            <div class="form-group">
-              <input placeholder="Nama Anda" type="text" name="name" class="form-control" id="name" required>
-            </div>
-            <div class="form-group mt-3">
-              <input placeholder="Email Anda" type="email" class="form-control" name="email" id="email" required>
-            </div>
-            <div class="form-group mt-3">
-              <input placeholder="Keluhan/Masukan" type="text" class="form-control" name="subject" id="subject" required>
-            </div>
-            <div class="form-group mt-3">
-              <textarea placeholder="Pesan" class="form-control" name="message" rows="5" required></textarea>
-            </div>
-            <div class="my-3">
-              <div class="loading">Loading</div>
-              <div class="error-message"></div>
-              <div class="sent-message">Your message has been sent. Thank you!</div>
-            </div>
-            <div class="text-center"><button type="submit">Kirim Pesan</button></div>
-          </form>
-        </div>
-
+      <div class="col-lg-6">
+        <form action="forms/contact.php" method="post" role="form" class="php-email-form" data-aos="fade-up">
+          <div class="form-group">
+            <input placeholder="Nama Anda" type="text" name="name" class="form-control" id="name" required>
+          </div>
+          <div class="form-group mt-3">
+            <input placeholder="Email Anda" type="email" class="form-control" name="email" id="email" required>
+          </div>
+          <div class="form-group mt-3">
+            <input placeholder="Keluhan/Masukan" type="text" class="form-control" name="subject" id="subject" required>
+          </div>
+          <div class="form-group mt-3">
+            <textarea placeholder="Pesan" class="form-control" name="message" rows="5" required></textarea>
+          </div>
+          <div class="my-3">
+            <div class="loading">Loading</div>
+            <div class="error-message"></div>
+            <div class="sent-message">Your message has been sent. Thank you!</div>
+          </div>
+          <div class="text-center"><button type="submit">Kirim Pesan</button></div>
+        </form>
       </div>
 
     </div>
-  </section><!-- End Contact Section -->
 
-    {{-- Modal Create Breeding --}}
-    <div class="modal fade" id="modal-create-breeds">
-      <div class="modal-dialog modal-lg">
-          <div class="modal-content">
-              <div class="modal-header">
-                  <h6 class="modal-title">Breeding</h6>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                      <span aria-hidden="true">&times;</span>
-                  </button>
-              </div>
-              <form action="" method="post" class="forms-sample">
-                  @csrf
-                  <div class="modal-body">
-                      <div class="alert alert-primary" role="alert">
-                        Biaya yang akan dikenakan sebesar Rp 25.000 untuk semalam <br>
-                        Biaya tidak termasuk tambahan lain. <br>
-                        Batas waktu sampai dengan betina hamil.
-                      </div>
-                      <div class="row">
-                          <div class="forms-group">
-                              <label for="petname" class="col-form-label">Nama Pet</label>
-                              <select id="petnameBreeds" class="form-control select2bs4" name="petname">
-                                <option value="" selected disabled>--Pilih Nama Pet--</option>
-                                @foreach ($petsBreeds as $value)
-                                    <option value="{{$value->id}}">{{$value->name}}</option>
-                                @endforeach
-                            </select>
-                          </div>
-                      </div>
-                      <div class="row">
-                        <div class="forms-group">
-                            <label for="petMale" class="col-form-label">Nama Jantan</label>
-                            <select id="petMale" class="form-control select2bs4" name="petMale">
-                              <option value="" selected disabled>--Pilih Nama Pet--</option>
-                              @foreach ($petAdmin as $value)
-                                  <option value="{{$value->name}}">{{$value->name}}</option>
-                              @endforeach
-                          </select>
-                        </div>
-                    </div>
-                    <div class="row">
+  </div>
+</section><!-- End Contact Section -->
+
+{{-- Modal Create Breeding --}}
+<div class="modal fade" id="modal-create-breeds">
+  <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h6 class="modal-title">Breeding</h6>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+              </button>
+          </div>
+          <form action="" method="post" class="forms-sample">
+              @csrf
+              <div class="modal-body">
+                  <div class="alert alert-primary" role="alert">
+                    Biaya yang akan dikenakan sebesar Rp 25.000 untuk semalam <br>
+                    Biaya tidak termasuk tambahan lain. <br>
+                    Batas waktu sampai dengan betina hamil.
+                  </div>
+                  <div class="row">
                       <div class="forms-group">
-                          <label for="start_at" class="col-form-label">Tanggal Masuk</label>
-                          <input type="text" placeholder="dd/mm/yyyy" name="start_at" id="start_at_breeds" class="form-control">
-                      </div>
-                    </div>
-                  </div>
-                  <div class="modal-footer justify-content-between">
-                      <button type="button" class="btn btn-gradient-light btn-fw close" data-dismiss="modal">Kembali</button>
-                      <button type="submit" class="btn btn-primary create_breeds">Simpan</button>
-                  </div>
-              </form>
-          </div>
-      </div>
-    </div>
-  {{-- Modal Create Grooms --}}
-  <div class="modal fade" id="modal-create-grooms">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h6 class="modal-title">Grooming</h6>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <form action="" method="post" class="forms-sample">
-                @csrf
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="form-group">
-                            <label for="petname" class="col-form-label">Nama Pet</label>
-                            <select id="petname" name="petname" class="form-control select2bs4">
-                              <option value="" selected disabled>--Pilih Nama Pet--</option>
-                              @foreach ($petsGrooms as $value)
-                                  <option value="{{$value->id}}">{{$value->name}}</option>
-                              @endforeach
-                          </select>
-                        </div>
-                    </div>
-                    <div class="row">
-                      <div class="form-group">
-                          <label for="service" class="col-form-label">Jenis Grooming</label>
-                          <select id="service" name="service" class="form-control select2bs4">
-                            <option value="" selected disabled>--Pilih Grooming--</option>
-                            <option value="Lengkap">Lengkap</option>
-                            <option value="Jamur">Jamur</option>
-                            <option value="Kutu">Kutu</option>
+                          <label for="petname" class="col-form-label">Nama Pet</label>
+                          <select id="petnameBreeds" class="form-control select2bs4" name="petname">
+                            <option value="" selected disabled>--Pilih Nama Pet--</option>
+                            @foreach ($petsBreeds as $value)
+                                <option value="{{$value->id}}">{{$value->name}}</option>
+                            @endforeach
                         </select>
                       </div>
-                    </div>
-                    <div>
-                      <input type="hidden" name="price" id="price">
-                    </div>
                   </div>
-                <div class="modal-footer justify-content-between">
-                    <button type="button" class="btn btn-gradient-light btn-fw close" data-dismiss="modal">Kembali</button>
-                    <button type="submit" class="btn btn-primary create_grooms">Simpan</button>
+                  <div class="row">
+                    <div class="forms-group">
+                        <label for="petMale" class="col-form-label">Nama Jantan</label>
+                        <select id="petMale" class="form-control select2bs4" name="petMale">
+                          <option value="" selected disabled>--Pilih Nama Pet--</option>
+                          @foreach ($petAdmin as $value)
+                              <option value="{{$value->name}}">{{$value->name}}</option>
+                          @endforeach
+                      </select>
+                    </div>
                 </div>
-            </form>
-        </div>
-    </div>
+                <div class="row">
+                  <div class="forms-group">
+                      <label for="start_at" class="col-form-label">Tanggal Masuk</label>
+                      <input type="text" placeholder="dd/mm/yyyy" name="start_at" id="start_at_breeds" class="form-control">
+                  </div>
+                </div>
+              </div>
+              <div class="modal-footer justify-content-between">
+                  <button type="button" class="btn btn-gradient-light btn-fw close" data-dismiss="modal">Kembali</button>
+                  <button type="submit" class="btn btn-primary create_breeds">Simpan</button>
+              </div>
+          </form>
+      </div>
   </div>
+</div>
 
-  {{-- Modal Create Hotels --}}
-  <div class="modal fade" id="modal-create-hotels">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h6 class="modal-title">Hotels</h6>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <form action="" method="post" class="forms-sample">
-                @csrf
-                <div class="modal-body">
-                  <div class="alert alert-primary" role="alert">
-                    Biaya yang akan dikenakan sebesar Rp 20.000 untuk semalam <br>
-                    Biaya tidak termasuk tambahan lain.
+{{-- Modal Create Grooms --}}
+<div class="modal fade" id="modal-create-grooms">
+  <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h6 class="modal-title">Grooming</h6>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+              </button>
+          </div>
+          <form action="" method="post" class="forms-sample">
+              @csrf
+              <div class="modal-body">
+                  <div class="row">
+                      <div class="form-group">
+                          <label for="petname" class="col-form-label">Nama Pet</label>
+                          <select id="petname" name="petname" class="form-control select2bs4">
+                            <option value="" selected disabled>--Pilih Nama Pet--</option>
+                            @foreach ($petsGrooms as $value)
+                                <option value="{{$value->id}}">{{$value->name}}</option>
+                            @endforeach
+                        </select>
+                      </div>
                   </div>
-                    <div class="row">
-                        <div class="forms-group">
-                            <label for="petname" class="col-form-label">Nama Pet</label>
-                            <select id="petnameHotels" class="form-control select2bs4" name="petname">
-                              <option value="" selected disabled>--Pilih Nama Pet--</option>
-                              @foreach ($petsHotels as $value)
-                                  <option value="{{$value->id}}">{{$value->name}}</option>
-                              @endforeach
-                          </select>
-                        </div>
+                  <div class="row">
+                    <div class="form-group">
+                        <label for="service" class="col-form-label">Jenis Grooming</label>
+                        <select id="service" name="service" class="form-control select2bs4">
+                          <option value="" selected disabled>--Pilih Grooming--</option>
+                          <option value="Lengkap">Lengkap</option>
+                          <option value="Jamur">Jamur</option>
+                          <option value="Kutu">Kutu</option>
+                      </select>
                     </div>
-                    <div class="row">
-                      <div class="form-group">
-                          <label for="service" class="col-form-label">Tanggal Masuk</label>
-                          <input type="text" placeholder="dd/mm/yyyy" name="start_at" id="start_at" class="form-control"> 
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="form-group">
-                          <label for="service" class="col-form-label">Tanggal Keluar</label>
-                          <input type="text" placeholder="dd/mm/yyyy" name="end_at" id="end_at" class="form-control">
-                      </div>
-                    </div>
-                <div class="modal-footer justify-content-between">
-                    <button type="button" class="btn btn-gradient-light btn-fw close" data-dismiss="modal">Kembali</button>
-                    <button type="submit" class="btn btn-primary create_hotels">Simpan</button>
+                  </div>
+                  <div>
+                    <input type="hidden" name="price" id="price">
+                  </div>
                 </div>
-            </form>
-        </div>
-    </div>
+              <div class="modal-footer justify-content-between">
+                  <button type="button" class="btn btn-gradient-light btn-fw close" data-dismiss="modal">Kembali</button>
+                  <button type="submit" class="btn btn-primary create_grooms">Simpan</button>
+              </div>
+          </form>
+      </div>
   </div>
+</div>
+
+{{-- Modal Create Hotels --}}
+<div class="modal fade" id="modal-create-hotels">
+  <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h6 class="modal-title">Hotels</h6>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+              </button>
+          </div>
+          <form action="" method="post" class="forms-sample">
+              @csrf
+              <div class="modal-body">
+                <div class="alert alert-primary" role="alert">
+                  Biaya yang akan dikenakan sebesar Rp 20.000 untuk semalam <br>
+                  Biaya tidak termasuk tambahan lain.
+                </div>
+                  <div class="row">
+                      <div class="forms-group">
+                          <label for="petname" class="col-form-label">Nama Pet</label>
+                          <select id="petnameHotels" class="form-control select2bs4" name="petname">
+                            <option value="" selected disabled>--Pilih Nama Pet--</option>
+                            @foreach ($petsHotels as $value)
+                                <option value="{{$value->id}}">{{$value->name}}</option>
+                            @endforeach
+                        </select>
+                      </div>
+                  </div>
+                  <div class="row">
+                    <div class="form-group">
+                        <label for="service" class="col-form-label">Tanggal Masuk</label>
+                        <input type="text" placeholder="dd/mm/yyyy" name="start_at" id="start_at" class="form-control"> 
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="form-group">
+                        <label for="service" class="col-form-label">Tanggal Keluar</label>
+                        <input type="text" placeholder="dd/mm/yyyy" name="end_at" id="end_at" class="form-control">
+                    </div>
+                  </div>
+              <div class="modal-footer justify-content-between">
+                  <button type="button" class="btn btn-gradient-light btn-fw close" data-dismiss="modal">Kembali</button>
+                  <button type="submit" class="btn btn-primary create_hotels">Simpan</button>
+              </div>
+          </form>
+      </div>
+  </div>
+</div>
+
+{{-- Modal Galery--}}
+<div class="modal fade" id="modal-galery">
+  <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h6 class="modal-title">Hotels</h6>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+              </button>
+          </div>
+          <form action="" method="post" class="forms-sample">
+              @csrf
+              <div class="modal-body">
+                <div class="alert alert-primary" role="alert">
+                  Biaya yang akan dikenakan sebesar Rp 20.000 untuk semalam <br>
+                  Biaya tidak termasuk tambahan lain.
+                </div>
+                  <div class="row">
+                      <div class="forms-group">
+                          <label for="petname" class="col-form-label">Nama Pet</label>
+                          <select id="petnameHotels" class="form-control select2bs4" name="petname">
+                            <option value="" selected disabled>--Pilih Nama Pet--</option>
+                            @foreach ($petsHotels as $value)
+                                <option value="{{$value->id}}">{{$value->name}}</option>
+                            @endforeach
+                        </select>
+                      </div>
+                  </div>
+                  <div class="row">
+                    <div class="form-group">
+                        <label for="service" class="col-form-label">Tanggal Masuk</label>
+                        <input type="text" placeholder="dd/mm/yyyy" name="start_at" id="start_at" class="form-control"> 
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="form-group">
+                        <label for="service" class="col-form-label">Tanggal Keluar</label>
+                        <input type="text" placeholder="dd/mm/yyyy" name="end_at" id="end_at" class="form-control">
+                    </div>
+                  </div>
+              <div class="modal-footer justify-content-between">
+                  <button type="button" class="btn btn-gradient-light btn-fw close" data-dismiss="modal">Kembali</button>
+                  <button type="submit" class="btn btn-primary create_hotels">Simpan</button>
+              </div>
+          </form>
+      </div>
+  </div>
+</div>
 
 @endsection
 @push('scripts')

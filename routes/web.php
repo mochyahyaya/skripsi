@@ -141,7 +141,12 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function() {
         Route::get('user-profile', [UserProfile::class, 'index'])->name('user/userProfile');
         Route::put('user-profile-update', [UserProfile::class, 'update'])->name('user/profileUpdate');
         Route::get('user-monitoring',[UserMonitoring::class, 'index'])->name('user/userMonitoring');
-        // Route::get('user-activity', [UserActivity::class, 'index'])->name('user/userActivity');
+        Route::get('user-monitoring-photo/{$id}',[UserMonitoring::class, 'galery'])->name('user/userMonitoringPhoto');
+        Route::get('user-monitoring-table/{$id}',[UserMonitoring::class, 'table'])->name('user/userMonitoringTabel');
+        Route::get('user-monitoring-breeds', [UserMonitoring::class, 'breeds'])->name('user/userMonitoringBreeds');
+        Route::get('user-activity-grooms', [UserActivity::class, 'grooms'])->name('user/userActivityGrooms');
+        Route::get('user-activity-boards', [UserActivity::class, 'boards'])->name('user/userActivityHotels');
+        Route::get('user-activity-breeds', [UserActivity::class, 'breeds'])->name('user/userActivityBreeds');
     });
 
 });

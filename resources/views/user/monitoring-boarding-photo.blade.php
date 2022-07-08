@@ -44,26 +44,15 @@
                   </ul>
                 </div>
               <div class="card-body">
-                <h4 class="card-title">List Monitoring</h4>
+                <h4 class="card-title">Foto Monitoring</h4>
                 <section id="gallery">
                   <div class="row">
-                      @foreach ($hotels as $value)
+                      @foreach ($images as $value)
                       <div class="col-lg-3 mb-4">
                           <div class="card">
-                              @if ($value->pets->type_pet_id == 1)
-                                  <img src="{!! asset('images/featured_image/'.$value->filename) !!}" alt="" class="card-img-top">
-                              @else
-                                  <img src="{!! asset('PurpleAdmin/assets/images/DogCage.jpg') !!}" alt="" class="card-img-top">
-                              @endif
                               <img src="" alt="" class="card-img-top">
                               <div class="card-body">
-                                <h5 class="card-title">{{$value->cages->type_cages->alias}} - {{$value->cages->number}} </h5>
-                                <p class="card-text">Nama Pet: <span>{{$value->pets->name}}</span></p>
-                                <p class="card-text">Jenis Pet: <span>{{$value->pets->typePets->name}}</span></p>
-                                <p class="card-text">Tanggal Masuk: <span>{{ \Carbon\Carbon::parse($value->start_at)->translatedFormat('d F Y')}}</span></p>
-                                <p class="card-text">Tanggal Keluar: <span>{{ \Carbon\Carbon::parse($value->end_at)->translatedFormat('d F Y')}}</span></p>
-                                <a href="{{route('user/userMonitoringPhoto', $value->id)}}" data-id="{{$value->pet_id}}">Foto</a>
-                                <a href="{{route('user/userMonitoringTabel', $value->id)}}" class="card-text">Tabel </a>
+                                  <img src="{!! asset('images/galery/'.$value->filename) !!}" alt="" class="card-img-top">
                               </div>
                           </div>
                       </div>

@@ -14,10 +14,10 @@
         <div class="card-header">
             <ul class="nav nav-tabs card-header-tabs">
               <li class="nav-item">
-                <a class="nav-link" href="{{route('admin/hotels')}}">Boarding</a>
+                <a class="nav-link active" href="#">Boarding</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link active" href="#">Monitoring</a>
+                <a class="nav-link" href="{{route('admin/breeds')}}">Breeding</a>
               </li>
             </ul>
           </div>

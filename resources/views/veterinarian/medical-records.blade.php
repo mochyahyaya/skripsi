@@ -257,233 +257,234 @@
         text-align: center;
     }
 </style>
-<div class="container">
-<div class="row">
-    <div class="col-lg-4 col-xl-4">
-        @foreach ($pets as $value)
-        <div class="card-box text-center">
-            <img src="{!!asset('images/featured_image/'.$value->filename) !!}" class="rounded-circle avatar-xl img-thumbnail" alt="profile-image">
+<div class="content-wrapper">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4 col-xl-4">
+                @foreach ($pets as $value)
+                <div class="card-box text-center">
+                    <img src="{!!asset('images/featured_image/'.$value->filename) !!}" class="rounded-circle avatar-xl img-thumbnail" alt="profile-image">
 
-            <h4 class="mb-0">{{$value->name}}</h4>
-            <p class="text-muted">{{$value->typePets->name}}</p>
+                    <h4 class="mb-0">{{$value->name}}</h4>
+                    <p class="text-muted">{{$value->typePets->name}}</p>
 
-            <table class="table table-borderless text-left">
-                <thead>
-                    <tr>
-                        <td ><strong>Pemilik</strong> </td>
-                        <td><span class=""> {{$value->users->name}}</span></td>
-                    </tr>
-                    <tr>
-                        <td><strong>BOD</strong>  </td>
-                        <td><span class="">{{ \Carbon\Carbon::parse($value->birthday)->locale('id')->format('d F Y')}}</span></td>
-                    </tr>
-                    <tr>
-                        <td><strong>Ras</strong>  </td>
-                        <td><span class="">{{$value->race}}</span></td>
-                    </tr>
-                    <tr>
-                        <td><strong>Berat</strong>  </td>
-                        <td><span class="">{{$value->weight}}</span></td>
-                    </tr>
-                    <tr>
-                        <td><strong>Warna</strong>  </td>
-                        <td><span class="">{{$value->colour}}</span></td>
-                    </tr>
-                    <tr>
-                        <td><strong>Gender</strong>  </td>
-                        <td><span class="">{{$value->gender}}</span></td>
-                    </tr>
-                </thead>
-            </table>
-        </div> <!-- end card-box -->
-        @endforeach
-
-        <div class="card-box">
-            <h4 class="header-title">Pet lain yang di miliki</h4>
-
-            <div class="pt-1">
-                @foreach ($otherpets as $value)
-                <a href="{{route('veterinarian/medicalRecords', $value->id)}}">
-                    <img src="{!!asset('images/featured_image/'.$value->filename) !!}" class="rounded-circle avatar-xl img-thumbnail mb-1 mt-1" alt="{{$value->name}}">
-                 </a> 
+                    <table class="table table-borderless text-left">
+                        <thead>
+                            <tr>
+                                <td ><strong>Pemilik</strong> </td>
+                                <td><span class=""> {{$value->users->name}}</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>BOD</strong>  </td>
+                                <td><span class="">{{ \Carbon\Carbon::parse($value->birthday)->locale('id')->format('d F Y')}}</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Ras</strong>  </td>
+                                <td><span class="">{{$value->race}}</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Berat</strong>  </td>
+                                <td><span class="">{{$value->weight}}</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Warna</strong>  </td>
+                                <td><span class="">{{$value->colour}}</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Gender</strong>  </td>
+                                <td><span class="">{{$value->gender}}</span></td>
+                            </tr>
+                        </thead>
+                    </table>
+                </div> <!-- end card-box -->
                 @endforeach
-            </div>
-        </div> <!-- end card-box-->
 
-    </div> <!-- end col-->
+                <div class="card-box">
+                    <h4 class="header-title">Pet lain yang di miliki</h4>
 
-    <div class="col-lg-8 col-xl-8">
-        <div class="card-box">
-            <ul class="nav nav-pills navtab-bg">
-                <li class="nav-item">
-                    <a href="#about-me" data-toggle="tab" aria-expanded="true" class="nav-link ml-0 active">
-                        <i class="mdi mdi-face-profile mr-1"></i>Profil Pet
-                    </a>
-                </li>
-            </ul>
+                    <div class="pt-1">
+                        @foreach ($otherpets as $value)
+                        <a href="{{route('veterinarian/medicalRecords', $value->id)}}">
+                            <img src="{!!asset('images/featured_image/'.$value->filename) !!}" class="rounded-circle avatar-xl img-thumbnail mb-1 mt-1" alt="{{$value->name}}">
+                        </a> 
+                        @endforeach
+                    </div>
+                </div> <!-- end card-box-->
 
-            <div class="tab-content">
-                
-                <div class="tab-pane show active" id="about-me">
+            </div> <!-- end col-->
 
-                    <h5 class="mb-4 text-uppercase"><i class="mdi mdi-briefcase mr-1"></i>
-                        Jadwal Berkunjung</h5>
-                    @foreach ($medicalrecords as $value)
-                    <ul class="list-unstyled timeline-sm">
-                        <li class="timeline-sm-item">
-                            <span class="timeline-sm-date">{{ \Carbon\Carbon::parse($value->created_at)->locale('id')->format('d F Y')}}</span>
-                            <h5 class="mt-0 mb-1">{{$value->needed}}</h5>
+            <div class="col-lg-8 col-xl-8">
+                <div class="card-box">
+                    <ul class="nav nav-pills navtab-bg">
+                        <li class="nav-item">
+                            <a href="#about-me" data-toggle="tab" aria-expanded="true" class="nav-link ml-0 active">
+                                <i class="mdi mdi-face-profile mr-1"></i>Profil Pet
+                            </a>
                         </li>
                     </ul>
-                    @endforeach
 
-                    <h5 class="mb-3 mt-4 text-uppercase"><i class="mdi mdi-cards-variant mr-1"></i>
-                        Tabel Kunjungan</h5>
-                        @foreach ($pets as $value)
-                            <button class="btn btn-primary mb-2" data-toggle="modal" data-target="#modal-create" data-id= "{{$value->id}}">
-                                Tambah Data Rekam Medis
-                            </button>
-                        @endforeach
-                    <div class="table-responsive">
-                        <table class="table table-borderless mb-0" id="table-medical-records">
-                            <thead class="thead-light">
-                                <tr>
-                                    <th>Keperluan</th>
-                                    <th>Gejala</th>
-                                    <th>Penanangan</th>
-                                    <th>Hari Kunjungan</th>
-                                    <th>Status</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($medicalrecords as $value)
-                                    <tr>
-                                        <td>{{$value->needed}}</td>
-                                        <td>{{$value->indication}}</td>
-                                        <td>{{$value->treatment}}</td>
-                                        <td>{{ \Carbon\Carbon::parse($value->created_at)->locale('id')->format('d F Y')}}</td>
-                                        @if ($value->status == 'Sehat')
-                                            <td><label class="badge badge-success">{{$value->status}}</label></td>
-                                        @else
-                                            <td><label class="badge badge-danger">{{$value->status}}</label></td>
-                                        @endif
-                                    </tr>
+                    <div class="tab-content">
+                        
+                        <div class="tab-pane show active" id="about-me">
+
+                            <h5 class="mb-4 text-uppercase"><i class="mdi mdi-briefcase mr-1"></i>
+                                Jadwal Berkunjung</h5>
+                            @foreach ($medicalrecords as $value)
+                            <ul class="list-unstyled timeline-sm">
+                                <li class="timeline-sm-item">
+                                    <span class="timeline-sm-date">{{ \Carbon\Carbon::parse($value->created_at)->locale('id')->format('d F Y')}}</span>
+                                    <h5 class="mt-0 mb-1">{{$value->needed}}</h5>
+                                </li>
+                            </ul>
+                            @endforeach
+
+                            <h5 class="mb-3 mt-4 text-uppercase"><i class="mdi mdi-cards-variant mr-1"></i>
+                                Tabel Kunjungan</h5>
+                                @foreach ($pets as $value)
+                                    <button class="btn btn-primary mb-2" data-toggle="modal" data-target="#modal-create" data-id= "{{$value->id}}">
+                                        Tambah Data Rekam Medis
+                                    </button>
                                 @endforeach
-                            </tbody>
-                        </table>
-                    </div>
+                            <div class="table-responsive">
+                                <table class="table table-borderless mb-0" id="table-medical-records">
+                                    <thead class="thead-light">
+                                        <tr>
+                                            <th>Keperluan</th>
+                                            <th>Gejala</th>
+                                            <th>Penanangan</th>
+                                            <th>Hari Kunjungan</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($medicalrecords as $value)
+                                            <tr>
+                                                <td>{{$value->needed}}</td>
+                                                <td>{{$value->indication}}</td>
+                                                <td>{{$value->treatment}}</td>
+                                                <td>{{ \Carbon\Carbon::parse($value->created_at)->locale('id')->format('d F Y')}}</td>
+                                                @if ($value->status == 'Sehat')
+                                                    <td><label class="badge badge-success">{{$value->status}}</label></td>
+                                                @else
+                                                    <td><label class="badge badge-danger">{{$value->status}}</label></td>
+                                                @endif
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
 
+                        </div>
+                        <!-- end timeline content-->
+
+                    </div> <!-- end tab-content -->
+                </div> <!-- end card-box-->
+
+            </div> <!-- end col -->
+        </div>
+    </div>
+
+    {{-- Modal create --}}
+    <div class="modal fade" id="modal-create">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title">Tambah Data</h6>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
-                <!-- end timeline content-->
+                <form action="" method="" class="forms-sample">
+                    @csrf
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="forms-group">
+                                <label for="username">Keperluan</label>
+                                <input type="text" class="form-control" name="needed" id="needed">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="forms-group">
+                                <label for="username">Gejala</label>
+                                <input type="text" class="form-control" name="indication" id="indication">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="forms-group">
+                                <label for="username">Penanganan</label>
+                                <input type="text" class="form-control" name="treatment" id="treatment">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="forms-group">
+                                <label for="username">Status</label>
+                                <select name="status" id="status" class="form-control select2bs4">
+                                    <option value="" disabled selected>--Keadaan Hewan--</option>
+                                    <option value="Sehat">Sehat</option>
+                                    <option value="Sakit">Sakit</option>
+                                </select>
+                            </div>
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-gradient-light btn-fw close" data-dismiss="modal">Kembali</button>
+                        <button type="submit" class="btn btn-gradient-primary btn-fw tambah_data">Simpan</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 
-            </div> <!-- end tab-content -->
-        </div> <!-- end card-box-->
-
-    </div> <!-- end col -->
-</div>
-</div>
-
-{{-- Modal create --}}
-<div class="modal fade" id="modal-create">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
+    {{-- Modal Update --}}
+    <div class="modal fade" id="modal-update">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
             <div class="modal-header">
-                <h6 class="modal-title">Tambah Data</h6>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <h6 class="modal-title">Ubah Data</h6>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form action="" method="" class="forms-sample">
-                @csrf
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="forms-group">
-                            <label for="username">Keperluan</label>
-                            <input type="text" class="form-control" name="needed" id="needed">
+                <form action="" method="" class="forms-sample">
+                    @csrf
+                    <div class="modal-body">
+                    <input type="hidden" id="medical_id">
+                        <div class="row">
+                            <div class="forms-group">
+                                <label for="petname" class="col-form-label">Keperluan</label>
+                                <input type="text" class="form-control" name="updateNeeded" id="updateNeeded">
+                            </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="forms-group">
-                            <label for="username">Gejala</label>
-                            <input type="text" class="form-control" name="indication" id="indication">
+                        <div class="row">
+                            <div class="forms-group">
+                                <label for="petname" class="col-form-label">Gejala</label>
+                                <input type="text" class="form-control" name="updateIndication" id="updateIndication">
+                            </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="forms-group">
-                            <label for="username">Penanganan</label>
-                            <input type="text" class="form-control" name="treatment" id="treatment">
+                        <div class="row">
+                            <div class="forms-group">
+                                <label for="petname" class="col-form-label">Penanganan</label>
+                                <input type="text" class="form-control" name="updateTreatment" id="updateTreatment">
+                            </div>
                         </div>
-                    </div>
-                    <div class="row">
+                        <div class="row">
                         <div class="forms-group">
-                            <label for="username">Status</label>
-                            <select name="status" id="status" class="form-control select2bs4">
-                                <option value="" disabled selected>--Keadaan Hewan--</option>
-                                <option value="Sehat">Sehat</option>
-                                <option value="Sakit">Sakit</option>
+                            <label for="status" class="col-form-label">Status</label>
+                            <select id="updateStatus" class="form-control select2bs4">
+                                <option value="Sakit">Proses</option>
+                                <option value="Sehat">Selesai</option>
                             </select>
                         </div>
-                  </div>
-                <div class="modal-footer justify-content-between">
-                    <button type="button" class="btn btn-gradient-light btn-fw close" data-dismiss="modal">Kembali</button>
-                    <button type="submit" class="btn btn-gradient-primary btn-fw tambah_data">Simpan</button>
-                </div>
-            </form>
+                    </div>
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-gradient-light btn-fw" data-bs-dismiss="modal">Kembali</button>
+                        <button type="submit" class="btn btn-gradient-primary btn-fw update_data">Simpan</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 </div>
-
-{{-- Modal Update --}}
-<div class="modal fade" id="modal-update">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h6 class="modal-title">Ubah Data</h6>
-            <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-            <form action="" method="" class="forms-sample">
-                @csrf
-                <div class="modal-body">
-                  <input type="hidden" id="medical_id">
-                    <div class="row">
-                        <div class="forms-group">
-                            <label for="petname" class="col-form-label">Keperluan</label>
-                            <input type="text" class="form-control" name="updateNeeded" id="updateNeeded">
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="forms-group">
-                            <label for="petname" class="col-form-label">Gejala</label>
-                            <input type="text" class="form-control" name="updateIndication" id="updateIndication">
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="forms-group">
-                            <label for="petname" class="col-form-label">Penanganan</label>
-                            <input type="text" class="form-control" name="updateTreatment" id="updateTreatment">
-                        </div>
-                    </div>
-                    <div class="row">
-                      <div class="forms-group">
-                          <label for="status" class="col-form-label">Status</label>
-                          <select id="updateStatus" class="form-control select2bs4">
-                            <option value="Sakit">Proses</option>
-                            <option value="Sehat">Selesai</option>
-                        </select>
-                      </div>
-                  </div>
-                </div>
-                <div class="modal-footer justify-content-between">
-                    <button type="button" class="btn btn-gradient-light btn-fw" data-bs-dismiss="modal">Kembali</button>
-                    <button type="submit" class="btn btn-gradient-primary btn-fw update_data">Simpan</button>
-                </div>
-            </form>
-        </div>
-    </div>
-  </div>
-
 @endsection
 
 @push('scripts')
