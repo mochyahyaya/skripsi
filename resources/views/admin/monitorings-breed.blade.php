@@ -30,7 +30,11 @@
                     <div class="card">
                         <img src="{!! asset('PurpleAdmin/assets/images/BreedCage.jpg') !!}" alt="" class="card-img-top">
                         <div class="card-body">
-                        <h5 class="card-title">{{$value->cages->type_cages->alias}} - {{$value->cages->number}} </h5>
+                        @if ($value->cage_id == null)
+                            <h5 class="card-title">Belum dikandang</h5>
+                        @else
+                            <h5 class="card-title">{{$value->cages->type_cages->alias}} - {{$value->cages->number}} </h5> 
+                        @endif
                         <p class="card-text">Nama Pet: <span>{{$value->pets->name}}</span></p>
                         <p class="card-text">Jenis Pet: <span>{{$value->pets->typePets->name}}</span></p>
                         <p class="card-text">Tanggal Masuk: <span>{{ \Carbon\Carbon::parse($value->start_at)->translatedFormat('d F Y')}}</span></p>
@@ -63,11 +67,11 @@
                             <label for="username">Kondisi Makan</label>
                                 <div class="form-check">
                                 <label class="form-check-label">
-                                  <input type="checkbox" class="form-check-input" name="food" value="Baik"> Baik <i class="input-helper"></i></label>
+                                  <input type="checkbox" class="form-check-input" name="food" value="Normal"> Baik <i class="input-helper"></i></label>
                                 </div>
                                 <div class="form-check">
                                     <label class="form-check-label">
-                                    <input type="checkbox" class="form-check-input" name="food" value="Tidak Baik"> Tidak Baik <i class="input-helper"></i></label>
+                                    <input type="checkbox" class="form-check-input" name="food" value="Tidak Normal"> Tidak Baik <i class="input-helper"></i></label>
                                 </div>
                           </div>
                     </div>

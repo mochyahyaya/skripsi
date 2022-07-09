@@ -59,7 +59,8 @@
                                     <td>{{$loop->iteration}}</td>
                                     <td>{{$value->food}}</td>
                                     <td>{{$value->temperature}}</td>
-                                    <td>{{$value->medicine}}</td>
+                                    <td>{{$value->medicine ?? 'Tidak Perlu'}}'</td>
+                                    <td>{{ \Carbon\Carbon::parse($value->created_at)->locale('id')->isoFormat('LLLL')}}</td>
                                 @endforeach
                             </tr>
                         </tbody>

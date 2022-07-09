@@ -143,11 +143,11 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function() {
         Route::get('user-profile', [UserProfile::class, 'index'])->name('user/userProfile');
         Route::put('user-profile-update', [UserProfile::class, 'update'])->name('user/profileUpdate');
         Route::get('user-monitoring',[UserMonitoring::class, 'index'])->name('user/userMonitoring');
+        Route::get('user-monitoring-breeds', [UserMonitoring::class, 'breeds'])->name('user/userMonitoringBreeds');
         Route::get('user-monitoring-photo/{$id}',[UserMonitoringPhoto::class, 'boards'])->name('user/userMonitoringPhoto');
         Route::get('user-monitoring-table/{$id}',[UserMonitoringTable::class, 'boards'])->name('user/userMonitoringTable');
         Route::get('user-monitoring-photo-breed/{$id}',[UserMonitoringPhoto::class, 'breeds'])->name('user/userMonitoringPhotoBreeds');
-        Route::get('user-monitoring-table-breed/{$id}',[UserMonitoringTable::class, 'breeds'])->name('user/userMonitoringTableBreeds');
-        Route::get('user-monitoring-breeds', [UserMonitoring::class, 'breeds'])->name('user/userMonitoringBreeds');
+        Route::get('user-monitoring-table-breed',[UserMonitoringTable::class, 'breeds'])->name('user/userMonitoringTableBreeds');
         Route::get('user-activity-grooms', [UserActivity::class, 'grooms'])->name('user/userActivityGrooms');
         Route::get('user-activity-boards', [UserActivity::class, 'boards'])->name('user/userActivityHotels');
         Route::get('user-activity-breeds', [UserActivity::class, 'breeds'])->name('user/userActivityBreeds');
