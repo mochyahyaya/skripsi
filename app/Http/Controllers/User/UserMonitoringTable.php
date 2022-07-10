@@ -17,9 +17,9 @@ class UserMonitoringTable extends Controller
         return view('user.monitoring-boarding-table', compact('hotels'));
     }
 
-    public function breeds()
+    public function breeds($id)
     {
-        $breeds = BreedMonitoring::where('id', 1)->get();
+        $breeds = BreedMonitoring::where('id', $id)->get();
         return view('user.monitoring-breeding-table', compact('breeds'));
     }
 }

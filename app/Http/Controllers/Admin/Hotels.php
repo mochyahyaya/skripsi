@@ -26,7 +26,9 @@ class Hotels extends Controller
     
     public function fetch()
     {
-        $hotels = Hotel::with('pets', 'cages.type_cages')->get();
+        $hotels = Hotel::with('pets', 'cages.type_cages')
+        ->orderBy('updated_at', 'DESC')
+        ->get();
         $cages = Cage::with('type_cages')->get();
         // dd($hotels);
         return response()->json([
@@ -71,7 +73,8 @@ class Hotels extends Controller
                 'status' => $request['status'],
                 'pickup' => $request['pickup'],
                 'cage_id' => $request['cage_id'],
-                'service_id' => $request['service_id']
+                'service_id' => $request['service_id'],
+                'health_status' => 'Normal'
             ]);
             $data->save();
             $cage = Cage::find($data->cage_id);

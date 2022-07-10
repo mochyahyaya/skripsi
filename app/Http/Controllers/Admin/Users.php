@@ -20,7 +20,9 @@ class Users extends Controller
 
     public function fetch()
     {
-        $users = User::with('roles')->get();
+        $users = User::with('roles')
+        ->orderBy('updated_at', 'DESC')
+        ->get();
         return response()->json([
             'users' => $users
         ]);

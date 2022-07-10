@@ -32,7 +32,9 @@ class Grooms extends Controller
 
     public function fetch()
     {
-        $grooms = Groom::with('pets')->get();
+        $grooms = Groom::with('pets')
+        ->orderBy('updated_at', 'DESC')
+        ->get();
         return response()->json([
             'grooms' => $grooms
         ]);

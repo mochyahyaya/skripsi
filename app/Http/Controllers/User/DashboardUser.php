@@ -13,6 +13,7 @@ use App\Models\Pet;
 use App\Models\Groom;
 use App\Models\Hotel;
 use App\Models\Breed;
+use App\Models\Testimonial;
 
 class DashboardUser extends Controller
 {
@@ -66,9 +67,12 @@ class DashboardUser extends Controller
         })
         ->get();
         
+        $queryBreeds2 = DB::table('breeds as b')
+        ->select(DB::raw('ROW_NUMBER() OVER (PARTITION BY pet_male ORDER BY id DESC) AS rn, b.*'));
+
         $petAdmin = DB::table('pets as p')
         ->select('p.*', 'p.id as petsid')
-        ->withExpression('pos_pets', $queryBreeds)
+        ->withExpression('pos_pets', $queryBreeds2)
         ->leftJoin('pos_pets', 'p.id', '=', 'pos_pets.pet_male')
         ->where('p.user_id', 1)
         ->whereNull('status')
@@ -79,9 +83,11 @@ class DashboardUser extends Controller
         })
         ->get();
 
+        $testi = Testimonial::where('type', 'Masukan')->where('show', 'Tampilkan')->get();
+
         $pets =  $petAdmin = $petAdmin = Pet::where('user_id', 1)->where('gender', 'Jantan')->get();
 
-        return view('user.dashboard', compact('petsGrooms', 'petAdmin', 'petsHotels', 'petsBreeds', 'pets'));
+        return view('user.dashboard', compact('petsGrooms', 'petAdmin', 'petsHotels', 'petsBreeds', 'pets', 'testi'));
     }
 
     public function grooms(Request $request)
@@ -224,6 +230,45 @@ class DashboardUser extends Controller
                 'data' => $data,
             ];
         }
+        return response()->json($data);
+    }
+
+    public function testimonial(Request $request)
+    {
+        $validated = $request->validate([
+            'name' => 'required',
+            'email' => 'required',
+            'subject' => 'required',
+            'messages' => 'required',
+        ]);
+
+        if(!$validated)
+        {
+            $data = [
+                'status' => 'error',
+                'meesage' => "Gagal menambahkan keluhan/masukan",
+                'data' => ''
+            ];
+        }
+
+        else
+        {
+            $data = Testimonial::create([
+                'name' => $request['name'],
+                'email'=> $request['email'],
+                'type'=> $request['subject'],
+                'messages' => $request['messages'],
+                'show' => 'Tidak Tampilkan',
+            ]);
+
+
+            $data = [
+                'status' => 'success',
+                'message' => 'Keluhan/Masukan berhasil dikirim',
+                'data' => $data,
+            ];
+        }
+
         return response()->json($data);
     }
 }

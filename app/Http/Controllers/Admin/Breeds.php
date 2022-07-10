@@ -26,7 +26,9 @@ class Breeds extends Controller
 
     public function fetch()
     {
-        $breeds = Breed::with('pets', 'cages.type_cages')->get();
+        $breeds = Breed::with('pets', 'cages.type_cages')
+        ->orderBy('updated_at', 'DESC')
+        ->get();
         return response()->json([
             'breeds' => $breeds
         ]);

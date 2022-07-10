@@ -42,6 +42,7 @@ class MonitoringsHotel extends Controller
             $data = HotelMonitoring::create([
                 'food' => $request['food'],
                 'temperature'=> $request['temperature'],
+                'medicine'=> $request['medicine'],
                 'notes'=> $request['notes'],
                 'hotel_id' => $request['hotel_id']
             ]);
@@ -55,7 +56,7 @@ class MonitoringsHotel extends Controller
                     $file->move(\public_path("/images/hotelmonitoring"),$imageName);
                     ImageMonitoringHotel::create([
                         'filename' => $imageName,
-                        'pet_id' => $data->hotels->pet_id
+                        'pet_id' => $data->id
                     ]);
                 }
              }

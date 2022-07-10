@@ -19,7 +19,9 @@ class Cages extends Controller
 
     public function fetch()
     {
-        $cages = Cage::with('type_cages')->get();
+        $cages = Cage::with('type_cages')
+        ->orderBy('updated_at', 'DESC')
+        ->get();
         // dd($cages); 
         return response()->json([
             'cages' => $cages

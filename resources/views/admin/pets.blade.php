@@ -276,7 +276,7 @@
                                 </td>\
                             \</tr>');
                         });
-                        $('#table-users').DataTable();
+                        $('#table-pets').DataTable();
                     }
                 });
             }

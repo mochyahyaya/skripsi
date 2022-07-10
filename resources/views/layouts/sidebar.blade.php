@@ -50,6 +50,7 @@
             <li class="nav-item"> <a class="nav-link" href="{{route('admin/users')}}"> Pengguna </a></li>
             <li class="nav-item"> <a class="nav-link" href="{{route('admin/pets')}}"> Hewan Peliharaan </a></li>
             <li class="nav-item"> <a class="nav-link" href="{{route('admin/cages')}}"> Kandang </a></li>
+            <li class="nav-item"> <a class="nav-link" href="{{route('admin/testimonials')}}"> Testimoni </a></li>
             <li class="nav-item"> <a class="nav-link" href="{{route('admin/reports')}}"> Laporan </a></li>
           </ul>
         </div>
@@ -64,7 +65,7 @@
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="{{route('admin/hotels')}}">
+        <a class="nav-link" href="{{route('veterinarian/inpatients')}}">
           <span class="menu-title">Penitipan Hewan Sakit</span>
           <i class="mdi mdi-hotel menu-icon"></i>
         </a>

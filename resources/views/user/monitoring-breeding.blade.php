@@ -59,12 +59,12 @@
                                 <h5 class="card-title">{{$value->cages->type_cages->alias}}  - {{$value->cages->number}} </h5>
                               @endif
                               <p class="card-text">Nama Pet: <span>{{$value->pets->name}}</span></p>
-                              <p class="card-text">Nama Jantan: <span>{{$value->pet_male}}</span></p>
+                              <p class="card-text">Nama Jantan: <span>{{$value->pets->pet_male}}</span></p>
                               <p class="card-text">Jenis Pet: <span>{{$value->pets->typePets->name}}</span></p>
                               <p class="card-text">Tanggal Masuk: <span>{{ \Carbon\Carbon::parse($value->start_at)->translatedFormat('d F Y')}}</span></p>
                               <p class="card-text"></p>
                               <a href="{{route('user/userMonitoringPhotoBreeds', $value->pet_id)}}" class="card-text">Foto</a>
-                              <a href="{{route('user/userMonitoringTableBreeds', $value->id)}}" class="card-text">Tabel </a>
+                              <a href="{{route('user/userMonitoringTableBreeds',  $value->id)}}" class="card-text">Tabel </a>
                             </div>
                         </div>
                     </div>

@@ -22,7 +22,9 @@ class Pets extends Controller
 
     public function fetch()
     {
-        $pets = Pet::with('users', 'typePets')->get();
+        $pets = Pet::with('users', 'typePets')
+        ->orderBy('updated_at', 'DESC')
+        ->get();
         // dd($pets);
         return response()->json([
             'pets' => $pets

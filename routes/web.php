@@ -14,6 +14,7 @@ use App\Http\Controllers\Admin\Pets;
 use App\Http\Controllers\Admin\Cages;
 use App\Http\Controllers\Admin\Reports;
 use App\Http\Controllers\Admin\Profile;
+use App\Http\Controllers\Admin\AdminTestimonials;
 use App\Http\Controllers\Admin\Dummy;
 
 //Vetrinarian
@@ -22,6 +23,7 @@ use App\Http\Controllers\Veterinarian\MedicalRecords;
 use App\Http\Controllers\Veterinarian\MedicalRecordUsers;
 use App\Http\Controllers\Veterinarian\MedicalRecordPets;
 use App\Http\Controllers\Veterinarian\VetProfile;
+use App\Http\Controllers\Veterinarian\Inpatient;
 
 //User
 use App\Http\Controllers\User\DashboardUser;
@@ -114,6 +116,12 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function() {
         Route::get('cages-update/{id}', [Cages::class, 'update'])->name('admin/cagesUpdate');
         Route::get('cages-delete/{id}', [Cages::class, 'destroy'])->name('admin/cagesDestroy');
 
+        Route::get('admin-testimonials', [AdminTestimonials::class, 'index'])->name('admin/testimonials');
+        Route::get('admin-testimonials-fetch', [AdminTestimonials::class, 'fetch'])->name('admin/testimonialsFetch');
+        Route::get('admin-testimonials-edit/{id}', [AdminTestimonials::class, 'edit'])->name('admin/testimonialsEdit');
+        Route::put('admin-testimonials-update/{id}', [AdminTestimonials::class, 'update'])->name('admin/testimonialsUpdate');
+        Route::delete('admin-testimonials-delete/{id}', [AdminTestimonials::class, 'destroy'])->name('admin/testimonialsDestroy');
+
         Route::get('reports', [Reports::class, 'index'])->name('admin/reports');
         Route::post('ref-month', [Reports::class, 'refMonth'])->name('admin/refMonths');
 
@@ -133,6 +141,15 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function() {
         Route::get('profile', [VetProfile::class, 'index'])->name('veterinarian/profile');
         Route::put('vet-profile-update', [VetProfile::class, 'update'])->name('veterinarian/profileUpdate');
 
+        Route::get('inpatients', [Inpatient::class, 'index'])->name('veterinarian/inpatients');
+        Route::get('inpatients-fetch', [Inpatient::class, 'fetch'])->name('veterinarian/inpatientsFetch');
+        Route::post('inpatients-store', [Inpatient::class, 'store'])->name('veterinarian/inpatientsStore');
+        Route::get('inpatients-edit/{id}', [Inpatient::class, 'edit'])->name('veterinarian/inpatientsEdit');
+        Route::put('inpatients-update/{id}', [Inpatient::class, 'update'])->name('veterinarian/inpatientsUpdate');
+        Route::delete('inpatients-delete/{id}', [Inpatient::class, 'destroy'])->name('veterinarian/inpatientsDestroy');
+        Route::post('inpatients-ref-pet', [Inpatient::class, 'refPets'])->name('veterinarian/refPetsHotels');
+        Route::post('inpatients-ref-cage', [Inpatient::class, 'refCages'])->name('veterinarian/refCages');
+
     });
 
     Route::prefix('user')->group(function () {
@@ -140,14 +157,15 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function() {
         Route::post('user-grooms', [DashboardUser::class, 'grooms'])->name('user/userGroomsStore');
         Route::post('user-hotels', [DashboardUser::class, 'hotels'])->name('user/userHotelsStore');
         Route::post('user-breeds', [DashboardUser::class, 'breeds'])->name('user/userBreedsStore');
+        Route::post('user-testimonials', [DashboardUser::class, 'testimonial'])->name('user/userTestimonialsStore');
         Route::get('user-profile', [UserProfile::class, 'index'])->name('user/userProfile');
         Route::put('user-profile-update', [UserProfile::class, 'update'])->name('user/profileUpdate');
         Route::get('user-monitoring',[UserMonitoring::class, 'index'])->name('user/userMonitoring');
         Route::get('user-monitoring-breeds', [UserMonitoring::class, 'breeds'])->name('user/userMonitoringBreeds');
-        Route::get('user-monitoring-photo/{$id}',[UserMonitoringPhoto::class, 'boards'])->name('user/userMonitoringPhoto');
-        Route::get('user-monitoring-table/{$id}',[UserMonitoringTable::class, 'boards'])->name('user/userMonitoringTable');
-        Route::get('user-monitoring-photo-breed/{$id}',[UserMonitoringPhoto::class, 'breeds'])->name('user/userMonitoringPhotoBreeds');
-        Route::get('user-monitoring-table-breed',[UserMonitoringTable::class, 'breeds'])->name('user/userMonitoringTableBreeds');
+        Route::get('user-monitoring-photo/{id}',[UserMonitoringPhoto::class, 'boards'])->name('user/userMonitoringPhoto');
+        Route::get('user-monitoring-table/{id}',[UserMonitoringTable::class, 'boards'])->name('user/userMonitoringTable');
+        Route::get('user-monitoring-photo-breed/{id}',[UserMonitoringPhoto::class, 'breeds'])->name('user/userMonitoringPhotoBreeds');
+        Route::get('user-monitoring-table-breed/{id}',[UserMonitoringTable::class, 'breeds'])->name('user/userMonitoringTableBreeds');
         Route::get('user-activity-grooms', [UserActivity::class, 'grooms'])->name('user/userActivityGrooms');
         Route::get('user-activity-boards', [UserActivity::class, 'boards'])->name('user/userActivityHotels');
         Route::get('user-activity-breeds', [UserActivity::class, 'breeds'])->name('user/userActivityBreeds');

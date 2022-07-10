@@ -28,7 +28,7 @@
     <div class="row">
       <div class="col-12">
         <div class="my-5">
-          <h3>Monitoring Boarding</h3>
+          <h3>Monitoring Breeding</h3>
           <hr>
         <div class="row mb-5 gx-5">
           <div class="col-xxl-12 mb-5 mb-xxl-0">
@@ -36,10 +36,10 @@
               <div class="card-header">
                   <ul class="nav nav-tabs card-header-tabs">
                     <li class="nav-item">
-                      <a class="nav-link active" href="">Boarding</a>
+                      <a class="nav-link " href="{{route('user/userMonitoring')}}">Boarding</a>
                     </li>
                     <li class="nav-item">
-                      <a class="nav-link" href="{{route('user/userMonitoringBreeds')}}">Breeding</a>
+                      <a class="nav-link active" href="#">Breeding</a>
                     </li>
                   </ul>
                 </div>

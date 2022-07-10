@@ -552,9 +552,9 @@ section {
     padding: 40px 0;
   }
   .gallery .swiper-slide-active {
-    border: 6px solid #5777ba;
+    /* border: 6px solid #5777ba; */
     padding: 4px;
-    background: #fff;
+    /* background: #fff; */
     z-index: 1;
     transform: scale(1.2);
     margin-top: 10px;

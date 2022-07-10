@@ -40,7 +40,7 @@
                         <p class="card-text">Jenis Pet: <span>{{$value->pets->typePets->name}}</span></p>
                         <p class="card-text">Tanggal Masuk: <span>{{ \Carbon\Carbon::parse($value->start_at)->translatedFormat('d F Y')}}</span></p>
                         <p class="card-text">Tanggal Keluar: <span>{{ \Carbon\Carbon::parse($value->end_at)->translatedFormat('d F Y')}}</span></p>
-                        <button class="btn btn-gradient-primary btn-sm" value="{{$value->id}}" id="monit-data"><i class="fa-solid fa-house-medical"></i></button>                        </div>
+                        <button class="btn btn-gradient-primary btn-sm" value="{{$value->id}}" id="monit-data"><i class="fa-solid fa-house-medical"></i></button></div>
                     </div>
                 </div>
                 @endforeach
@@ -49,67 +49,80 @@
         </div>
       </div>
     </div>
-</div>
 
-<div class="modal fade" id="modal-create">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h6 class="modal-title">Tambah Data</h6>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <form action="" method="" class="forms-sample">
-                @csrf
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="form-group">
-                            <label for="username">Kondisi Makan</label>
-                                <div class="form-check">
-                                <label class="form-check-label">
-                                  <input type="checkbox" class="form-check-input" name="food" value="Normal"> Baik <i class="input-helper"></i></label>
-                                </div>
-                                <div class="form-check">
-                                    <label class="form-check-label">
-                                    <input type="checkbox" class="form-check-input" name="food" value="Tidak Normal"> Tidak Baik <i class="input-helper"></i></label>
-                                </div>
-                          </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group">
-                            <label for="username">Kondisi Suhu Badan</label>
-                                <div class="form-check">
-                                <label class="form-check-label">
-                                  <input type="checkbox" class="form-check-input" name="temperature" value="Normal"> Normal <i class="input-helper"></i></label>
-                                </div>
-                                <div class="form-check">
-                                    <label class="form-check-label">
-                                    <input type="checkbox" class="form-check-input" name="temperature" value="Tidak Normal"> Tidak Normal <i class="input-helper"></i></label>
-                                </div>
-                          </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group">
-                            <label for="username">Keterangan</label>
-                            <textarea name="notes" id="notes" cols="10" rows="5" class="form-control"></textarea>
-                          </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group">
-                            <label for="username">Upload Foto</label>
-                            <input type="file" class="form-control-file" id="images" name="images[]" enctype="multipart/form-data" multiple>
-                        </div>
-                    </div>
-                <div class="modal-footer justify-content-between">
-                    <button type="button" class="btn btn-gradient-light btn-fw close" data-dismiss="modal">Kembali</button>
-                    <button type="submit" class="btn btn-gradient-primary btn-fw tambah_data">Simpan</button>
+    {{-- Create for Hotels --}}
+    <div class="modal fade" id="modal-create">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title">Tambah Data</h6>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
-            </form>
+                <form action="" method="" class="forms-sample">
+                    @csrf
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="form-group">
+                                <label for="username">Kondisi Makan</label>
+                                    <div class="form-check">
+                                    <label class="form-check-label">
+                                    <input type="checkbox" class="form-check-input" name="food" value="Normal"> Baik <i class="input-helper"></i></label>
+                                    </div>
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                        <input type="checkbox" class="form-check-input" name="food" value="Tidak Normal"> Tidak Baik <i class="input-helper"></i></label>
+                                    </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group">
+                                <label for="username">Kondisi Suhu Badan</label>
+                                    <div class="form-check">
+                                    <label class="form-check-label">
+                                    <input type="checkbox" class="form-check-input" name="temperature" value="Normal"> Normal <i class="input-helper"></i></label>
+                                    </div>
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                        <input type="checkbox" class="form-check-input" name="temperature" value="Tidak Normal"> Tidak Normal <i class="input-helper"></i></label>
+                                    </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group">
+                                <label for="username">Kebutuhan Obat</label>
+                                    <div class="form-check">
+                                    <label class="form-check-label">
+                                    <input type="checkbox" class="form-check-input" name="medicine" value="Sudah"> Sudah <i class="input-helper"></i></label>
+                                    </div>
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                        <input type="checkbox" class="form-check-input" name="medicine" value="Tidak Butuh"> Tidak Perlu <i class="input-helper"></i></label>
+                                    </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group">
+                                <label for="username">Keterangan</label>
+                                <textarea name="notes" id="notes" cols="10" rows="5" class="form-control"></textarea>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group">
+                                <label for="username">Upload Foto</label>
+                                <input type="file" class="form-control-file" id="images" name="images[]" enctype="multipart/form-data" multiple>
+                            </div>
+                        </div>
+                    <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-gradient-light btn-fw close" data-dismiss="modal">Kembali</button>
+                        <button type="submit" class="btn btn-gradient-primary btn-fw tambah_data">Simpan</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 </div>
-
 @endsection
 
 @push('scripts')
@@ -132,8 +145,6 @@
                 let TotalImages = $('#images')[0].files.length;  //Total Images
                 let images = $('#images')[0];  
 
-               alert(image_upload);
-
                 for (let i = 0; i < TotalImages; i++) {
                     image_upload.append('images[' + i + ']' , images.files[i]);
                 }
@@ -142,6 +153,7 @@
                 image_upload.append('notes', $('#notes').val());
                 image_upload.append('food', $("input[name='food']:checked").val());
                 image_upload.append('temperature', $("input[name='temperature']:checked").val());
+                image_upload.append('medicine', $("input[name='medicine']:checked").val());
                 image_upload.append('hotel_id', $('#monit-data').val());
                 
                 // var data = {

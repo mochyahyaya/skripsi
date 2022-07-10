@@ -1,5 +1,6 @@
 @extends('layouts.user')
 
+@section('content')
 <!-- ======= Hero Section ======= -->
 <section id="hero" class="d-flex align-items-center">
 
@@ -19,7 +20,6 @@
 
 </section><!-- End Hero -->
 
-@section('content')
 <section id="features" class="features">
     <div class="container">
 
@@ -168,25 +168,24 @@
 
   <div class="container-fluid" data-aos="fade-up">
     <div class="gallery-slider swiper">
-      <div class="swiper-wrapper" style="max-height: 600px">
+        <div class="swiper-wrapper">
         @foreach ($pets as $value)
-        <a href="{!! asset('images/featured_image/'.$value->filename) !!}" class="gallery-lightbox" data-gall="gallery-carousel">
-          <img src="{!! asset('images/featured_image/'.$value->filename) !!}" class="img-fluid m-3" style="height: 500px; width: 400px" alt="">
-        </a>
-        {{-- <a data-target="#modal-create-breeds" data-toggle="modal" id="modal-galery" 
-          href="#modal-create-breeds">
-          <img src="{!! asset('images/featured_image/'.$value->filename) !!}" class="img-fluid m-3" style="height: 500px; width: 400px" alt="">
-        </a> --}}
+        <div class="swiper-slide">
+            <a href="{!! asset('images/featured_image/'.$value->filename) !!}" class="gallery-lightbox" data-gall="gallery-carousel">
+            <img src="{!! asset('images/featured_image/'.$value->filename) !!}" class="img-fluid m-3" style="height: 500px; width: 400px" alt="">
+            </a>
+            <div class="img-fluid m-3">{{$value->name}}</div>
+        </div>
         @endforeach
         </div>
       </div>
       <div class="swiper-pagination"></div>
     </div>
-  </div>
+
 </section><!-- End Gallery Section -->
 
   <!-- ======= Testimonials Section ======= -->
-  {{-- <section id="testimonials" class="testimonials">
+  <section id="testimonials" class="testimonials">
     <div class="container" data-aos="fade-up">
 
       <div class="section-title">
@@ -196,63 +195,30 @@
       <div class="testimonials-slider swiper" data-aos="fade-up" data-aos-delay="100">
         <div class="swiper-wrapper">
 
+          @foreach ($testi as $value)
           <div class="swiper-slide">
             <div class="testimonial-item">
-              <img src={!! asset('Appland/assets/img/testimonials/testimonials-1.jpg') !!} class="testimonial-img" alt="">
-              <h3>Pengguna 1</h3>
+              {{-- <img src={!! asset('Appland/assets/img/testimonials/testimonials-1.jpg') !!} class="testimonial-img" alt=""> --}}
+              <h3>{{$value->name}}</h3>
               <p>
                 <i class="bx bxs-quote-alt-left quote-icon-left"></i>
-                Garden tempat yang bagus untuk menitipkan hewan peliharaan, gak nyesel nitipin disini.
+                {{$value->messages}}
                 <i class="bx bxs-quote-alt-right quote-icon-right"></i>
               </p>
             </div>
           </div>
+          @endforeach
 
-          <div class="swiper-slide">
-            <div class="testimonial-item">
-              <img src={!! asset('Appland/assets/img/testimonials/testimonials-2.jpg') !!} class="testimonial-img" alt="">
-              <h3>Pengguna 2</h3>
-              <p>
-                <i class="bx bxs-quote-alt-left quote-icon-left"></i>
-                Bukan cuma pelayanannya yang bagus tapi juga harganya yang murah banget dibandingkan petshop lain
-                <i class="bx bxs-quote-alt-right quote-icon-right"></i>
-              </p>
-            </div>
-          </div>
-
-          <div class="swiper-slide">
-            <div class="testimonial-item">
-              <img src={!! asset('Appland/assets/img/testimonials/testimonials-3.jpg') !!} class="testimonial-img" alt="">
-              <h3>Pengguna 3</h3>
-              <p>
-                <i class="bx bxs-quote-alt-left quote-icon-left"></i>
-                Pelayanannya ramah dan baik banget
-                <i class="bx bxs-quote-alt-right quote-icon-right"></i>
-              </p>
-            </div>
-          </div>
-
-          <div class="swiper-slide">
-            <div class="testimonial-item">
-              <img src={!! asset('Appland/assets/img/testimonials/testimonials-4.jpg') !!} class="testimonial-img" alt="">
-              <h3>Pengguna 4</h3>
-              <p>
-                <i class="bx bxs-quote-alt-left quote-icon-left"></i>
-                Gak nyesel grooming disini, hasilnya bersih dan harum
-                <i class="bx bxs-quote-alt-right quote-icon-right"></i>
-              </p>
-            </div>
-          </div>
         </div>
         <div class="swiper-pagination"></div>
       </div>
 
     </div>
-  </section> --}}
+  </section>
   <!-- End Testimonials Section -->
 
 <!-- ======= Contact Section ======= -->
-<section id="contact" class="contact">
+<section id="contact" class="contact section-bg">
   <div class="container" data-aos="fade-up">
 
     <div class="section-title">
@@ -288,7 +254,7 @@
       </div>
 
       <div class="col-lg-6">
-        <form action="forms/contact.php" method="post" role="form" class="php-email-form" data-aos="fade-up">
+        <form action="" method="" role="" class="php-email-form" data-aos="fade-up">
           <div class="form-group">
             <input placeholder="Nama Anda" type="text" name="name" class="form-control" id="name" required>
           </div>
@@ -296,17 +262,21 @@
             <input placeholder="Email Anda" type="email" class="form-control" name="email" id="email" required>
           </div>
           <div class="form-group mt-3">
-            <input placeholder="Keluhan/Masukan" type="text" class="form-control" name="subject" id="subject" required>
+            <select name="subject" id="subject" class="form-control">
+              <option value="" selected disabled>--Keluhan/Masukan--</option>
+              <option value="Keluhan">Keluhan</option>
+              <option value="Masukan">Masukan</option>
+            </select>
           </div>
           <div class="form-group mt-3">
-            <textarea placeholder="Pesan" class="form-control" name="message" rows="5" required></textarea>
+            <textarea placeholder="Pesan" class="form-control" id="messages" name="messages" rows="5" required></textarea>
           </div>
           <div class="my-3">
             <div class="loading">Loading</div>
             <div class="error-message"></div>
             <div class="sent-message">Your message has been sent. Thank you!</div>
           </div>
-          <div class="text-center"><button type="submit">Kirim Pesan</button></div>
+          <div class="text-center"><button type="submit" id="btn-testi-submit">Kirim Pesan</button></div>
         </form>
       </div>
 
@@ -438,7 +408,7 @@
                 </div>
                   <div class="row">
                       <div class="forms-group">
-                          <label for="petname" class="col-form-label">Nama Pet</label>
+                          <label for="petnameHotels" class="col-form-label">Nama Pet</label>
                           <select id="petnameHotels" class="form-control select2bs4" name="petname">
                             <option value="" selected disabled>--Pilih Nama Pet--</option>
                             @foreach ($petsHotels as $value)
@@ -644,7 +614,7 @@
                   })
               },
               complete: function(){
-                  $('.tambah_data').text('Simpan').removeAttr('disabled');
+                  $('.create_hotels').text('Simpan').removeAttr('disabled');
                   $('#username').val(null).trigger('change');
                   $('#petname').val(null).trigger('change');
                   $('#start_at').val('');
@@ -658,7 +628,7 @@
                       var el = $(document).find('[name="'+i+'"]');
                       el.after($('<span style="color: red;">'+error[0]+'</span>'));
                   });
-                  $('.tambah_data').text('Simpan').removeAttr('disabled')
+                  $('.create_hotels').text('Simpan').removeAttr('disabled')
               }
             }
           });
@@ -718,6 +688,61 @@
                 }
                 }
             });
+      });
+
+      $(document).on('click', '#btn-testi-submit', function (e) {
+          e.preventDefault();
+
+          $(this).text('Progress....').attr('disabled', 'disabled')
+
+          var data = {
+              'name': $('#name').val(),
+              'email': $('#email').val(),
+              'subject': $('#subject').val(),
+              'messages': $('#messages').val(),
+          }
+
+          $.ajax({
+              type: "POST",
+              url: "{{ route('user/userTestimonialsStore') }}",
+              data: data,
+              dataType: "json",
+              success: function (data) {
+              const Toast = Swal.mixin({
+                  toast: true,
+                  position: 'top-end',
+                  showConfirmButton: false,
+                  timer: 3000,
+                  timerProgressBar: true,
+                  didOpen: (toast) => {
+                  toast.addEventListener('mouseenter', Swal.stopTimer)
+                  toast.addEventListener('mouseleave', Swal.resumeTimer)
+                  }
+                  })
+                  Toast.fire({
+                  icon: data.status,
+                  title: data.message
+                  })
+              },
+              complete: function(){
+                  $('#btn-testi-submit').text('Simpan').removeAttr('disabled');
+                  $('#name').val('');
+                  $('#email').val('');
+                  $('#subject').val('');
+                  $('#messages').val('');
+                  $('#modal-create-hotels .close').click();
+                  fetch();
+              },
+              error: function (err) {
+              if (err.status == 422) {
+                  $.each(err.responseJSON.errors, function (i, error) {
+                      var el = $(document).find('[name="'+i+'"]');
+                      el.after($('<span style="color: red;">'+error[0]+'</span>'));
+                  });
+                  $('#btn-testi-submit').text('Simpan').removeAttr('disabled')
+              }
+            }
+          });
       });
     });
   </script>

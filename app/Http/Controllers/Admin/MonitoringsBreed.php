@@ -54,7 +54,7 @@ class MonitoringsBreed extends Controller
                     $file->move(\public_path("/images/breedmonitoring"),$imageName);
                     ImageMonitoringBreed::create([
                         'filename' => $imageName,
-                        'pet_id' => $data->breeds->pet_id
+                        'pet_id' => $data->id
                     ]);
                 }
             }

@@ -29,7 +29,7 @@ class UserMonitoring extends Controller
     public function breeds()
     {
         $breeds = Breed::with('pets', 'cages')
-        ->leftjoin('pets', 'breeds.pet_id', '=', 'pets.id')
+        ->join('pets', 'breeds.pet_id', '=', 'pets.id')
         ->where('status', 'Proses')
         ->where('pets.user_id', Auth::user()->id)
         ->get();
