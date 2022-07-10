@@ -117,7 +117,7 @@
                                                 </div>
                                                 <!-- Button -->
                                                 <input type="file" name="file" >
-                                                <label class="btn btn-success-soft btn-block" for="customFile">Upload</label>
+                                                {{-- <label class="btn btn-success-soft btn-block" for="customFile">Upload</label> --}}
                                                 <!-- Content -->
                                             @endforeach
                                         </div>

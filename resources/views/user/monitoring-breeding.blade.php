@@ -64,7 +64,7 @@
                               <p class="card-text">Tanggal Masuk: <span>{{ \Carbon\Carbon::parse($value->start_at)->translatedFormat('d F Y')}}</span></p>
                               <p class="card-text"></p>
                               <a href="{{route('user/userMonitoringPhotoBreeds', $value->pet_id)}}" class="card-text">Foto</a>
-                              <a href="{{route('user/userMonitoringTableBreeds')}}" class="card-text">Tabel </a>
+                              <a href="{{route('user/userMonitoringTableBreeds', $value->id)}}" class="card-text">Tabel </a>
                             </div>
                         </div>
                     </div>
