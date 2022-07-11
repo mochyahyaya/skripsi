@@ -81,7 +81,9 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function() {
 
         Route::get('monitorings-hotel', [MonitoringsHotel::class, 'index'])->name('admin/monitoringsHotel');
         Route::post('monitorings-hotel-store', [MonitoringsHotel::class, 'store'])->name('admin/monitoringsHotelStore');
-        Route::post('monitorings-hotel-store-image', [MonitoringsHotel::class, 'storeImage'])->name('admin/monitoringsHotelStoreImage');
+
+        Route::get('monitorings-hotel-tables/{id}', [MonitoringsHotel::class, 'table'])->name('admin/monitoringsTableHotel');
+        Route::get('monitorings-hotel-galery/{id}', [MonitoringsHotel::class, 'galery'])->name('admin/monitoringsGaleryHotel');
 
         Route::get('breeds', [Breeds::class, 'index'])->name('admin/breeds');
         Route::get('breeds-fetch', [Breeds::class, 'fetch'])->name('admin/breedsFetch');
@@ -94,6 +96,8 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function() {
 
         Route::get('monitorings-breed', [MonitoringsBreed::class, 'index'])->name('admin/monitoringsBreed');
         Route::post('monitorings-breed-store', [MonitoringsBreed::class, 'store'])->name('admin/monitoringsBreedStore');
+        Route::get('monitorings-breed-tables/{id}', [MonitoringsBreed::class, 'table'])->name('admin/monitoringsTableBreed');
+        Route::get('monitorings-breed-galery/{id}', [MonitoringsBreed::class, 'galery'])->name('admin/monitoringsGaleryBreed');
         
         Route::get('users', [Users::class, 'index'])->name('admin/users');
         Route::get('users-fetch', [Users::class, 'fetch'])->name('admin/usersFetch');

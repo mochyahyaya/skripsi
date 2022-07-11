@@ -33,7 +33,7 @@ class Grooms extends Controller
     public function fetch()
     {
         $grooms = Groom::with('pets')
-        ->orderBy('updated_at', 'DESC')
+        ->orderBy('id', 'DESC')
         ->get();
         return response()->json([
             'grooms' => $grooms
@@ -118,14 +118,14 @@ class Grooms extends Controller
     {
             $data = $request->all();
             $data = Groom::find($id);
-            $data->price = $request['price'];
+            $price= $request['price'];
             $priceformat = number_format($data->price,0,".",".");
             if($data)
             {
                 $data->pet_id = $request['petname'];
                 $data->service = $request['service'];
                 $data->status = $request['status'];
-                $data->price = $priceformat;
+                $data->price = $price;
                 $data->update();
                 $data = [
                     'data' => $data,

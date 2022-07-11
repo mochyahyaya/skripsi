@@ -30,42 +30,31 @@
         <div class="my-5">
           <h3>Monitoring Boarding</h3>
           <hr>
+        </div>
         <div class="row mb-5 gx-5">
           <div class="col-xxl-12 mb-5 mb-xxl-0">
             <div class="card">
-              <div class="card-header">
-                  <ul class="nav nav-tabs card-header-tabs">
-                    <li class="nav-item">
-                      <a class="nav-link active" href="">Boarding</a>
-                    </li>
-                    <li class="nav-item">
-                      <a class="nav-link" href="{{route('user/userMonitoringBreeds')}}">Breeding</a>
-                    </li>
-                  </ul>
-                </div>
               <div class="card-body">
                 <h4 class="card-title">Foto Monitoring</h4>
-                <section id="gallery">
-                    <table class="table" id="table-monitoring">
-                        <tr>
-                            <th>#</th>
-                            <th>Kondisi Makan</th>
-                            <th>Kondisi Suhu Badan</th>
-                            <th>Kebutuhan Obat</th>
-                        </tr>
-                        <tbody>
-                            <tr>
-                                @foreach ($hotels as $value)
-                                    <td>{{$loop->iteration}}</td>
-                                    <td>{{$value->food}}</td>
-                                    <td>{{$value->temperature}}</td>
-                                    <td>{{$value->medicine ?? 'Tidak Perlu'}}'</td>
-                                    <td>{{ \Carbon\Carbon::parse($value->created_at)->locale('id')->isoFormat('LLLL')}}</td>
-                                @endforeach
-                            </tr>
-                        </tbody>
-                    </table>
-                </section>
+                  <table class="table" id="table-monitoring">
+                      <tr>
+                          <th>#</th>
+                          <th>Kondisi Makan</th>
+                          <th>Kondisi Suhu Badan</th>
+                          <th>Kebutuhan Obat</th>
+                      </tr>
+                      <tbody>
+                          <tr>
+                              @foreach ($hotels as $value)
+                                  <td>{{$loop->iteration}}</td>
+                                  <td>{{$value->food}}</td>
+                                  <td>{{$value->temperature}}</td>
+                                  <td>{{$value->medicine ?? 'Tidak Perlu'}}'</td>
+                                  <td>{{ \Carbon\Carbon::parse($value->created_at)->locale('id')->isoFormat('LLLL')}}</td>
+                              @endforeach
+                          </tr>
+                      </tbody>
+                  </table>
               </div>
             </div>
           </div>
@@ -73,7 +62,6 @@
         </div>
       </div>
     </div>
-  </div>
 </section>
 @endsection
 @push('scripts')

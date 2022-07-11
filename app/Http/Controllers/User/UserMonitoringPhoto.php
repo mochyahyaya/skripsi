@@ -12,13 +12,13 @@ class UserMonitoringPhoto extends Controller
 {
     public function boards($id)
     {
-        $images = ImageMonitoringHotel::where('pet_id', $id)->get();
+        $images = ImageMonitoringHotel::where('hotel_id', $id)->get();
         return view('user.monitoring-boarding-photo', compact('images')); 
     }
 
     public function breeds($id)
     {
-        $images = ImageMonitoringBreed::where('pet_id', $id)->get();
+        $images = ImageMonitoringBreed::where('breed_id', $id)->get();
         return view('user.monitoring-breeding-photo', compact('images')); 
     }
 

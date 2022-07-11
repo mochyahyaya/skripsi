@@ -21,14 +21,31 @@ class Breeds extends Controller
         $pets = Pet::all();
         $breeds = Breed::all();
         $petAdmin = Pet::where('user_id', 1)->where('gender', 'Jantan')->get();
+
+        $query = DB::table('breeds as b')
+        ->select(DB::raw('ROW_NUMBER() OVER (PARTITION BY pet_male ORDER BY id DESC) AS rn, b.*'));
+
+        $petAdmin = DB::table('pets as p')
+                ->select('p.*', 'p.id as petsid')
+                ->withExpression('pos_pets', $query)
+                ->leftJoin('pos_pets', 'p.id', '=', 'pos_pets.pet_male')
+                ->where('p.user_id', 1)
+                ->whereNull('status')
+                ->orWhere(function ($join){
+                    $join
+                    ->where('rn', 1)
+                    ->where('status', 'Selesai');
+                })
+                ->get();
         return view('admin.breeds', compact('users', 'pets', 'breeds', 'petAdmin'));
     }
 
     public function fetch()
     {
-        $breeds = Breed::with('pets', 'cages.type_cages')
+        $breeds = Breed::with('pets', 'cages.type_cages', 'petsMale')
         ->orderBy('updated_at', 'DESC')
         ->get();
+        // dd($breeds);
         return response()->json([
             'breeds' => $breeds
         ]);
@@ -88,6 +105,7 @@ class Breeds extends Controller
     {
         $breeds = Breed::with('cages.type_cages', 'pets')->find($id);
         $petUsers = Pet::where('user_id', $breeds->pets->user_id )->get();
+        $petAdmin = Pet::where('user_id', 1 )->get();
         $cages = Cage::with('type_cages')
                 ->where('type_cage_id',  3)
                 ->whereRaw('counter < count')
@@ -99,7 +117,8 @@ class Breeds extends Controller
                 'message' => 'Data breeding berhasil ditampilkan',
                 'breeds'=> $breeds,
                 'petUser' => $petUsers,
-                'cages' => $cages
+                'cages' => $cages, 
+                'petAdmin' => $petAdmin
             ]);
         }
         else

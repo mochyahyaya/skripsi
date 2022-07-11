@@ -12,14 +12,14 @@ class UserMonitoringTable extends Controller
 {
     public function boards($id)
     {
-        $hotels = HotelMonitoring::where('id', $id)->get();
+        $hotels = HotelMonitoring::where('hotel_id', $id)->get();
 
         return view('user.monitoring-boarding-table', compact('hotels'));
     }
 
     public function breeds($id)
     {
-        $breeds = BreedMonitoring::where('id', $id)->get();
+        $breeds = BreedMonitoring::where('breed_id', $id)->get();
         return view('user.monitoring-breeding-table', compact('breeds'));
     }
 }

@@ -35,12 +35,16 @@
                         @endif
                         <img src="" alt="" class="card-img-top">
                         <div class="card-body">
-                        <h5 class="card-title">{{$value->cages->type_cages->alias}} - {{$value->cages->number}} </h5>
-                        <p class="card-text">Nama Pet: <span>{{$value->pets->name}}</span></p>
-                        <p class="card-text">Jenis Pet: <span>{{$value->pets->typePets->name}}</span></p>
-                        <p class="card-text">Tanggal Masuk: <span>{{ \Carbon\Carbon::parse($value->start_at)->translatedFormat('d F Y')}}</span></p>
-                        <p class="card-text">Tanggal Keluar: <span>{{ \Carbon\Carbon::parse($value->end_at)->translatedFormat('d F Y')}}</span></p>
-                        <button class="btn btn-gradient-primary btn-sm" value="{{$value->id}}" id="monit-data"><i class="fa-solid fa-house-medical"></i></button></div>
+                            <h5 class="card-title">{{$value->cages->type_cages->alias}} - {{$value->cages->number}} </h5>
+                            <p class="card-text">Nama Pet: <span>{{$value->pets->name}}</span></p>
+                            <p class="card-text">Jenis Pet: <span>{{$value->pets->typePets->name}}</span></p>
+                            <p class="card-text">Tanggal Masuk: <span>{{ \Carbon\Carbon::parse($value->start_at)->translatedFormat('d F Y')}}</span></p>
+                            <p class="card-text">Tanggal Keluar: <span>{{ \Carbon\Carbon::parse($value->end_at)->translatedFormat('d F Y')}}</span></p>
+                            <button class="btn btn-gradient-primary btn-sm" value="{{$value->id}}" id="monit-data"><i class="fa-solid fa-house-medical"></i></button>
+                            <a href="{{route('admin/monitoringsTableHotel', $value->id)}}">
+                                <button class="btn btn-gradient-primary btn-sm"><i class="fa-solid fa-notes-medical"></i></button>
+                            </a> 
+                        </div>
                     </div>
                 </div>
                 @endforeach
@@ -136,6 +140,9 @@
         $(document).ready(function () {
             $(document).on('click', '#monit-data', function(e) {
                 $('#modal-create').modal('show');
+
+                id = $('#monit-data').val();
+                console.log(id)
             });
             
             $(document).on('click', '.tambah_data', function (e) {
@@ -155,6 +162,8 @@
                 image_upload.append('temperature', $("input[name='temperature']:checked").val());
                 image_upload.append('medicine', $("input[name='medicine']:checked").val());
                 image_upload.append('hotel_id', $('#monit-data').val());
+
+
                 
                 // var data = {
                 //     'food': $("input[name='food']:checked").val(),

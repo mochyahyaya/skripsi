@@ -58,8 +58,8 @@
                                 <p class="card-text">Jenis Pet: <span>{{$value->pets->typePets->name}}</span></p>
                                 <p class="card-text">Tanggal Masuk: <span>{{ \Carbon\Carbon::parse($value->start_at)->translatedFormat('d F Y')}}</span></p>
                                 <p class="card-text">Tanggal Keluar: <span>{{ \Carbon\Carbon::parse($value->end_at)->translatedFormat('d F Y')}}</span></p>
-                                <a href="{{route('user/userMonitoringPhoto')}}" class="card-text">Foto</a>
-                                <a href="{{route('user/userMonitoringTable')}}" class="card-text">Tabel </a>
+                                <a href="{{route('user/userMonitoringPhoto', $value->hotelsid)}}" class="card-text">Foto</a>
+                                <a href="{{route('user/userMonitoringTable', $value->hotelsid)}}" class="card-text">Tabel </a>
                               </div>
                           </div>
                       </div>

@@ -33,16 +33,6 @@
         <div class="row mb-5 gx-5">
           <div class="col-xxl-12 mb-5 mb-xxl-0">
             <div class="card">
-              <div class="card-header">
-                  <ul class="nav nav-tabs card-header-tabs">
-                    <li class="nav-item">
-                      <a class="nav-link " href="{{route('user/userMonitoring')}}">Boarding</a>
-                    </li>
-                    <li class="nav-item">
-                      <a class="nav-link active" href="#">Breeding</a>
-                    </li>
-                  </ul>
-                </div>
               <div class="card-body">
                 <h4 class="card-title">Foto Monitoring</h4>
                 <section id="gallery">
@@ -51,8 +41,8 @@
                       <div class="col-lg-3 mb-4">
                           <div class="card">
                               <img src="" alt="" class="card-img-top">
-                              <div class="card-body">
-                                  <img src="{!! asset('images/galery/'.$value->filename) !!}" alt="" class="card-img-top">
+                              <div class="card">
+                                  <img src="{!! asset('images/breedmonitoring/'.$value->filename) !!}" alt="" class="card-img-top" style="height: 150px; widht: 40px">
                               </div>
                           </div>
                       </div>

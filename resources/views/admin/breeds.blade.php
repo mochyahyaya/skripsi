@@ -89,7 +89,7 @@
                             <select id="petMale" class="form-control select2bs4" name="petMale">
                               <option value="" selected disabled>--Pilih Nama Pet--</option>
                               @foreach ($petAdmin as $value)
-                                  <option value="{{$value->name}}">{{$value->name}}</option>
+                                  <option value="{{$value->id}}">{{$value->name}}</option>
                               @endforeach
                           </select>
                         </div>
@@ -151,7 +151,7 @@
                             <label for="petname" class="col-form-label">Nama Jantan</label>
                             <select id="updatePetMale" class="form-control select2bs4" name="updatePetMale">
                               @foreach ($petAdmin as $value)
-                                  <option value="{{$value->name}}">{{$value->name}}</option>
+                                  <option value="{{$value->id}}">{{$value->name}}</option>
                               @endforeach
                           </select>
                         </div>
@@ -235,7 +235,7 @@
                             var cages = '<td><label>'+ item.cages.type_cages.alias + ' - ' + item.cages.number +'</label></td>'
                         }
                         $('tbody').append('<tr>\
-                            <td>' + item.pet_male + '</td>\
+                            <td>' + item.pets_male.name + '</td>\
                             <td>' + item.pets.name + '</td>\
                             <td>' + moment(item.start_at).locale('id').format('LL') + '</td>\
                             <td>' + item.price + '</td>\
@@ -435,17 +435,29 @@
                     $('#breeds_id').val(response.breeds.id);
 
                     data = response.petUser;
+                    data2 = response.petAdmin;
                     cage = response.cages;
-                    console.log(data);
+
+                    console.log(data2);
                     var status = $("#updateStatus").val();
                     console.log(status);
                     if(status == 'Selesai'){
                         $(document).find('#updateStatus option').attr("disabled", "disabled");
                     }
+
                     var el = $(document).find('#updatePetName option');
                     el.remove();
                     $.each(data,function (j,data){
                         $('select[name="updatePetName"]').append($('<option>', { 
+                            value: data['id'],
+                            text : data['name'] 
+                        }));
+                    });
+
+                    var el2 = $(document).find('#updatePetMale option');
+                    el2.remove();
+                    $.each(data2,function (j,data){
+                        $('select[name="updatePetMale"]').append($('<option>', { 
                             value: data['id'],
                             text : data['name'] 
                         }));

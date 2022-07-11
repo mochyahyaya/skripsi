@@ -56,7 +56,8 @@ class MonitoringsHotel extends Controller
                     $file->move(\public_path("/images/hotelmonitoring"),$imageName);
                     ImageMonitoringHotel::create([
                         'filename' => $imageName,
-                        'pet_id' => $data->id
+                        'pet_id' => $hotels->pet_id,
+                        'hotel_id' => $data->id
                     ]);
                 }
              }
@@ -69,5 +70,19 @@ class MonitoringsHotel extends Controller
         }
 
         return response()->json($data);
+    }
+
+    public function table($id)
+    {
+        $hotels = HotelMonitoring::where('hotel_id', $id)->get();
+        // dd($hotels);
+        return view('admin.monitoring-hotels-tables', compact('hotels'));
+    }
+
+    public function galery($id)
+    {
+        $hotels = Hotel::find($id);
+        $images = ImageMonitoringHotel::where('hotel_id', $id)->get();
+        return view('admin.monitoring-hotels-galery', compact('images'));
     }
 }

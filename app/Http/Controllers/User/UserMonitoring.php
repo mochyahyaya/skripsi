@@ -18,10 +18,11 @@ class UserMonitoring extends Controller
     public function index()
     {
         $hotels = Hotel::with('pets', 'cages')
-        ->leftjoin('pets', 'hotels.pet_id', '=', 'pets.id')
+        ->select('*', 'hotels.id as hotelsid')
+        ->join('pets', 'hotels.pet_id', '=', 'pets.id')
         ->where('status', 'Dalam Kandang')
-        ->where('pets.user_id', Auth::user()->id)
         ->get();
+        // dd($hotel);
         $image = ImageMonitoringHotel::all();
         return view('user.monitoring-boarding', compact('hotels', 'image'));
     }
@@ -29,25 +30,13 @@ class UserMonitoring extends Controller
     public function breeds()
     {
         $breeds = Breed::with('pets', 'cages')
+        ->select('*', 'breeds.id as breedsid')
         ->join('pets', 'breeds.pet_id', '=', 'pets.id')
         ->where('status', 'Proses')
-        ->where('pets.user_id', Auth::user()->id)
+        ->where('user_id', Auth::user()->id)
         ->get();
+        // dd($breeds);
         $image = ImageMonitoringBreed::all();
         return view('user.monitoring-breeding', compact('breeds', 'image'));
-    }
-
-    public function galery($id)
-    {
-        $images = ImageMonitoringHotel::where('pet_id', $id)->get();
-
-        return view('user.monitoring-boarding-photo', compact('images'));
-    }
-
-    public function table($id)
-    {
-        $hotels = HotelMonitoring::where('id', $id)->get();
-
-        return view('user.monitoring-boarding-photo', compact('hotels'));
     }
 }

@@ -54,7 +54,8 @@ class MonitoringsBreed extends Controller
                     $file->move(\public_path("/images/breedmonitoring"),$imageName);
                     ImageMonitoringBreed::create([
                         'filename' => $imageName,
-                        'pet_id' => $data->id
+                        'pet_id' => $breeds->pet_id,
+                        'breed_id' => $data->id
                     ]);
                 }
             }
@@ -66,5 +67,21 @@ class MonitoringsBreed extends Controller
         }
 
         return response()->json($data);
+    }
+
+    public function table($id)
+    {
+        $breeds = BreedMonitoring::where('breed_id', $id)->get();
+        // dd($hotels);
+        return view('admin.monitoring-breed-tables', compact('breeds'));
+    }
+
+    public function galery($id)
+    {
+        $breeds = Breed::find($id);
+        $images = ImageMonitoringBreed::where('pet_id', $breeds->pet_id)
+        ->where('breed_id', $id)
+        ->get();
+        return view('admin.monitoring-breed-galery', compact('images'));
     }
 }
