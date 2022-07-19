@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 use App\Models\Galery;
 use App\Models\Pet;
@@ -14,7 +15,7 @@ class Pets extends Controller
 {
     public function index()
     {
-        $pets = Pet::all();
+        $pets = Pet::orderBy('id', 'DESC')->get();
         $type = TypePet::all();
         $users = User::with('roles')->where('role_id', '!=', 2)->get();
         return view('admin.pets', compact('pets', 'users', 'type'));
@@ -25,7 +26,6 @@ class Pets extends Controller
         $pets = Pet::with('users', 'typePets')
         ->orderBy('updated_at', 'DESC')
         ->get();
-        // dd($pets);
         return response()->json([
             'pets' => $pets
         ]);

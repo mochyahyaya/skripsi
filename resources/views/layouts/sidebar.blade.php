@@ -64,12 +64,12 @@
           <i class="mdi mdi-broom menu-icon"></i>
         </a>
       </li>
-      <li class="nav-item">
+      {{-- <li class="nav-item">
         <a class="nav-link" href="{{route('veterinarian/inpatients')}}">
           <span class="menu-title">Penitipan Hewan Sakit</span>
           <i class="mdi mdi-hotel menu-icon"></i>
         </a>
-      </li>
+      </li> --}}
       @endif
     </ul>
   </nav>

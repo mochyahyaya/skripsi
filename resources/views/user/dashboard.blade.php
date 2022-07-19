@@ -172,7 +172,7 @@
         @foreach ($pets as $value)
         <div class="swiper-slide">
             <a href="{!! asset('images/featured_image/'.$value->filename) !!}" class="gallery-lightbox" data-gall="gallery-carousel">
-            <img src="{!! asset('images/featured_image/'.$value->filename) !!}" class="img-fluid m-3" style="height: 500px; width: 400px" alt="">
+            <img src="{!! asset('images/featured_image/'.$value->filename) !!}" class="img-fluid m-3" style="height: 500px; width: 500px" alt="">
             </a>
             <div class="img-fluid m-3">{{$value->name}}</div>
         </div>
